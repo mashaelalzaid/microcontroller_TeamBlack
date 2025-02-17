@@ -1,4 +1,4 @@
-module rv32i #(
+module rv32i_top #(
     parameter DMEM_DEPTH = 1024, 
     parameter IMEM_DEPTH = 1024
 )(
