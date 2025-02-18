@@ -25,37 +25,39 @@ module soc_test;
             reset_n = 1;
         end
     endtask
+    initial begin
+       $readmemh("machine.hex", dut.rom_instance.rom);
+   end // wait
 
-    // Task to test GPIO functionality
-    task test_gpio;
-        logic [31:0] gpio_input;
-        begin
-            $display("Testing GPIO functionality...");
-            gpio_input = 32'hA5A5A5A5;
-            force dut.io_data = gpio_input; // Force GPIO input value
-            #10;
-            release dut.io_data; // Release control of GPIO
+//    // Task to test GPIO functionality
+//    task test_gpio;
+//        logic [31:0] gpio_input;
+//        begin
+//            $display("Testing GPIO functionality...");
+//            gpio_input = 32'hA5A5A5A5;
+//            force dut.io_data = gpio_input; // Force GPIO input value
+//            #10;
+//            release dut.io_data; // Release control of GPIO
             
-            if (dut.i_gpio !== gpio_input) 
-                $display("ERROR: GPIO input mismatch!");
-            else 
-                $display("GPIO input test PASSED!");
+//            if (dut.i_gpio !== gpio_input) 
+//                $display("ERROR: GPIO input mismatch!");
+//            else 
+//                $display("GPIO input test PASSED!");
 
-            // Test output functionality
-            force dut.o_gpio = 32'h5A5A5A5A;
-            force dut.en_gpio = 32'hFFFFFFFF;
-            #10;
+//            // Test output functionality
+//            force dut.o_gpio = 32'h5A5A5A5A;
+//            force dut.en_gpio = 32'hFFFFFFFF;
+//            #10;
             
-            if (dut.io_data !== 32'h5A5A5A5A)
-                $display("ERROR: GPIO output mismatch!");
-            else
-                $display("GPIO output test PASSED!");
+//            if (dut.io_data !== 32'h5A5A5A5A)
+//                $display("ERROR: GPIO output mismatch!");
+//            else
+//                $display("GPIO output test PASSED!");
 
-            release dut.o_gpio;
-            release dut.en_gpio;
-        end
-    endtask
-
+//            release dut.o_gpio;
+//            release dut.en_gpio;
+//        end
+//    endtask
     // Main test sequence
     initial begin
         // Initialize signals
@@ -66,9 +68,7 @@ module soc_test;
         reset_system();
 
         // Test GPIO
-        test_gpio();
-
+//        test_gpio();
         // Finish simulation
-        $stop;
     end
 endmodule

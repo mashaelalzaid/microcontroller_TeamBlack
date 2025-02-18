@@ -207,7 +207,7 @@ gpio_top gpio(
 .wb_clk_i(clk),	// Clock
 .wb_rst_i(reset_n),	// Reset
 .wb_cyc_i(wb_gpio_cyc_o),	// cycle valid input
-.wb_adr_i(wb_gpio_adr_o),	// address bus inputs
+.wb_adr_i(wb_gpio_adr_o[9:2]),	// address bus inputs //Q new new to be confirmed.
 .wb_dat_i(wb_gpio_dat_o),	// input data bus
 .wb_sel_i(wb_gpio_sel_o),	// byte select inputs
 .wb_we_i(wb_gpio_we_o ),	// indicates write transfer 
@@ -325,23 +325,23 @@ logic      mosi_o;     // MasterOut SlaveIN
 assign mosi_o = wb_io_dat_i;
 
 // connection
-simple_spi #(SS_WIDTH) spi (
+//simple_spi #(SS_WIDTH) spi (
 
-.clk_i(clk),         // clock
-.rst_i(reset_n),         // reset (synchronous active high)//Q new new: should this be active high or low?
-.cyc_i(wb_spi_flash_cyc_o),         // cycle
-.stb_i(wb_spi_flash_stb_o),         // strobe
-.adr_i(wb_spi_flash_adr_o),         // [2:0] address
-.we_i(wb_spi_flash_we_o),         // write enable
-.dat_i(wb_spi_flash_dat_o),         // [7:0]  data input
-.dat_o(wb_spi_flash_dat_i),         // [7:0] data output
-.ack_o(wb_spi_flash_ack_i),         // normal bus termination
-.inta_o(),        // interrupt output // Q new new: what should be passed here? 
-.sck_o(sck_o),         // serial clock output
-.ss_o(ss_o),      // [SS_WIDTH-1:0] slave select (active low) //Q new new: what should be passed here? 
-.mosi_o(mosi_o),        // MasterOut SlaveIN
-.miso_i(wb_io_dat_o)         // MasterIn SlaveOut
-);
+//.clk_i(clk),         // clock
+//.rst_i(reset_n),         // reset (synchronous active high)//Q new new: should this be active high or low?
+//.cyc_i(wb_spi_flash_cyc_o),         // cycle
+//.stb_i(wb_spi_flash_stb_o),         // strobe
+//.adr_i(wb_spi_flash_adr_o),         // [2:0] address
+//.we_i(wb_spi_flash_we_o),         // write enable
+//.dat_i(wb_spi_flash_dat_o),         // [7:0]  data input
+//.dat_o(wb_spi_flash_dat_i),         // [7:0] data output
+//.ack_o(wb_spi_flash_ack_i),         // normal bus termination
+//.inta_o(),        // interrupt output // Q new new: what should be passed here? 
+//.sck_o(sck_o),         // serial clock output
+//.ss_o(ss_o),      // [SS_WIDTH-1:0] slave select (active low) //Q new new: what should be passed here? 
+//.mosi_o(mosi_o),        // MasterOut SlaveIN
+//.miso_i(wb_io_dat_o)         // MasterIn SlaveOut
+//);
 
     
 endmodule : rv32i_soc
