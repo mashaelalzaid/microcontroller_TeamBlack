@@ -205,16 +205,16 @@ logic        gpio_wb_ack_o, gpio_wb_err_o, gpio_wb_inta_o;
 
 gpio_top gpio(
 .wb_clk_i(clk),	// Clock
-.wb_rst_i(reset_n),	// Reset
+.wb_rst_i(~reset_n),	// Reset
 .wb_cyc_i(wb_gpio_cyc_o),	// cycle valid input
-.wb_adr_i(wb_gpio_adr_o[9:2]),	// address bus inputs //Q new new to be confirmed.
+.wb_adr_i(wb_gpio_adr_o[7:0]),	// address bus inputs //Q new new to be confirmed.
 .wb_dat_i(wb_gpio_dat_o),	// input data bus
 .wb_sel_i(wb_gpio_sel_o),	// byte select inputs
 .wb_we_i(wb_gpio_we_o ),	// indicates write transfer 
 .wb_stb_i(wb_gpio_stb_o),	// strobe input
-.wb_dat_o(gpio_wb_dat_o),	// output data bus // Q new new: where should the ouptut signals go? 
-.wb_ack_o(gpio_wb_ack_o),	// normal termination
-.wb_err_o(gpio_wb_err_o),	// termination w/ error
+    .wb_dat_o(wb_gpio_dat_i),
+    .wb_ack_o(wb_gpio_ack_i),
+    .wb_err_o(wb_gpio_err_i),
 .wb_inta_o(gpio_wb_inta_o),	// Interrupt request output
 .i_gpio(i_gpio   ),
 .o_gpio(o_gpio),
@@ -268,11 +268,11 @@ gpio_top gpio(
         .we_i        (wb_imem_we_o ), 
         .sel_i       (wb_imem_sel_o),
         .dat_i       (wb_imem_dat_o), //Q new new: the dataout of wishbone is the input here right? 
-        .dat_o       (imem_dat_o), //Q new new: where should this signal be sent back to?
-        .ack_o       (wb_s2m_imem_ack)  //Q new new: where should this signal be sent back to?  
+        .dat_o       (wb_imem_dat_i), //Q new new: where should this signal be sent back to?
+        .ack_o       (wb_imem_ack_i)  //Q new new: where should this signal be sent back to?  
     );
     
-    assign imem_inst = wb_imem_adr_o; //Q new new: why was this overwritten again? why didn't we use the mux like the first delaration?
+    assign imem_inst = wb_imem_dat_i; //Q new new: why was this overwritten again? why didn't we use the mux like the first delaration?
 
 
     // BOOT ROM 

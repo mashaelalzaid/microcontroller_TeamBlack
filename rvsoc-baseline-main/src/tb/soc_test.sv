@@ -26,7 +26,7 @@ module soc_test;
         end
     endtask
     initial begin
-       $readmemh("machine.hex", dut.rom_instance.rom);
+       $readmemh("machine.mem", dut.rom_instance.rom);
    end // wait
 
 //    // Task to test GPIO functionality
