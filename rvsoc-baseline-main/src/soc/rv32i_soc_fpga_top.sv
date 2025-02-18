@@ -4,21 +4,27 @@ module rv32i_soc_fpag_top (
     input logic CPU_RESETN, 
     
     // FPGA core signals 
-    output logic        o_uart_tx,
-    input  logic        i_uart_rx,
-    output logic        o_flash_cs_n,
-    output logic        o_flash_mosi,
-    input  logic        i_flash_miso,
+//    output logic        UART_TXD_IN,
+//    input  logic        UART_RXD_OUT,
+//    output logic        o_flash_cs_n,
+//    output logic        o_flash_mosi,
+//    input  logic        i_flash_miso,
 
 
     input logic [15:0] SW,
     output logic [15:0] LED
 );  
 
+    
     parameter DMEM_DEPTH = 128;
     parameter IMEM_DEPTH = 128;
     
+    logic        o_flash_cs_n;
+    logic        o_flash_mosi;
+    logic        i_flash_miso;
     
+//    logic o_uart_tx = UART_TXD_IN ;
+//    logic  i_uart_rx= UART_RXD_OUT;
     logic        o_flash_sclk;
     STARTUPE2 STARTUPE2
         (
@@ -49,9 +55,9 @@ module rv32i_soc_fpag_top (
 
     // gpio signals
 
-    // wire [31:0]   io_data;
-    // assign io_data[31:16] = SW;
-    // assign LED = io_data[15:0];
+    wire [31:0]   io_data;
+    assign io_data[31:16] = SW;
+    assign LED = io_data[15:0];
 
     logic reset_n;
     logic clk;
@@ -69,7 +75,7 @@ module rv32i_soc_fpag_top (
         .IMEM_DEPTH(IMEM_DEPTH)
     ) soc_inst (
         .*,
-        .io_data({SW, LED})
+        .io_data( {SW ,LED})
     );
 
 endmodule : rv32i_soc_fpag_top

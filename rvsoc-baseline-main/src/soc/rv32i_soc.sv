@@ -29,7 +29,8 @@ module rv32i_soc #(
     logic stall_pipl;
     logic [31:0] current_pc;
     logic [31:0] inst; 
-      logic        if_id_reg_en;
+    logic        if_id_reg_en;
+    
     // Instantiate the processor core here 
     rv32i_top rv32i_top (
         .clk(clk),
@@ -45,10 +46,12 @@ module rv32i_soc #(
     // stall signal from wishbone 
     .stall_pipl(stall_pipl),
     .if_id_reg_en(if_id_reg_en),
-    .mem_addr_mem   (mem_addr_mem),
-    .mem_wdata_mem      (mem_wdata_mem),
-    .mem_write_mem      (mem_write_mem),
-    .mem_read_mem       (mem_read_mem)
+    
+   
+    .mem_addr_mem(mem_addr_mem),
+    .mem_wdata_mem(mem_wdata_mem),
+    .mem_write_mem(mem_write_mem),
+    .mem_read_mem(mem_read_mem)
     );
 
 
@@ -87,6 +90,9 @@ module rv32i_soc #(
         .wb_dat_i   (wb_io_dat_o), // For simplicity, no data input
         .wb_ack_i   (wb_io_ack_o)   
     );
+    
+ logic [2:0]  wb_m2s_io_cti;
+ logic [1:0] wb_m2s_io_bte;
     assign wb_m2s_io_cti = 0;
     assign wb_m2s_io_bte  = 0;
 
@@ -94,6 +100,9 @@ module rv32i_soc #(
     // ============================================
     //             Wishbone Interconnect 
     // ============================================
+    
+    assign wb_io_cti_i = wb_m2s_io_cti; 
+    assign wb_io_bte_i = wb_m2s_io_bte;
     // SPI FLASH SIGNALS 
   logic [31:0] wb_spi_flash_adr_o;
   logic [31:0] wb_spi_flash_dat_o;
@@ -200,27 +209,48 @@ wb_intercon interconnect_inst (
     // ============================================
     // Instantiate the GPIO peripheral here 
 
-logic [31:0] gpio_wb_dat_o;
-logic        gpio_wb_ack_o, gpio_wb_err_o, gpio_wb_inta_o;
+//logic [31:0] gpio_wb_dat_o;
+//logic        gpio_wb_ack_o, gpio_wb_err_o, 
+logic gpio_wb_inta_o;
 
-gpio_top gpio(
+
+  
+  gpio_top gpio(
 .wb_clk_i(clk),	// Clock
 .wb_rst_i(~reset_n),	// Reset
 .wb_cyc_i(wb_gpio_cyc_o),	// cycle valid input
 .wb_adr_i(wb_gpio_adr_o[7:0]),	// address bus inputs //Q new new to be confirmed.
 .wb_dat_i(wb_gpio_dat_o),	// input data bus
-.wb_sel_i(wb_gpio_sel_o),	// byte select inputs
+.wb_sel_i(wb_gpio_sel_o),	//========= byte select inputs
 .wb_we_i(wb_gpio_we_o ),	// indicates write transfer 
 .wb_stb_i(wb_gpio_stb_o),	// strobe input
-    .wb_dat_o(wb_gpio_dat_i),
-    .wb_ack_o(wb_gpio_ack_i),
-    .wb_err_o(wb_gpio_err_i),
+.wb_dat_o(wb_gpio_dat_i),	// output data bus // Q new new: where should the ouptut signals go? 
+.wb_ack_o(wb_gpio_ack_i),	// normal termination
+.wb_err_o(wb_gpio_err_i),	// termination w/ error
 .wb_inta_o(gpio_wb_inta_o),	// Interrupt request output
-.i_gpio(i_gpio   ),
+.i_gpio(i_gpio),
 .o_gpio(o_gpio),
 .en_gpio(en_gpio)
-
 );
+  
+//gpio_top gpio(
+//.wb_clk_i(clk),	// Clock
+//.wb_rst_i(reset_n),	// Reset
+//.wb_cyc_i(wb_gpio_cyc_o),	// cycle valid input
+//.wb_adr_i(wb_gpio_adr_o[9:2]),	// address bus inputs //Q new new to be confirmed.
+//.wb_dat_i(wb_gpio_dat_o),	// input data bus
+//.wb_sel_i(wb_gpio_sel_o),	// byte select inputs
+//.wb_we_i(wb_gpio_we_o ),	// indicates write transfer 
+//.wb_stb_i(wb_gpio_stb_o),	// strobe input
+//.wb_dat_o(gpio_wb_dat_o),	// output data bus // Q new new: where should the ouptut signals go? 
+//.wb_ack_o(gpio_wb_ack_o),	// normal termination
+//.wb_err_o(gpio_wb_err_o),	// termination w/ error
+//.wb_inta_o(gpio_wb_inta_o),	// Interrupt request output
+//.i_gpio(i_gpio   ),
+//.o_gpio(o_gpio),
+//.en_gpio(en_gpio)
+
+//);
 
 
     // ============================================
@@ -254,7 +284,7 @@ gpio_top gpio(
   
     logic wb_s2m_imem_ack;
     logic [31:0] imem_dat_o;
-        logic sel_boot_rom;
+    logic sel_boot_rom;
 
     assign imem_addr = sel_boot_rom ? wb_dmem_adr_o: current_pc;
     data_mem #(
@@ -268,11 +298,11 @@ gpio_top gpio(
         .we_i        (wb_imem_we_o ), 
         .sel_i       (wb_imem_sel_o),
         .dat_i       (wb_imem_dat_o), //Q new new: the dataout of wishbone is the input here right? 
-        .dat_o       (wb_imem_dat_i), //Q new new: where should this signal be sent back to?
-        .ack_o       (wb_imem_ack_i)  //Q new new: where should this signal be sent back to?  
+        .dat_o       (imem_dat_o), //Q new new: where should this signal be sent back to?
+        .ack_o       (wb_s2m_imem_ack)  //Q new new: where should this signal be sent back to?  
     );
     
-    assign imem_inst = wb_imem_dat_i; //Q new new: why was this overwritten again? why didn't we use the mux like the first delaration?
+    assign imem_inst = wb_imem_adr_o; //Q new new: why was this overwritten again? why didn't we use the mux like the first delaration?
 
 
     // BOOT ROM 
@@ -343,39 +373,5 @@ assign mosi_o = wb_io_dat_i;
 //.miso_i(wb_io_dat_o)         // MasterIn SlaveOut
 //);
 
-
- // ============================================
- //          Instruction Memory Instance
-// ============================================
-  logic srx_pad_i;
- logic stx_pad_o;
- logic rts_pad_o;
- logic dtr_pad_o;
- logic cts_pad_i;
- logic ri_pad_i;
- logic dcd_pad_i;
- logic dsr_pad_i;
- logic int_o;
- 
- uart_top uart(
-    .wb_clk_i(clk),
-    .wb_rst_i(~reset_n),
-    .wb_adr_i(wb_uart_adr_o[2:0]),
-    .wb_dat_i(wb_uart_dat_o[7:0]),
-    .wb_dat_o(wb_uart_dat_i[7:0]),
-    .wb_we_i(wb_uart_we_o),
-    .wb_stb_i(wb_uart_stb_o),
-    .wb_cyc_i(wb_uart_cyc_o),
-    .wb_sel_i(wb_uart_sel_o),
-    .wb_ack_o(wb_uart_ack_i),
-    .int_o(int_o),
-    .srx_pad_i(srx_pad_i),
-    .stx_pad_o(stx_pad_o),
-    .rts_pad_o(rts_pad_o),
-    .cts_pad_i(cts_pad_i),
-    .dtr_pad_o(dtr_pad_o),
-    .dsr_pad_i(dsr_pad_i),
-    .ri_pad_i(ri_pad_i),
-    .dcd_pad_i(dcd_pad_i)
- );  
+    
 endmodule : rv32i_soc
