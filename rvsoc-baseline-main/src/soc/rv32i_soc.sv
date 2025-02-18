@@ -372,7 +372,6 @@ assign mosi_o = wb_io_dat_i;
     .srx_pad_i(srx_pad_i),
     .stx_pad_o(stx_pad_o),
     .rts_pad_o(rts_pad_o),
-    .rts_pad_o(rts_pad_o),
     .cts_pad_i(cts_pad_i),
     .dtr_pad_o(dtr_pad_o),
     .dsr_pad_i(dsr_pad_i),
