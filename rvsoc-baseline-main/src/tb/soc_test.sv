@@ -6,17 +6,19 @@ module soc_test;
     logic clk;
     logic reset_n;
     wire [31:0] io_data;
-
+    logic tx, rx;
     // Instantiate the DUT (Device Under Test)
     rv32i_soc dut (
         .clk(clk),
         .reset_n(reset_n),
         .io_data(io_data)
+//        .rx(rx),
+//        .tx(tx)
     );
 
     // Clock generation
     always #5 clk = ~clk; // 10ns period
-
+    
     // Task to reset the system
     task reset_system;
         begin
@@ -26,6 +28,8 @@ module soc_test;
         end
     endtask
     initial begin
+    for(int i=0 ; i < 128; i++)
+        dut.rom_instance.rom[i]=0;
        $readmemh("machine.mem", dut.rom_instance.rom);
    end // wait
 
@@ -59,11 +63,12 @@ module soc_test;
 //        end
 //    endtask
     // Main test sequence
+    assign dut.uart.srx_pad_i=dut.uart.stx_pad_o;
     initial begin
         // Initialize signals
         clk = 0;
         reset_n = 0;
-
+        
         // Apply reset
         reset_system();
 
