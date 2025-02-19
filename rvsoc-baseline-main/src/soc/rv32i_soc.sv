@@ -373,5 +373,44 @@ assign mosi_o = wb_io_dat_i;
 //.miso_i(wb_io_dat_o)         // MasterIn SlaveOut
 //);
 
+logic srx_pad_i;
+ logic stx_pad_o;
+ logic rts_pad_o;
+ logic dtr_pad_o;
+ logic cts_pad_i;
+ logic ri_pad_i;
+ logic dcd_pad_i;
+ logic dsr_pad_i;
+ logic int_o;
+ 
+ assign srx_pad_i = 0;
+ assign cts_pad_i = 0;
+ assign dsr_pad_i = 0;
+ assign ri_pad_i = 0;
+ assign dcd_pad_i = 0;
+ 
+ 
+
+ uart_top uart(
+    .wb_clk_i(clk),
+    .wb_rst_i(~reset_n),
+    .wb_adr_i(wb_uart_adr_o[2:0]),
+    .wb_dat_i(wb_uart_dat_o[7:0]),
+    .wb_dat_o(wb_uart_dat_i[7:0]),
+    .wb_we_i(wb_uart_we_o),
+    .wb_stb_i(wb_uart_stb_o),
+    .wb_cyc_i(wb_uart_cyc_o),
+    .wb_sel_i(wb_uart_sel_o),
+    .wb_ack_o(wb_uart_ack_i),
+    .int_o(int_o),
+    .srx_pad_i(srx_pad_i),
+    .stx_pad_o(stx_pad_o),
+    .rts_pad_o(rts_pad_o),
+    .cts_pad_i(cts_pad_i),
+    .dtr_pad_o(dtr_pad_o),
+    .dsr_pad_i(dsr_pad_i),
+    .ri_pad_i(ri_pad_i),
+    .dcd_pad_i(dcd_pad_i)
+ );
     
 endmodule : rv32i_soc
