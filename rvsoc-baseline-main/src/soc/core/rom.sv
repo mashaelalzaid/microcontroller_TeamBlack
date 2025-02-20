@@ -6,42 +6,41 @@ module rom (
    logic [31:0] rom [0:127];
 
 //    initial  $readmemh("/home/it/Documents/rvsoc_v3/src/tb/uart_receiver/rom.hex",rom);
-//    initial $readmemh("/home/it/soc/src/tb/machine.hex", dut.rom_instance.rom);
+    initial $readmemh("machine.mem", rom);
 
 
+//    assign rom[0]    = 32'h00000013;
+//    assign rom[1]    = 32'h00000013;
+//    assign rom[2]    = 32'h20000537;
+//    assign rom[3]    = 32'h00350513;
+//    assign rom[4]    = 32'h09B00593;
+//    assign rom[5]    = 32'h00B52023;
+//    assign rom[6]    = 32'h20000537;
+//    assign rom[7]    = 32'h00150513;
+//    assign rom[8]    = 32'h00100593;
+//    assign rom[9]    = 32'h00B52023;
+//    assign rom[10]   = 32'h20000537;
+//    assign rom[11]   = 32'h00050513;
+//    assign rom[12]   = 32'h04600593;
+//    assign rom[13]   = 32'h00B52023;
+//    assign rom[14]   = 32'h20000537;
+//    assign rom[15]   = 32'h00350513;
+//    assign rom[16]   = 32'h01B00593;
+//    assign rom[17]   = 32'h00B52023;
+//    assign rom[18]   = 32'h20000537;
+//    assign rom[19]   = 32'h00050513;
+//    assign rom[20]   = 32'h0000B5B7;
+//    assign rom[21]   = 32'hBCD58593;
+//    assign rom[22]   = 32'h00B52023;
+//    assign rom[23]   = 32'hFFDFF06F;
 
-    assign rom[0]    = 32'h00000013;
-    assign rom[1]    = 32'h00000013;
-    assign rom[2]    = 32'h20000537;
-    assign rom[3]    = 32'h00350513;
-    assign rom[4]    = 32'h09B00593;
-    assign rom[5]    = 32'h00B52023;
-    assign rom[6]    = 32'h20000537;
-    assign rom[7]    = 32'h00150513;
-    assign rom[8]    = 32'h00100593;
-    assign rom[9]    = 32'h00B52023;
-    assign rom[10]   = 32'h20000537;
-    assign rom[11]   = 32'h00050513;
-    assign rom[12]   = 32'h04600593;
-    assign rom[13]   = 32'h00B52023;
-    assign rom[14]   = 32'h20000537;
-    assign rom[15]   = 32'h00350513;
-    assign rom[16]   = 32'h01B00593;
-    assign rom[17]   = 32'h00B52023;
-    assign rom[18]   = 32'h20000537;
-    assign rom[19]   = 32'h00050513;
-    assign rom[20]   = 32'h0000B5B7;
-    assign rom[21]   = 32'hBCD58593;
-    assign rom[22]   = 32'h00B52023;
-    assign rom[23]   = 32'hFFDFF06F;
-
-    // Fill the rest with zeros
-    generate
-        genvar i;
-        for (i = 24; i < 128; i = i + 1) begin
-            assign rom[i] = 32'h00000013;
-        end
-    endgenerate
+//    // Fill the rest with zeros
+//    generate
+//        genvar i;
+//        for (i = 24; i < 128; i = i + 1) begin
+//            assign rom[i] = 32'h00000013;
+//        end
+//    endgenerate
 
 //    assign rom[0]    = 32'h00000013;
 //    assign rom[1]    = 32'h00000013;
