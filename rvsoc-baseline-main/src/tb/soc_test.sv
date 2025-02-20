@@ -7,14 +7,25 @@ module soc_test;
     logic reset_n;
     wire [31:0] io_data;
     logic tx, rx;
-    // Instantiate the DUT (Device Under Test)
-    rv32i_soc dut (
-        .clk(clk),
-        .reset_n(reset_n),
-        .io_data(io_data)
-//        .rx(rx),
-//        .tx(tx)
-    );
+    
+    
+//    // Instantiate the DUT (Device Under Test)
+//    rv32i_soc dut (
+//        .clk(clk),
+//        .reset_n(reset_n),
+//        .io_data(io_data),
+//        .srx_pad_i(rx),
+//        .stx_pad_o(tx)
+//    );
+    
+ rv32i_soc_fpag_top  DUT(
+    .CLK100MHZ(clk), 
+    .CPU_RESETN(reset_n),
+    .UART_TXD_IN(tx)
+ );
+    
+    
+    
 
     // Clock generation
     always #5 clk = ~clk; // 10ns period
@@ -28,9 +39,9 @@ module soc_test;
         end
     endtask
     initial begin
-    for(int i=0 ; i < 128; i++)
-        dut.rom_instance.rom[i]=0;
-       $readmemh("machine.mem", dut.rom_instance.rom);
+//    for(int i=0 ; i < 128; i++)
+//        dut.rom_instance.rom[i]=0;
+//       $readmemh("machine.mem", dut.rom_instance.rom);
    end // wait
 
 //    // Task to test GPIO functionality
@@ -63,7 +74,7 @@ module soc_test;
 //        end
 //    endtask
     // Main test sequence
-    assign dut.uart.srx_pad_i=dut.uart.stx_pad_o;
+//    assign dut.uart.srx_pad_i=dut.uart.stx_pad_o;
     initial begin
         // Initialize signals
         clk = 0;

@@ -4,8 +4,10 @@ module rv32i_soc_fpag_top (
     input logic CPU_RESETN, 
     
     // FPGA core signals 
-//    output logic        UART_TXD_IN,
-//    input  logic        UART_RXD_OUT,
+    input logic        UART_TXD_IN,
+    output  logic        UART_RXD_OUT,
+    input logic        UART_CTS,
+    output  logic        UART_RTS,
 //    output logic        o_flash_cs_n,
 //    output logic        o_flash_mosi,
 //    input  logic        i_flash_miso,
@@ -23,8 +25,8 @@ module rv32i_soc_fpag_top (
     logic        o_flash_mosi;
     logic        i_flash_miso;
     
-//    logic o_uart_tx = UART_TXD_IN ;
-//    logic  i_uart_rx= UART_RXD_OUT;
+    logic o_uart_tx = UART_TXD_IN ;
+    logic  i_uart_rx= UART_RXD_OUT;
     logic        o_flash_sclk;
     STARTUPE2 STARTUPE2
         (
@@ -75,8 +77,21 @@ module rv32i_soc_fpag_top (
         .IMEM_DEPTH(IMEM_DEPTH)
     ) soc_inst (
         .*,
-        .io_data( {SW ,LED})
+//        .io_data( {SW ,LED}),
+        .srx_pad_i(UART_TXD_IN),
+        .stx_pad_o(UART_RXD_OUT),
+        .rts_pad_o(UART_RTS),
+        .cts_pad_i(UART_CTS)
     );
+
+ila_0 your_instance_name (
+	.clk(clk), // input wire clk
+
+
+	.probe0(UART_RXD_OUT), // input wire [0:0]  probe0  
+	.probe1(UART_TXD_IN) // input wire [0:0]  probe1
+);
+
 
 endmodule : rv32i_soc_fpag_top
 
