@@ -21,7 +21,7 @@ module data_mem #(
 logic wb_acc;
 logic mem_write, mem_read;
 
-assign wb_acc = cyc_i & stb_i;
+assign wb_acc = cyc_i & stb_i; 
 assign mem_write = wb_acc &  we_i;
 assign mem_read  = wb_acc & ~we_i;
 

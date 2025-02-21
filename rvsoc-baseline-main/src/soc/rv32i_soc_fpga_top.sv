@@ -1,7 +1,7 @@
 
-module rv32i_soc_fpag_top (
+ module rv32i_soc_fpag_top (
     input logic CLK100MHZ, 
-    input logic CPU_RESETN, 
+    input logic CPU_RESETN,  
     
     // FPGA core signals 
     input logic        UART_TXD_IN,
@@ -12,7 +12,7 @@ module rv32i_soc_fpag_top (
 //    output logic        o_flash_mosi,
 //    input  logic        i_flash_miso,
 
-
+    
     input logic [15:0] SW,
     output logic [15:0] LED
 );  
@@ -73,6 +73,9 @@ module rv32i_soc_fpag_top (
         .reset_n(CPU_RESETN)
     );
 
+    //ila
+    logic [31:0] current_pc_OUT;
+    logic [31:0] inst_OUT;
     rv32i_soc #(
         .DMEM_DEPTH(DMEM_DEPTH),
         .IMEM_DEPTH(IMEM_DEPTH)
@@ -85,12 +88,12 @@ module rv32i_soc_fpag_top (
         .cts_pad_i(UART_CTS)
     );
 
-//ila_0 your_instance_name (
+//ila_0 your_instance_name ( 
 //	.clk(clk), // input wire clk
 
 
-//	.probe0(UART_RXD_OUT), // input wire [0:0]  probe0  
-//	.probe1(UART_TXD_IN) // input wire [0:0]  probe1
+//	.probe0(current_pc_OUT), // input wire [0:0]  probe0  
+//	.probe1(inst_OUT) // input wire [0:0]  probe1
 //);
 
 

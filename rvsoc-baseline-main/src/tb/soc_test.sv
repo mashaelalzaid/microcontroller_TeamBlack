@@ -39,9 +39,9 @@ module soc_test;
         end
     endtask
     initial begin
-    for(int i=0 ; i < 128; i++)
-        dut.rom_instance.rom[i]=0;
-       $readmemh("machine.mem", dut.rom_instance.rom);
+//    for(int i=0 ; i < 128; i++)
+//        dut.rom_instance.rom[i]=0;
+//       $readmemh("machine.mem", dut.rom_instance.rom);
    end // wait
 
 //    // Task to test GPIO functionality

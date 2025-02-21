@@ -42,7 +42,7 @@ sw x11, 0(x10)
 ################################################################################ bootloader ##################################################################################
 li x10,0x20000000
 li x12,0x10000000 # inst mem address
-li x13,0x10000200 # last instruction that should be sent
+li x13,64 # number of bytes that should be sent 64 byte
 Listen:
     lw x11, 5(x10) # addr 5 is the status register
     andi x11, x11, 1
@@ -52,18 +52,27 @@ lw x11,0(x10) # load the data from Rx
 nop
 nop
 nop
-#sw x11,0(x10) # send the same instruction back just to check
-#nop
-#nop
+sw x13,0(x10) # send x13
+nop
+nop
 sb x11,0(x12) # store the data in n-th mem location
 nop
 nop
 nop
 addi x12, x12, 1
-bge x12, x13, exit
+addi x13, x13, -1
+beq x13, x0, exit
 nop
 nop
 j Listen
+nop
+nop
+nop
+li x11,0xabcdef # load HEX 0xabcdef to indicate end of instructions
+nop
+nop
+nop
+sw x11,0(x10) # send 0xabcdef
 nop
 nop
 nop

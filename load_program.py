@@ -38,7 +38,7 @@ def send_instruction(ser, instruction, count, order):
         ser.flush()
         time.sleep(0.0)  # Small delay between bytes
 
-    # **Ensure we wait for a response**
+    # # **Ensure we wait for a response**
     timeout = 10.0  # Maximum wait time in seconds
     start_time = time.time()
 
@@ -72,16 +72,15 @@ def continuous_test(file_path):
         for instruction in instructions:
             send_instruction(ser, instruction, count, order)
             count += 1
-            time.sleep(0.0) 
+            time.sleep(0.1) 
 
-        # **Send 0x00000013 (NOP) until count reaches 512**
+        # **Send 0x00000013 (NOP) until count reaches 16**
         NOP_INSTRUCTION = [0x13, 0x00, 0x00, 0x00]  # 0x00000013 in little-endian format
 
-        while count < 512:
+        while count < 16:
             send_instruction(ser, NOP_INSTRUCTION, count, order)
             count += 1
-            time.sleep(0.0)
-
+            time.sleep(0.1)
     except serial.SerialException as e:
         print(f"Error: {e}")
     finally:

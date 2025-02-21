@@ -14,10 +14,15 @@ module rv32i_soc #(
     input								 srx_pad_i,
     output 								 stx_pad_o,
     output 								 rts_pad_o,
-    input								 cts_pad_i
+    input								 cts_pad_i,
+    
+    // ila
+    output [31:0] current_pc_OUT,
+    output [31:0] inst_OUT
     
 );
-
+    assign current_pc_OUT = current_pc;
+    assign inst_OUT = inst;
 
     // Memory bus signals
     logic [31:0] mem_addr_mem;
@@ -46,7 +51,7 @@ module rv32i_soc #(
 
     // inst mem access 
     .current_pc(current_pc), 
-    .inst(inst), //Q: should this be inst or data mem inst?
+    .inst(inst), //Q: should this be inst or data mem inst? //feb20
 
     // stall signal from wishbone 
     .stall_pipl(stall_pipl),
@@ -294,23 +299,23 @@ logic gpio_wb_inta_o;
     logic [31:0] imem_dat_o;
     logic sel_boot_rom;
 
-    assign imem_addr = sel_boot_rom ? wb_dmem_adr_o: current_pc;
+    assign imem_addr = sel_boot_rom ? wb_imem_adr_o: current_pc; //Feb20 changed wb_dmem_adr_o to wb_imem_adr_o
     data_mem #(
         .DEPTH(IMEM_DEPTH)
     ) inst_mem_inst (
         .clk_i       (clk            ),
-        .rst_i       (~reset_n         ),
-        .cyc_i       (wb_imem_cyc_o), 
+        .rst_i       (~reset_n         ), 
+        .cyc_i       (wb_imem_cyc_o),  
         .stb_i       (wb_imem_stb_o), 
         .adr_i       (imem_addr      ), 
         .we_i        (wb_imem_we_o ), 
         .sel_i       (wb_imem_sel_o),
         .dat_i       (wb_imem_dat_o), //Q new new: the dataout of wishbone is the input here right? 
-        .dat_o       (imem_dat_o), //Q new new: where should this signal be sent back to?
-        .ack_o       (wb_s2m_imem_ack)  //Q new new: where should this signal be sent back to?  
+        .dat_o       (wb_imem_dat_i), //Q new new: where should this signal be sent back to?
+        .ack_o       (wb_imem_ack_i)  //Q new new: where should this signal be sent back to?  
     );
     
-    assign imem_inst = wb_imem_adr_o; //Q new new: why was this overwritten again? why didn't we use the mux like the first delaration?
+    assign imem_inst = wb_imem_dat_i; //Q new new: why was this overwritten again? why didn't we use the mux like the first delaration?
 
 
     // BOOT ROM 
