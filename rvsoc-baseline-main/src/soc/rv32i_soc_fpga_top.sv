@@ -60,6 +60,7 @@ module rv32i_soc_fpag_top (
     wire [31:0]   io_data;
     assign io_data[31:16] = SW;
     assign LED = io_data[15:0];
+    assign io_data= {SW ,LED}; // in soc instantiation
 
     logic reset_n;
     logic clk;
@@ -77,20 +78,20 @@ module rv32i_soc_fpag_top (
         .IMEM_DEPTH(IMEM_DEPTH)
     ) soc_inst (
         .*,
-//        .io_data( {SW ,LED}),
+        .io_data(io_data),
         .srx_pad_i(UART_TXD_IN),
         .stx_pad_o(UART_RXD_OUT),
         .rts_pad_o(UART_RTS),
         .cts_pad_i(UART_CTS)
     );
 
-ila_0 your_instance_name (
-	.clk(clk), // input wire clk
+//ila_0 your_instance_name (
+//	.clk(clk), // input wire clk
 
 
-	.probe0(UART_RXD_OUT), // input wire [0:0]  probe0  
-	.probe1(UART_TXD_IN) // input wire [0:0]  probe1
-);
+//	.probe0(UART_RXD_OUT), // input wire [0:0]  probe0  
+//	.probe1(UART_TXD_IN) // input wire [0:0]  probe1
+//);
 
 
 endmodule : rv32i_soc_fpag_top

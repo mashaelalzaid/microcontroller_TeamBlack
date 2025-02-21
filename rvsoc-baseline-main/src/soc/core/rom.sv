@@ -6,8 +6,35 @@ module rom (
    logic [31:0] rom [0:127];
 
 //    initial  $readmemh("/home/it/Documents/rvsoc_v3/src/tb/uart_receiver/rom.hex",rom);
-    initial $readmemh("machine.mem", rom);
+//    initial $readmemh("/home/it/soc/src/tb/machine.hex", dut.rom_instance.rom);
 
+assign rom[0]    = 32'h00000013;  // nop
+assign rom[1]    = 32'h200005B7;  // lui x11, 0x20000    ; GPIO base address
+assign rom[2]    = 32'h10058593;  // addi x11, x11, 0x100
+assign rom[3]    = 32'h0000F537;  // lui x10, 0xF        ; Load 0x0000FFFF for direction
+assign rom[4]    = 32'hFFF50513;  // addi x10, x10, -1   
+assign rom[5]    = 32'h00A59423;  // sw x10, 8(x11)      ; Write to direction register (0x108)
+assign rom[6]    = 32'h00F00513;  // addi x10, x0, 0xF   ; Set value 0xF
+assign rom[7]    = 32'h00A59223;  // sw x10, 4(x11)      ; Write to output register (0x104)
+assign rom[8]    = 32'hFF9FF06F;  // j back
+
+
+
+// gpio test
+//    assign rom[0]    = 32'h00000013;
+//    assign rom[1]    = 32'h00000013;
+//    assign rom[2]    = 32'h200005B7;
+//    assign rom[3]    = 32'h10058593;
+//    assign rom[4]    = 32'h00000013;
+//    assign rom[5]    = 32'h00000013;
+//    assign rom[6]    = 32'h00059503;
+//    assign rom[7]    = 32'h00000013;
+//    assign rom[8]    = 32'h00000013;
+//    assign rom[9]    = 32'h00A59123;
+//    assign rom[10]   = 32'hFD9FF06F;
+
+
+/// uart test
 
 //    assign rom[0]    = 32'h00000013;
 //    assign rom[1]    = 32'h00000013;
@@ -34,13 +61,13 @@ module rom (
 //    assign rom[22]   = 32'h00B52023;
 //    assign rom[23]   = 32'hFFDFF06F;
 
-//    // Fill the rest with zeros
-//    generate
-//        genvar i;
-//        for (i = 24; i < 128; i = i + 1) begin
-//            assign rom[i] = 32'h00000013;
-//        end
-//    endgenerate
+    // Fill the rest with zeros
+    generate
+        genvar i;
+        for (i = 24; i < 128; i = i + 1) begin
+            assign rom[i] = 32'h00000013;
+        end
+    endgenerate
 
 //    assign rom[0]    = 32'h00000013;
 //    assign rom[1]    = 32'h00000013;
