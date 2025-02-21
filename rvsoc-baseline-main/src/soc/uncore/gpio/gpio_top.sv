@@ -174,21 +174,21 @@ n_bit_dec #(
 
 always @(posedge wb_clk_i, posedge wb_rst_i) begin 
   if(wb_rst_i) begin 
-//    rgpio_in  <= 0;
+    // rgpio_in  <= 0;
     rgpio_out <= 0;
-//    rgpio_oe  <= 0;
-//   end else if(rgpio_in_sel) begin 
-//     if(wb_sel_i[0]) rgpio_in[7:0] <= wb_dat_i[ 7: 0];
-//     if(wb_sel_i[1]) rgpio_in[7:0] <= wb_dat_i[15: 8];
-//     if(wb_sel_i[2]) rgpio_in[7:0] <= wb_dat_i[23:16];
-//     if(wb_sel_i[3]) rgpio_in[7:0] <= wb_dat_i[31:24];
+    rgpio_oe  <= 0;
+  // end else if(rgpio_in_sel) begin 
+  //   if(wb_sel_i[0]) rgpio_in[7:0] <= wb_dat_i[ 7: 0];
+  //   if(wb_sel_i[1]) rgpio_in[7:0] <= wb_dat_i[15: 8];
+  //   if(wb_sel_i[2]) rgpio_in[7:0] <= wb_dat_i[23:16];
+  //   if(wb_sel_i[3]) rgpio_in[7:0] <= wb_dat_i[31:24];
   end else if(gpio_write) begin 
     if(rgpio_out_sel) begin 
       if(wb_sel_i[0]) rgpio_out[ 7: 0] <= wb_dat_i[ 7: 0];
       if(wb_sel_i[1]) rgpio_out[15: 8] <= wb_dat_i[15: 8];
       if(wb_sel_i[2]) rgpio_out[23:16] <= wb_dat_i[23:16];
       if(wb_sel_i[3]) rgpio_out[31:24] <= wb_dat_i[31:24];
-    end else if(rgpio_oe_sel ) begin 
+    end else if(rgpio_oe_sel) begin 
       if(wb_sel_i[0]) rgpio_oe[ 7: 0]  <= wb_dat_i[ 7: 0];
       if(wb_sel_i[1]) rgpio_oe[15: 8]  <= wb_dat_i[15: 8];
       if(wb_sel_i[2]) rgpio_oe[23:16]  <= wb_dat_i[23:16];
@@ -197,9 +197,9 @@ always @(posedge wb_clk_i, posedge wb_rst_i) begin
   end
 end
 
-//assign i_gpio = rgpio_in;
+assign rgpio_in = i_gpio;
 assign o_gpio   = rgpio_out;
-assign en_gpio  = rgpio_oe;
+assign en_gpio  = 32'h0000ffff;
 
 
 // output logic here 
@@ -212,4 +212,3 @@ assign wb_ack_o = wb_acc;
 
 
 endmodule
-
