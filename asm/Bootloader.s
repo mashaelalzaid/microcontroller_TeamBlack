@@ -42,7 +42,7 @@ sw x11, 0(x10)
 ################################################################################ bootloader ##################################################################################
 li x10,0x20000000
 li x12,0x10000000 # inst mem address
-li x13,64 # number of bytes that should be sent 64 byte
+li x13,512 # number of bytes that should be sent 512 byte /4 = 128 instructions
 Listen:
     lw x11, 5(x10) # addr 5 is the status register
     andi x11, x11, 1

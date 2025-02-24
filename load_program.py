@@ -4,12 +4,17 @@ import time
 # Set this to True to send LSB first (right to left), or False for MSB first (left to right)
 SEND_LSB_FIRST = True  
 
+INSTRUCTION_LIMIT = 128  # Global variable for instruction limit
+
 def read_hex_from_file(file_path):
     """Reads hex instructions from a file and returns a list of bytes (optionally reversed)."""
     instructions = []
     try:
         with open(file_path, 'r') as file:
-            for line in file:
+            for line_number, line in enumerate(file, start=1):
+                if line_number > INSTRUCTION_LIMIT:
+                    raise ValueError("Error: Number of instructions is greater than 128.")
+                
                 line = line.strip().replace(" ", "").lower()  # Remove spaces and normalize case
                 if line.startswith("0x"):  # Remove '0x' prefix if present
                     line = line[2:]
@@ -36,7 +41,7 @@ def send_instruction(ser, instruction, count, order):
         print(f"Sent Byte: {hex(byte)}")  # Print each sent byte
         ser.write(bytes([byte]))  # Send byte-by-byte
         ser.flush()
-        time.sleep(0.0)  # Small delay between bytes
+        # time.sleep(0.0)  # Small delay between bytes
 
     # # **Ensure we wait for a response**
     timeout = 10.0  # Maximum wait time in seconds
@@ -72,15 +77,15 @@ def continuous_test(file_path):
         for instruction in instructions:
             send_instruction(ser, instruction, count, order)
             count += 1
-            time.sleep(0.1) 
+            # time.sleep(0.1) 
 
-        # **Send 0x00000013 (NOP) until count reaches 16**
+        # **Send 0x00000013 (NOP) until count reaches INSTRUCTION_LIMIT**
         NOP_INSTRUCTION = [0x13, 0x00, 0x00, 0x00]  # 0x00000013 in little-endian format
 
-        while count < 16:
+        while count < INSTRUCTION_LIMIT:
             send_instruction(ser, NOP_INSTRUCTION, count, order)
             count += 1
-            time.sleep(0.1)
+            # time.sleep(0.1)
     except serial.SerialException as e:
         print(f"Error: {e}")
     finally:
@@ -88,5 +93,5 @@ def continuous_test(file_path):
 
 
 if __name__ == "__main__":
-    file_path = "Bootmachine.mem"  
+    file_path = "Bootmachine.mem"
     continuous_test(file_path)

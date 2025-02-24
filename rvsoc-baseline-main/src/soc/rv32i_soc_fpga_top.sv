@@ -1,7 +1,7 @@
 
  module rv32i_soc_fpag_top (
     input logic CLK100MHZ, 
-    input logic CPU_RESETN,  
+    input logic CPU_RESETN,
     
     // FPGA core signals 
     input logic        UART_TXD_IN,
