@@ -20,6 +20,7 @@ module rom (
 
 
 
+<<<<<<< HEAD
 // gpio test
 //    assign rom[0]    = 32'h00000013;
 //    assign rom[1]    = 32'h00000013;
@@ -36,6 +37,8 @@ module rom (
 
 /// uart test
 
+=======
+>>>>>>> fac26f0 (K)
 //    assign rom[0]    = 32'h00000013;
 //    assign rom[1]    = 32'h00000013;
 //    assign rom[2]    = 32'h20000537;
@@ -60,14 +63,109 @@ module rom (
 //    assign rom[21]   = 32'hBCD58593;
 //    assign rom[22]   = 32'h00B52023;
 //    assign rom[23]   = 32'hFFDFF06F;
+<<<<<<< HEAD
+=======
+// assign rom[0]    = 32'h20000537;
+//    assign rom[1]    = 32'h10450513;
+//    assign rom[2]    = 32'h00000593;
+//    assign rom[3]    = 32'h00058693;
+//    assign rom[4]    = 32'h00100613;
+//    assign rom[5]    = 32'h00D52023;
+//    assign rom[6]    = 32'h00B606B3;
+//    assign rom[7]    = 32'h00060593;
+//    assign rom[8]    = 32'h00068613;
+//    assign rom[9]    = 32'h02FAF737;
+//    assign rom[10]   = 32'h08070713;
+//    assign rom[11]   = 32'hFFF70713;
+//    assign rom[12]   = 32'hFE071EE3;
+//    assign rom[13]   = 32'hFE1FF06F;
+//        assign rom[0]  = 32'h00000013;
+//    assign rom[1]  = 32'h00000013;
+//    assign rom[2]  = 32'h20000537;
+//    assign rom[3]  = 32'h00350513;
+//    assign rom[4]  = 32'h09B00593;
+//    assign rom[5]  = 32'h00B52023;
+//    assign rom[6]  = 32'h20000537;
+//    assign rom[7]  = 32'h00150513;
+//    assign rom[8]  = 32'h00100593;
+//    assign rom[9]  = 32'h00B52023;
+//    assign rom[10] = 32'h20000537;
+//    assign rom[11] = 32'h00050513;
+//    assign rom[12] = 32'h04600593;
+//    assign rom[13] = 32'h00B52023;
+//    assign rom[14] = 32'h20000537;
+//    assign rom[15] = 32'h00350513;
+//    assign rom[16] = 32'h01B00593;
+//    assign rom[17] = 32'h00B52023;
+//    assign rom[18] = 32'h20000537;
+//    assign rom[19] = 32'h00050513;
+//    assign rom[20] = 32'h10000637;
+//    assign rom[21] = 32'h00060613;
+//    assign rom[22] = 32'h100006B7;
+//    assign rom[23] = 32'h19968693;
+//    assign rom[24] = 32'h00552583;
+//    assign rom[25] = 32'h0015F593;
+//    assign rom[26] = 32'hFE058CE3;
+//    assign rom[27] = 32'h00052583;
+//    assign rom[28] = 32'h00000013;
+//    assign rom[29] = 32'h00000013;
+//    assign rom[30] = 32'h00B62023;
+//    assign rom[31] = 32'h00160613;
+//    assign rom[32] = 32'h00D60463;
+//    assign rom[33] = 32'hFDDFF06F;
+//    assign rom[34] = 32'h10000537;
+//    assign rom[35] = 32'h00050513;
+//    assign rom[36] = 32'h000500E7;
+assign rom[0]  = 32'h20000537;
+assign rom[1]  = 32'h10450513;
+assign rom[2]  = 32'h00000593;
+assign rom[3]  = 32'h00058693;
+assign rom[4]  = 32'h00100613;
+assign rom[5]  = 32'h00D52023;
+assign rom[6]  = 32'h00B606B3;
+assign rom[7]  = 32'h00060593;
+assign rom[8]  = 32'h00068613;
+assign rom[9]  = 32'h00000013;
+assign rom[10] = 32'h00000013;
+assign rom[11] = 32'hFE9FF06F;
+assign rom[12] = 32'h00000013;
+assign rom[13] = 32'h00000013;
+
+>>>>>>> fac26f0 (K)
 
     // Fill the rest with zeros
 //    generate
 //        genvar i;
+<<<<<<< HEAD
 //        for (i = 24; i < 128; i = i + 1) begin
 //            assign rom[i] = 32'h00000013;
 //        end
 //    endgenerate
+=======
+//        for (i = 14; i < 128; i = i + 1) begin
+//            assign rom[i] = 32'h00000013;
+//        end
+//    endgenerate
+//    assign rom[0]    = 32'h200002B7;
+//    assign rom[1]    = 32'h10028293;
+//    assign rom[2]    = 32'h00100313;
+//    assign rom[3]    = 32'h00500393;
+//    assign rom[4]    = 32'h0062A023;
+//    assign rom[5]    = 32'h00000317;
+//    assign rom[6]    = 32'h024300E7;
+//    assign rom[7]    = 32'h00000E13;
+//    assign rom[8]    = 32'h01C2A023;
+//    assign rom[9]    = 32'h00000317;
+//    assign rom[10]   = 32'h014300E7;
+//    assign rom[11]   = 32'hFFF38393;
+//    assign rom[12]   = 32'hFE0390E3;
+//    assign rom[13]   = 32'h0000006F;
+//    assign rom[14]   = 32'h00008EB7;
+//    assign rom[15]   = 32'h000E8E93;
+//    assign rom[16]   = 32'hFFFE8E93;
+//    assign rom[17]   = 32'hFE0E9EE3;
+//    assign rom[18]   = 32'h00008067;
+>>>>>>> fac26f0 (K)
 
 //    assign rom[0]    = 32'h00000013;
 //    assign rom[1]    = 32'h00000013;

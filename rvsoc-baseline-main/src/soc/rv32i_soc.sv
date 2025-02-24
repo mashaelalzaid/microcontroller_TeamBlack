@@ -311,7 +311,11 @@ logic gpio_wb_inta_o;
         .we_i        (wb_imem_we_o ), 
         .sel_i       (wb_imem_sel_o),
         .dat_i       (wb_imem_dat_o), //Q new new: the dataout of wishbone is the input here right? 
+<<<<<<< HEAD
         .dat_o       (wb_imem_dat_i), //Q new new: where should this signal be sent back to?
+=======
+        .dat_o       (imem_dat_o), //Q new new: where should this signal be sent back to?
+>>>>>>> fac26f0 (K)
         .ack_o       (wb_imem_ack_i)  //Q new new: where should this signal be sent back to?  
     );
     

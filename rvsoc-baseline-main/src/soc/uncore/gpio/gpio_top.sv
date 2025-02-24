@@ -151,7 +151,7 @@ output  [31:0]    en_gpio;
 // Logic here
 logic wb_acc;
 logic gpio_write;
-assign wb_acc = wb_stb_i & wb_cyc_i;
+assign wb_acc = wb_stb_i & wb_cyc_i; // Transaction is active only if both are high
 assign gpio_write = wb_acc & wb_we_i;
 
 logic [31:0] rgpio_in;
@@ -211,4 +211,8 @@ assign wb_ack_o = wb_acc;
 
 
 
+<<<<<<< HEAD
 endmodule
+=======
+endmodule
+>>>>>>> fac26f0 (K)

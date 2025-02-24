@@ -17,15 +17,20 @@ module soc_test;
 //        .srx_pad_i(rx),
 //        .stx_pad_o(tx)
 //    );
-    
- rv32i_soc_fpag_top  DUT(
+        logic [15:0] SW;
+     logic [15:0] LED;
+ rv32i_soc_fpag_top  dut(
     .CLK100MHZ(clk), 
     .CPU_RESETN(reset_n),
-    .UART_TXD_IN(tx)
+    .UART_TXD_IN(tx),
+    .io_data(io_data),
+.SW(SW), .LED(LED)
  );
     
     
-    
+////        wire [31:0]   io_data;
+//    assign io_data[31:16] = SW;
+//    assign LED = io_data[15:0];
 
     // Clock generation
     always #5 clk = ~clk; // 10ns period
@@ -44,37 +49,39 @@ module soc_test;
 //       $readmemh("machine.mem", dut.rom_instance.rom);
    end // wait
 
-//    // Task to test GPIO functionality
+////    // Task to test GPIO functionality
 //    task test_gpio;
 //        logic [31:0] gpio_input;
 //        begin
 //            $display("Testing GPIO functionality...");
 //            gpio_input = 32'hA5A5A5A5;
-//            force dut.io_data = gpio_input; // Force GPIO input value
+//            force dut.soc_inst.io_data = gpio_input; // Force GPIO input value
 //            #10;
-//            release dut.io_data; // Release control of GPIO
+//            release dut.soc_inst.io_data; // Release control of GPIO
             
-//            if (dut.i_gpio !== gpio_input) 
+//            if (dut.soc_inst.i_gpio !== gpio_input) 
 //                $display("ERROR: GPIO input mismatch!");
 //            else 
 //                $display("GPIO input test PASSED!");
 
 //            // Test output functionality
-//            force dut.o_gpio = 32'h5A5A5A5A;
-//            force dut.en_gpio = 32'hFFFFFFFF;
+//            force dut.soc_inst.o_gpio = 32'h5A5A5A5A;
+//            force dut.soc_inst.en_gpio = 32'hFFFFFFFF;
 //            #10;
             
-//            if (dut.io_data !== 32'h5A5A5A5A)
+//            if (dut.soc_inst.io_data !== 32'h5A5A5A5A)
 //                $display("ERROR: GPIO output mismatch!");
 //            else
 //                $display("GPIO output test PASSED!");
 
-//            release dut.o_gpio;
-//            release dut.en_gpio;
+//            release dut.soc_inst.o_gpio;
+//            release dut.soc_inst.en_gpio;
 //        end
 //    endtask
     // Main test sequence
 //    assign dut.uart.srx_pad_i=dut.uart.stx_pad_o;
+assign    io_data[31:16] = 16'b0001111;
+
     initial begin
         // Initialize signals
         clk = 0;
@@ -82,7 +89,8 @@ module soc_test;
         
         // Apply reset
         reset_system();
-
+   #10;
+   
         // Test GPIO
 //        test_gpio();
         // Finish simulation
