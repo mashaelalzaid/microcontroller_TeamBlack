@@ -25,7 +25,7 @@ nop
 
 
 delay:
-    li t6, 2500000
+    li t6, 1
     delay_loop:
         addi t6, t6, -1
         bnez t6, delay_loop
