@@ -214,9 +214,39 @@ wb_intercon interconnect_inst (
             end    
     endgenerate
 
+    // ============================================
+    //                 CLINT Instantiation
+    // ============================================
+    // Instantiate the CLINT peripheral here 
 
 
-
+    //CLINT SIGNALS
+    logic [31:0] wb_clint_adr_o;
+    logic [31:0] wb_clint_dat_o;
+//    output  [3:0] wb_clint_sel_o,
+    logic   wb_clint_we_o;
+    logic   wb_clint_cyc_o;
+    logic   wb_clint_stb_o;
+//    output  [2:0] wb_clint_cti_o,
+//    output  [1:0] wb_clint_bte_o,
+    logic  [31:0] wb_clint_dat_i;
+    logic         wb_clint_ack_i;
+//    input         wb_clint_err_i,
+//    input         wb_clint_rty_i,
+    logic timer_intterrupt;
+     
+ clint_wishbone  clint_inst(
+    .wb_clk_i(clk),       
+    .wb_rst_i(~reset_n),       
+    .wb_cyc_i(wb_clint_cyc_o),       
+    .wb_stb_i(wb_clint_stb_o),       
+    .wb_we_i(wb_clint_we_o),        
+    .wb_adr_i(wb_clint_adr_o), 
+    .wb_dat_i(wb_clint_dat_o), 
+    .wb_dat_o(wb_clint_dat_i), 
+    .wb_ack_o(wb_clint_ack_i),       
+    .mtip_o(timer_intterrupt)         
+);
     // ============================================
     //                 GPIO Instantiation
     // ============================================
