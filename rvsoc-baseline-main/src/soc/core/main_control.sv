@@ -40,6 +40,7 @@ module decode_control (
             7'b1101111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=1; lui=0; auipc=0; jal=1; r_type=0; end // J-type
             7'b0110111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=0; lui=1; auipc=0; jal=0; r_type=0; end // LUI
             7'b0010111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=0; lui=0; auipc=1; jal=0; r_type=0; end // AUIPC
+            7'b1110011: begin reg_write='bx; mem_write='bx; mem_to_reg='bx; alu_op='bx; alu_src='bx; branch='bx; jump='bx; lui='bx; auipc='bx; jal='bx; r_type='bx; end // CSRR // TODO Xs to be replaced with correct signals
             default: begin reg_write=0; mem_write=0; mem_to_reg=0; alu_op=2'b00; alu_src=0; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; end // NOP
         endcase
     end
