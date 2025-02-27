@@ -233,7 +233,7 @@ module data_path #(
     assign fun7_id   = inst_id[31:25];
     assign opcode_id = inst_id[6:0];
     assign fun7_5_id = fun7_id[5];
-
+    assign csr_imm_id = inst_id[19:15];
     logic [31:0] reg_rdata1, reg_rdata2;
     
 
@@ -297,6 +297,7 @@ module data_path #(
         reg_rdata1_id,
         reg_rdata2_id,
         imm_id,
+        csr_imm_id,
         // control signals
         reg_write_id,
         mem_write_id,
@@ -307,7 +308,8 @@ module data_path #(
         lui_id,
         auipc_id,
         jal_id,
-        alu_op_id
+        alu_op_id,
+        csr_data_sel_id
     };
 
     n_bit_reg_wclr #(
@@ -320,8 +322,11 @@ module data_path #(
         .data_i(id_exe_bus_i),
         .data_o(id_exe_bus_o)
     );
-
-    // data signals 
+    logic [4:0] csr_imm_id; 
+    logic [4:0] csr_imm_exe; //TODO connect from pipeline reg exe
+    logic csr_data_sel_id;
+    logic csr_data_sel_exe;//TODO connect from pipeline reg exe
+    // data signals
     assign current_pc_exe  = id_exe_bus_o.current_pc; // 32
     assign pc_plus_4_exe   = id_exe_bus_o.pc_plus_4;  // 32
     assign rs1_exe         = id_exe_bus_o.rs1;     // 5
@@ -329,7 +334,7 @@ module data_path #(
     assign rd_exe          = id_exe_bus_o.rd; 
     assign fun3_exe        = id_exe_bus_o.fun3;
     assign fun7_5_exe      = id_exe_bus_o.fun7_5;
-    assign reg_rdata1_exe  = id_exe_bus_o.reg_rdata1;
+    assign reg_rdata1_exe  = csr_data_sel_exe ==1?csr_imm_exe : id_exe_bus_o.reg_rdata1; // new mux to select between rdara and csr imm
     assign reg_rdata2_exe  = id_exe_bus_o.reg_rdata2;
     assign imm_exe         = id_exe_bus_o.imm;
 
@@ -540,9 +545,10 @@ module data_path #(
         .data_o(mem_wb_bus_o)
     );
 
+    logic csr_to_reg_wb;//TODO connect this to the correct pipeline reg
     // data signals 
     assign rd_wb             = mem_wb_bus_o.rd; 
-    assign non_mem_result_wb = mem_wb_bus_o.result;
+    assign non_mem_result_wb = csr_to_reg_wb==1 ? csr_data : mem_wb_bus_o.result;
     // control signals
     assign reg_write_wb      = mem_wb_bus_o.reg_write;
     assign mem_to_reg_wb     = mem_wb_bus_o.mem_to_reg; 

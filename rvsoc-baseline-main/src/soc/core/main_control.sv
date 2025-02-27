@@ -12,6 +12,7 @@ typedef enum logic [6:0] {
 
 module decode_control (
     input logic [6:0] opcode,
+    input logic [2:0] func3,
     output logic reg_write, 
     output logic mem_write, 
     output logic mem_to_reg, 
@@ -22,25 +23,32 @@ module decode_control (
     output logic lui, 
     output logic auipc,
     output logic jal,
-    output logic r_type
+    output logic r_type,
+    output logic csr_write,
+    output logic csr_data_sel,
+    output logic csr_to_reg
 );
 
     logic invalid_inst;
     assign  invalid_inst = ~|opcode[1:0]; // all valid instructions start with 2'b11
     parameter LOAD_STORE = 2'b00, R_TYPE = 2'b11, I_TYPE = 2'b01, B_TYPE = 2'b10;
+    // new signals for csr
+//    logic csr_to_reg;//this has to be logic and not 0 or 1 hard wired
+//    logic csr_data_sel;
+//    logic csr_write;
     
     always @(opcode) begin
         case(opcode[6:0])
-            7'b0110011: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=R_TYPE; alu_src=0; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=1; end // R-type
-            7'b0010011: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=I_TYPE; alu_src=1; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; end // I-type
-            7'b1100111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=1; lui=0; auipc=0; jal=0; r_type=0; end // I-type JALR
-            7'b0000011: begin reg_write=1; mem_write=0; mem_to_reg=1; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; end // Load
-            7'b0100011: begin reg_write=0; mem_write=1; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; end // Store
-            7'b1100011: begin reg_write=0; mem_write=0; mem_to_reg=0; alu_op=B_TYPE; alu_src=0; branch=1; jump=0; lui=0; auipc=0; jal=0; r_type=0; end // B-type
-            7'b1101111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=1; lui=0; auipc=0; jal=1; r_type=0; end // J-type
-            7'b0110111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=0; lui=1; auipc=0; jal=0; r_type=0; end // LUI
-            7'b0010111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=0; lui=0; auipc=1; jal=0; r_type=0; end // AUIPC
-            7'b1110011: begin reg_write='bx; mem_write='bx; mem_to_reg='bx; alu_op='bx; alu_src='bx; branch='bx; jump='bx; lui='bx; auipc='bx; jal='bx; r_type='bx; end // CSRR // TODO Xs to be replaced with correct signals
+            7'b0110011: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=R_TYPE; alu_src=0; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=1; csr_data_sel=0; end // R-type
+            7'b0010011: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=I_TYPE; alu_src=1; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; csr_data_sel=0; end // I-type
+            7'b1100111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=1; lui=0; auipc=0; jal=0; r_type=0; csr_data_sel=0; end // I-type JALR
+            7'b0000011: begin reg_write=1; mem_write=0; mem_to_reg=1; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; csr_data_sel=0; end // Load
+            7'b0100011: begin reg_write=0; mem_write=1; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; csr_data_sel=0; end // Store
+            7'b1100011: begin reg_write=0; mem_write=0; mem_to_reg=0; alu_op=B_TYPE; alu_src=0; branch=1; jump=0; lui=0; auipc=0; jal=0; r_type=0; csr_data_sel=0; end // B-type
+            7'b1101111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=1; lui=0; auipc=0; jal=1; r_type=0; csr_data_sel=0; end // J-type
+            7'b0110111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=0; lui=1; auipc=0; jal=0; r_type=0; csr_data_sel=0; end // LUI
+            7'b0010111: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=LOAD_STORE; alu_src=1; branch=0; jump=0; lui=0; auipc=1; jal=0; r_type=0; csr_data_sel=0; end // AUIPC
+            7'b1110011: begin reg_write='bx; mem_write='bx; mem_to_reg='bx; alu_op='bx; alu_src='bx; branch='bx; jump='bx; lui='bx; auipc='bx; jal='bx; r_type='bx; assign csr_data_sel=func3[2]; end // CSRR // TODO Xs to be replaced with correct signals
             default: begin reg_write=0; mem_write=0; mem_to_reg=0; alu_op=2'b00; alu_src=0; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; end // NOP
         endcase
     end
