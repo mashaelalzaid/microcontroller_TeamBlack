@@ -284,7 +284,8 @@ module data_path #(
     // ============================================
     
     id_exe_reg_t id_exe_bus_i, id_exe_bus_o;
-
+    logic csr_data_sel_id;
+    logic csr_to_reg_id;
     assign id_exe_bus_i = {
         // data signals 
         current_pc_id, // 32
@@ -309,7 +310,8 @@ module data_path #(
         auipc_id,
         jal_id,
         alu_op_id,
-        csr_data_sel_id
+        csr_data_sel_id,
+        csr_to_reg_id
     };
 
     n_bit_reg_wclr #(
@@ -322,10 +324,11 @@ module data_path #(
         .data_i(id_exe_bus_i),
         .data_o(id_exe_bus_o)
     );
-    logic [4:0] csr_imm_id; 
+//    logic [4:0] csr_imm_id_exe; 
     logic [4:0] csr_imm_exe; //TODO connect from pipeline reg exe
-    logic csr_data_sel_id;
-    logic csr_data_sel_exe;//TODO connect from pipeline reg exe
+    
+    logic csr_data_sel_exe;//DONE
+    logic csr_to_reg_exe;
     // data signals
     assign current_pc_exe  = id_exe_bus_o.current_pc; // 32
     assign pc_plus_4_exe   = id_exe_bus_o.pc_plus_4;  // 32
@@ -337,6 +340,7 @@ module data_path #(
     assign reg_rdata1_exe  = csr_data_sel_exe ==1?csr_imm_exe : id_exe_bus_o.reg_rdata1; // new mux to select between rdara and csr imm
     assign reg_rdata2_exe  = id_exe_bus_o.reg_rdata2;
     assign imm_exe         = id_exe_bus_o.imm;
+    assign csr_imm_exe     = id_exe_bus_o.csr_imm;
 
     // control signals
     assign reg_write_exe   = id_exe_bus_o.reg_write;
@@ -349,6 +353,8 @@ module data_path #(
     assign auipc_exe       = id_exe_bus_o.auipc;
     assign jal_exe         = id_exe_bus_o.jal;
     assign alu_op_exe      = id_exe_bus_o.alu_op;
+    assign csr_data_sel_exe = id_exe_bus_o.csr_data_sel;
+    assign csr_to_reg_exe = id_exe_bus_o.csr_to_reg;
 
 
 
@@ -434,7 +440,7 @@ module data_path #(
     // ============================================
     
     exe_mem_reg_t exe_mem_bus_i, exe_mem_bus_o;
-
+    logic csr_to_reg_mem;
     assign exe_mem_bus_i = {
     // data signals 
     pc_plus_4_exe,  
@@ -452,7 +458,8 @@ module data_path #(
     branch_exe,
     jump_exe,
     lui_exe,
-    zero_exe
+    zero_exe,
+    csr_to_reg_exe
     };
 
     n_bit_reg_wclr #(
@@ -483,6 +490,7 @@ module data_path #(
     assign jump_mem        = exe_mem_bus_o.jump;
     assign lui_mem         = exe_mem_bus_o.lui; 
     assign zero_mem        = exe_mem_bus_o.zero;
+    assign csr_to_reg_mem = exe_mem_bus_o.csr_to_reg;
 
 
     // ============================================
@@ -524,14 +532,16 @@ module data_path #(
     
     mem_wb_reg_t mem_wb_bus_i, mem_wb_bus_o;
     logic [31:0] alu_mem_result_wb;
-
+    logic [31:0] csr_data_mem;
     assign mem_wb_bus_i = {
     // data signals 
     rd_mem, 
     result_mem,
+    csr_data_mem,
     // control signals
     reg_write_mem,
-    mem_to_reg_mem
+    mem_to_reg_mem,
+    csr_to_reg_mem
     };
 
     n_bit_reg_wclr #(
@@ -544,14 +554,16 @@ module data_path #(
         .data_i(mem_wb_bus_i),
         .data_o(mem_wb_bus_o)
     );
-
-    logic csr_to_reg_wb;//TODO connect this to the correct pipeline reg
+    logic csr_data_wb;
+    logic csr_to_reg_wb;//DONE
     // data signals 
     assign rd_wb             = mem_wb_bus_o.rd; 
-    assign non_mem_result_wb = csr_to_reg_wb==1 ? csr_data : mem_wb_bus_o.result;
+    assign non_mem_result_wb = csr_to_reg_wb ==1 ? csr_data_wb : mem_wb_bus_o.result;
+    assign csr_data_wb      = mem_wb_bus_o.csr_data;
     // control signals
     assign reg_write_wb      = mem_wb_bus_o.reg_write;
     assign mem_to_reg_wb     = mem_wb_bus_o.mem_to_reg; 
+    assign csr_to_reg_wb     = mem_wb_bus_o.csr_to_reg;
 
 
     // ============================================
