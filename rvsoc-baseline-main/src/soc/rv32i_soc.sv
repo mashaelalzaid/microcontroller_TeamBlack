@@ -1,6 +1,7 @@
 module rv32i_soc #(
     parameter DMEM_DEPTH = 128,
-    parameter IMEM_DEPTH = 128
+    parameter IMEM_DEPTH = 128,
+    parameter TEST_MODE = 0 
 ) (
     input logic clk, 
     input logic reset_n,
@@ -21,8 +22,7 @@ module rv32i_soc #(
     output [31:0] inst_OUT
     
 );
-    assign current_pc_OUT = current_pc;
-    assign inst_OUT = inst;
+
 
     // Memory bus signals
     logic [31:0] mem_addr_mem;
@@ -350,7 +350,7 @@ logic gpio_wb_inta_o;
 
     // BOOT ROM 
     logic [31:0] rom_inst, rom_inst_ff;
-    rom rom_instance(
+    rom #( .TEST_MODE(TEST_MODE))  rom_instance(
         .addr     (current_pc[11:0]),
         .inst     (rom_inst  )
     );
@@ -490,6 +490,7 @@ uart_top uart (
     .ri_pad_i(ri_pad_i),
     .dcd_pad_i(dcd_pad_i)
 );
-
+    assign current_pc_OUT = current_pc;
+    assign inst_OUT = inst;
     
 endmodule : rv32i_soc

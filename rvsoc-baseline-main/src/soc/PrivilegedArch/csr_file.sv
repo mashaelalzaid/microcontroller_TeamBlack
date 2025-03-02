@@ -1,20 +1,14 @@
 module csr_file (
     input logic clk,
     input logic reset_n,
-    
-
     input  logic [11:0] csr_addr,      
-    input  logic [31:0] csr_wdata,
-    input  logic        csr_wen,
-    input  logic [2:0]  csr_op,    
+    input  logic [31:0] csr_wdata, // 
+    input  logic        csr_wen, // control signal 
+    input  logic [2:0]  csr_op,    // decoder (control signal) 
     output logic [31:0] csr_rdata,
-
     input  logic timer_int,            
-    
     input  logic [31:0] current_pc,   
-
-    
-    // MRET handling
+ // MRET handling
     input  logic        mret_exec,     // q: where does this come from? is is pipelined from the csr decoding stage or somewhere else?
     output logic [31:0] mret_pc        // this should be mux-ed with pc in rv32i_top
 );

@@ -76,16 +76,22 @@
     //ila
     logic [31:0] current_pc_OUT;
     logic [31:0] inst_OUT;
+    logic [2:0] test_mode;
+//    test_mode= 0; 
+    
     rv32i_soc #(
         .DMEM_DEPTH(DMEM_DEPTH),
-        .IMEM_DEPTH(IMEM_DEPTH)
+        .IMEM_DEPTH(IMEM_DEPTH),
+        .TEST_MODE(3'b000)
     ) soc_inst (
         .*,
         .io_data(io_data),
         .srx_pad_i(UART_TXD_IN),
         .stx_pad_o(UART_RXD_OUT),
         .rts_pad_o(UART_RTS),
-        .cts_pad_i(UART_CTS)
+        .cts_pad_i(UART_CTS),
+        .current_pc_OUT(current_pc_OUT),
+        .inst_OUT(inst_OUT)
     );
 
 //ila_0 your_instance_name ( 
