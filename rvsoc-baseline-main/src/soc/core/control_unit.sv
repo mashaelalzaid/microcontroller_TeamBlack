@@ -66,7 +66,7 @@ module control_unit(
     
     decode_control dec_ctrl_inst (
         .opcode(opcode_id),
-        .fun3(fun3_id),
+        .func3(fun3_id),
         .reg_write(reg_write_id),
         .mem_write(mem_write_id),
         .mem_to_reg(mem_to_reg_id),
