@@ -1,4 +1,4 @@
-module rom#(parameter TEST_MODE =0) (
+module rom (
     input logic [11:0] addr,  
     output logic [31:0] inst
 );
@@ -6,13 +6,10 @@ module rom#(parameter TEST_MODE =0) (
    logic [31:0] rom [0:127];
 
 //    initial  $readmemh("/home/it/Documents/rvsoc_v3/src/tb/uart_receiver/rom.hex",rom);
-//    initial $readmemh("machine.mem", rom);
-    initial begin
-        if (TEST_MODE)
-            $readmemh("machine.mem", rom);
-        else
-            $readmemh("Test1.mem", rom);
-    end
+  
+      initial $readmemh("trap_handler.mem", rom);
+   // initial $readmemh("machine.mem", rom);
+
 //assign rom[0]    = 32'h00000013;  // nop
 //assign rom[1]    = 32'h200005B7;  // lui x11, 0x20000    ; GPIO base address
 //assign rom[2]    = 32'h10058593;  // addi x11, x11, 0x100
