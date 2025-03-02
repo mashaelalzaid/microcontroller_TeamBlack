@@ -10,7 +10,7 @@ module data_path #(
     // outputs to controller 
     output logic [6:0] opcode_id,
     output logic fun7_5_exe,
-    output logic [2:0] fun3_exe, fun3_mem,
+    output logic [2:0] fun3_id, fun3_exe, fun3_mem,
     output logic zero_mem,
     output logic [1:0] alu_op_exe,
     output logic jump_mem, 

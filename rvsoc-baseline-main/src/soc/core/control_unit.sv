@@ -24,6 +24,8 @@ module control_unit(
     output logic csr_to_reg,      // Whether to write CSR value to register
     output logic is_csr_instr,    // Whether instruction is CSR
     output logic is_mret_instr,    // Whether instruction is MRET
+    input logic trap_taken,     // New: Signal when trap is requested
+    input logic mret_exec,        // New: Signal when MRET is executed
 
     // alu_controller output
     output [3:0] alu_ctrl_exe,
@@ -76,7 +78,7 @@ module control_unit(
     
     decode_control dec_ctrl_inst (
         .opcode(opcode_id),
-        .fun3(fun3_id),
+        .func3(fun3_id),
         .reg_write(reg_write_id),
         .mem_write(mem_write_id),
         .mem_to_reg(mem_to_reg_id),
@@ -144,7 +146,10 @@ module control_unit(
         .load_hazard(load_hazard),
         .branch_hazard(branch_hazard),
         .stall_pipl(stall_pipl),
-        .*
+        .*,        
+        .trap_taken(trap_taken),     
+        .mret_exec(mret_exec)
+
     );
 
 endmodule

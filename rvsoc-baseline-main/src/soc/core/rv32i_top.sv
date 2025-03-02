@@ -88,7 +88,7 @@ logic [31:0] mret_pc;
     // data path to the controller 
     logic [6:0] opcode_id;
     logic fun7_5_exe;
-    logic [2:0] fun3_exe, fun3_mem;
+    logic [2:0] fun3_id,fun3_exe, fun3_mem;
     logic zero_mem;
     logic [1:0] alu_op_exe;
     logic jump_mem; 
@@ -164,17 +164,16 @@ logic [31:0] mret_pc;
     );
 
     control_unit controller_inst(
-        .*
-        
+        .*,
+        //.fun3_id(fun3_id),
         // CSR control signals
-//        .csr_write_id(csr_write_id),
-//        .csr_data_sel_id(csr_data_sel_id),
-//        .csr_to_reg_id(csr_to_reg_id),
-//        .is_csr_instr_id(is_csr_instr_id),
-//        .is_mret_instr_id(is_mret_instr_id),
-//        .trap_taken(trap_taken),     // From CSR file to control pipeline
-//        .mret_exec(mret_exec)       // From data path to control pipeline
-        
+        .csr_write(csr_write_id),
+        .csr_data_sel_id(csr_data_sel_id),
+        .csr_to_reg(csr_to_reg_id),
+        .is_csr_instr(is_csr_instr_id),
+        .is_mret_instr(is_mret_instr_id),
+        .trap_taken(trap_taken),     // From CSR file to control pipeline
+        .mret_exec(mret_exec)       // From data path to control pipeline
         
     );
 
