@@ -28,6 +28,8 @@ module data_path #(
     input logic jal_id,
     input logic [1:0] alu_op_id,
 
+
+
     input logic [3:0] alu_ctrl_exe,
     input logic pc_sel_mem,
 
@@ -77,7 +79,29 @@ module data_path #(
 
     // inst mem access
     output logic [31:0] current_pc_if,
-    input logic [31:0] inst_if
+    input logic [31:0] inst_if,
+    
+    
+        // CSR control signals mashael
+    input logic csr_write_id,       // Whether to write to CSR
+    input logic csr_data_sel_id,    // Whether to use immediate or register for CSR op
+    input logic csr_to_reg_id,      // Whether to write CSR value to register
+    input logic is_csr_instr_id,    // Whether instruction is CSR
+    input logic is_mret_instr_id,   // Whether instruction is MRET
+    
+        // CSR interface signals mashael
+    output logic [11:0] csr_addr,       // CSR address
+    output logic [31:0] csr_wdata,      // Data to write to CSR
+    input  logic [31:0] csr_rdata,      // Data read from CSR
+    output logic csr_wen,               // CSR write enable
+    output logic [2:0] csr_op,          // CSR operation type
+    
+    // Trap handling signals mashael
+    input  logic trap_taken,            // Signal when trap is taken
+    input  logic [31:0] trap_pc,        // Trap handler address
+    output logic mret_exec,             // Signal MRET execution
+    input  logic [31:0] mret_pc         // Return address for MRET
+    
 );
     
     logic [31:0] inst_id;
@@ -90,7 +114,25 @@ module data_path #(
     logic [31:0] pc_jump_exe, pc_jump_mem;
     logic [31:0] next_pc_if1;
     logic [31:0] non_mem_result_wb;
-
+    
+    
+    // start CSR signals mashael
+    logic is_csr_instr_exe, is_csr_instr_mem, is_csr_instr_wb;
+    logic is_mret_instr_exe, is_mret_instr_mem;
+    logic csr_write_exe, csr_write_mem;
+    logic [11:0] csr_addr_id, csr_addr_exe, csr_addr_mem;
+    logic [31:0] csr_wdata_id, csr_wdata_exe, csr_wdata_mem;
+    logic [2:0] csr_op_id, csr_op_exe, csr_op_mem;
+    logic [31:0] csr_rdata_wb;
+    
+    // Extract CSR address from instruction (bits [31:20])
+    assign csr_addr_id = inst_id[31:20];
+    
+    // CSR operation is based on funct3
+    assign csr_op_id = inst_id[14:12];
+    
+    
+    //// end CSR signals mashael
 
     logic reg_write_exe;
     logic mem_write_exe;
@@ -108,9 +150,31 @@ module data_path #(
     logic [31:0] current_pc_if2, pc_plus_4_if2, inst_if2;
 
  
+ 
+ //// CSR related PC modification mashael
+ 
+     // Modify the next_pc_mux to account for traps
+    logic [31:0] final_next_pc;
+    
+    always_comb begin
+        if (trap_taken)
+            final_next_pc = trap_pc;             // Jump to trap handler
+        else if (is_mret_instr_mem)
+            final_next_pc = mret_pc;             // Return from trap
+        else if (pc_sel_mem)
+            final_next_pc = pc_jump_mem;         // Branch/jump target
+        else
+            final_next_pc = pc_plus_4_if1;       // Normal sequential execution
+    end
+ 
+ /// end of CSR related PC modification mashael
+ 
+ 
+ 
     program_counter PC_inst (
         .*,
-        .en(pc_reg_en)
+        .en(pc_reg_en),
+        .next_pc_if1(final_next_pc) //mashael
     );
 
 
@@ -140,7 +204,7 @@ module data_path #(
         .*,
         .data_i(if_id_reg_en),
         .data_o(if_id_reg_en_ff),
-        .wen(1'b1) //Q: why is it always enabled? 
+        .wen(1'b1) 
     );
     n_bit_reg #(
         .n(1)
@@ -148,7 +212,7 @@ module data_path #(
         .*,
         .data_i(if_id_reg_clr),
         .data_o(if_id_reg_clr_ff),
-        .wen(1'b1) //Q: why is it always enabled? 
+        .wen(1'b1) 
     );
 
 
@@ -235,7 +299,7 @@ module data_path #(
     assign fun7_5_id = fun7_id[5];
     assign csr_imm_id = inst_id[19:15];
     logic [31:0] reg_rdata1, reg_rdata2;
-    
+    //assign csr_addr_id = inst_id[31:20];           //mashael CSR address from instruction
 
     // register file (decode stage)
     reg_file reg_file_inst (
@@ -310,8 +374,16 @@ module data_path #(
         auipc_id,
         jal_id,
         alu_op_id,
+        
+        //CSR
         csr_data_sel_id,
-        csr_to_reg_id
+        csr_to_reg_id,
+        csr_addr_id,    
+        csr_op_id,
+        csr_write_id,
+        is_csr_instr_id,
+        is_mret_instr_id
+        
     };
 
     n_bit_reg_wclr #(
@@ -337,11 +409,22 @@ module data_path #(
     assign rd_exe          = id_exe_bus_o.rd; 
     assign fun3_exe        = id_exe_bus_o.fun3;
     assign fun7_5_exe      = id_exe_bus_o.fun7_5;
+    
+    //mashael CSR data for csr file
+
     assign reg_rdata1_exe  = csr_data_sel_exe ==1?csr_imm_exe : id_exe_bus_o.reg_rdata1; // new mux to select between rdara and csr imm
     assign reg_rdata2_exe  = id_exe_bus_o.reg_rdata2;
     assign imm_exe         = id_exe_bus_o.imm;
     assign csr_imm_exe     = id_exe_bus_o.csr_imm;
-
+   
+    //CSR
+    assign csr_addr_exe    = id_exe_bus_o.csr_addr_id; 
+    assign csr_wdata_exe   = reg_rdata1_exe; 
+    assign csr_op_exe      = id_exe_bus_o.csr_op_id; 
+    assign csr_write_exe    = id_exe_bus_o.csr_write_id;
+    assign is_csr_instr_exe = id_exe_bus_o.is_csr_instr_id;
+    assign is_mret_instr_exe = id_exe_bus_o.is_mret_instr_id;
+    
     // control signals
     assign reg_write_exe   = id_exe_bus_o.reg_write;
     assign mem_write_exe   = id_exe_bus_o.mem_write;
@@ -406,7 +489,7 @@ module data_path #(
     logic [31:0] alu_op2_exe;
     mux2x1 #(
         .n(32)
-    ) alu_op1_mux ( //Q: where is this in the microarcheticture? 
+    ) alu_op1_mux (  
         .sel(auipc_exe),
         .in0(rdata1_frw_exe),
         .in1(current_pc_exe),
@@ -414,7 +497,7 @@ module data_path #(
     );
 
     // (exe stage)
-    mux2x1 #( //Q: where is this in the microarcheticture? 
+    mux2x1 #(  
         .n(32)
     ) alu_op2_mux (
         .sel(alu_src_exe),
@@ -451,6 +534,8 @@ module data_path #(
     rdata2_frw_exe,
     imm_exe,
     alu_result_exe,
+    
+    
     // control signals
     reg_write_exe,
     mem_write_exe,
@@ -459,7 +544,17 @@ module data_path #(
     jump_exe,
     lui_exe,
     zero_exe,
-    csr_to_reg_exe
+    
+//CSR
+    csr_to_reg_exe,
+    current_pc_exe,        // Added for CSR trap handling
+    csr_addr_exe,          // CSR address
+    csr_wdata_exe,         // CSR write data 
+    csr_op_exe,            // CSR operation type
+    csr_write_exe,         // CSR write enable
+    is_csr_instr_exe,      // Is CSR instruction
+    is_mret_instr_exe      // Is MRET instruction
+        
     };
 
     n_bit_reg_wclr #(
@@ -482,6 +577,16 @@ module data_path #(
     assign rdata2_frw_mem  = exe_mem_bus_o.rdata2_frw;
     assign imm_mem         = exe_mem_bus_o.imm;
     assign alu_result_mem  = exe_mem_bus_o.alu_result;
+   
+    // CSR
+    assign csr_to_reg_mem = exe_mem_bus_o.csr_to_reg;
+    assign csr_addr_mem    = exe_mem_bus_o.csr_addr_exe;
+    assign csr_wdata_mem   = exe_mem_bus_o.csr_wdata_exe;
+    assign csr_op_mem      = exe_mem_bus_o.csr_op_exe;
+    assign csr_write_mem   = exe_mem_bus_o.csr_write_exe;
+    assign is_csr_instr_mem = exe_mem_bus_o.is_csr_instr_exe;
+    assign is_mret_instr_mem = exe_mem_bus_o.is_mret_instr_exe;
+
     // control signals
     assign reg_write_mem   = exe_mem_bus_o.reg_write;
     assign mem_write_mem   = exe_mem_bus_o.mem_write;
@@ -490,12 +595,12 @@ module data_path #(
     assign jump_mem        = exe_mem_bus_o.jump;
     assign lui_mem         = exe_mem_bus_o.lui; 
     assign zero_mem        = exe_mem_bus_o.zero;
-    assign csr_to_reg_mem = exe_mem_bus_o.csr_to_reg;
-
 
     // ============================================
     //                Memory Stage 
     // ============================================
+ 
+ 
     
     // generating memory access signals (write/read) 
    
@@ -509,11 +614,18 @@ module data_path #(
     assign mem_addr_mem = alu_result_mem;
     assign mem_op_mem = fun3_mem;
     
+//bookmark should i instantiate csr here or in the top file?
 
+    // Connect CSR signals to the CSR file
+    assign csr_addr = csr_addr_mem;
+    assign csr_wdata = csr_wdata_mem;
+    assign csr_wen = csr_write_mem;
+    assign csr_op = csr_op_mem;
+    //assign is_csr_instr = is_csr_instr_mem;
+    assign mret_exec = is_mret_instr_mem;
+       
     // selecting result in the memory stage
     // it can be used in the exe, incase it's needed 
-    // Q: can you elaborate on the above commented point? 
-
     logic alu_to_reg_mem;
     assign alu_to_reg_mem = ~( jump_mem | lui_mem);
     one_hot_mux3x1 #(
@@ -541,7 +653,8 @@ module data_path #(
     // control signals
     reg_write_mem,
     mem_to_reg_mem,
-    csr_to_reg_mem
+    csr_to_reg_mem,
+     is_csr_instr_mem       
     };
 
     n_bit_reg_wclr #(
@@ -554,17 +667,18 @@ module data_path #(
         .data_i(mem_wb_bus_i),
         .data_o(mem_wb_bus_o)
     );
-    logic csr_data_wb;
+    logic [31:0] csr_data_wb;
     logic csr_to_reg_wb;//DONE
     // data signals 
+    assign csr_data_mem = csr_rdata; // mashael to be valudated I suspect this is wrog
     assign rd_wb             = mem_wb_bus_o.rd; 
     assign non_mem_result_wb = csr_to_reg_wb ==1 ? csr_data_wb : mem_wb_bus_o.result;
-    assign csr_data_wb      = mem_wb_bus_o.csr_data;
+    assign csr_data_wb      = mem_wb_bus_o.csr_data;  // mashael to be valudated I suspect this is wrog
     // control signals
     assign reg_write_wb      = mem_wb_bus_o.reg_write;
     assign mem_to_reg_wb     = mem_wb_bus_o.mem_to_reg; 
     assign csr_to_reg_wb     = mem_wb_bus_o.csr_to_reg;
-
+    assign is_csr_instr_wb   = mem_wb_bus_o.is_csr_instr; // mashael to be validated
 
     // ============================================
     //                Write Back Stage 

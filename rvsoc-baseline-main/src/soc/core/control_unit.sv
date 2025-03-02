@@ -19,7 +19,12 @@ module control_unit(
     output logic jal_id,
     output logic [1:0] alu_op_id,
      //CSR
-    output logic csr_data_sel_id,
+    output logic csr_write, //mashael csr write enable
+    output logic csr_data_sel_id, // Whether to use immediate or register for CSR op
+    output logic csr_to_reg,      // Whether to write CSR value to register
+    output logic is_csr_instr,    // Whether instruction is CSR
+    output logic is_mret_instr,    // Whether instruction is MRET
+
     // alu_controller output
     output [3:0] alu_ctrl_exe,
 
@@ -63,6 +68,11 @@ module control_unit(
     input logic stall_pipl
 );
 
+    logic csr_write_wire; //mashael csr write enable
+    logic csr_data_sel_wire; // Whether to use immediate or register for CSR op
+    logic csr_to_reg_wire;      // Whether to write CSR value to register
+    logic is_csr_instr_wire;    // Whether instruction is CSR
+    logic is_mret_instr_wire;   // Whether instruction is MRET    
     
     decode_control dec_ctrl_inst (
         .opcode(opcode_id),
@@ -79,8 +89,20 @@ module control_unit(
         .jal(jal_id),
         .r_type(r_type_id),
         //CSR
-        .csr_data_sel(csr_data_sel_id)
+        .csr_write(csr_write_wire), //mashael csr write enable
+        .csr_data_sel(csr_data_sel_wire), // Whether to use immediate or register for CSR op
+        .csr_to_reg(csr_to_reg_wire),      // Whether to write CSR value to register
+        .is_csr_instr(is_csr_instr_wire),   // Whether instruction is CSR
+        .is_mret_instr(is_mret_instr_wire)    // Whether instruction is MRET
+
     );
+    
+    assign csr_write=csr_write_wire; //mashael csr write enable
+    assign csr_data_sel_id=csr_data_sel_wire;// Whether to use immediate or register for CSR op
+    assign csr_to_reg=csr_to_reg_wire;     // Whether to write CSR value to register
+    assign is_csr_instr=is_csr_instr_wire;   // Whether instruction is CSR
+    assign is_mret_instr=is_mret_instr_wire;   // Whether instruction is MRET    
+
 
     wire exe_use_rs1_id;
     wire exe_use_rs2_id;

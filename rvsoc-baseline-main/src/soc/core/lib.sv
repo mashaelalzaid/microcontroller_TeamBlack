@@ -235,9 +235,19 @@ package riscv_types;
         logic        auipc;
         logic        jal;
         logic [1:0]  alu_op;
+        //CSR
         logic csr_data_sel;
         logic csr_to_reg;
+        logic [11:0] csr_addr_id;
+        logic [31:0] csr_wdata_id;
+        logic [2:0] csr_op_id;
+        logic csr_write_id;
+         logic is_csr_instr_id; 
+         logic is_mret_instr_id;
     } id_exe_reg_t;
+    
+
+    
 
     // EX/MEM Register Structure
     typedef struct packed {
@@ -258,7 +268,25 @@ package riscv_types;
         logic        jump;
         logic        lui;
         logic        zero;
+        //CSR
         logic       csr_to_reg;
+        logic [11:0] csr_addr_exe;
+        logic csr_write_exe;
+        logic [31:0] csr_wdata_exe; 
+        logic [2:0] csr_op_exe;
+         logic is_csr_instr_exe; 
+         logic is_mret_instr_exe;
+//        //CSR
+//        logic csr_data_sel;
+//        logic csr_to_reg;
+//        logic [11:0] csr_addr_id;
+//        logic [31:0] csr_wdata_id;
+//        logic [2:0] csr_op_id;
+//        logic csr_write_id;
+//         logic is_csr_instr_id; 
+//         logic is_mret_instr_id;
+
+       
     } exe_mem_reg_t;
 
     // MEM/WB Register Structure
@@ -271,6 +299,8 @@ package riscv_types;
         logic        reg_write;
         logic        mem_to_reg;
         logic        csr_to_reg;
+        logic is_csr_instr; //mashael
+
     } mem_wb_reg_t;
 
 endpackage
