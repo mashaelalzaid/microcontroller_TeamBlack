@@ -28,7 +28,7 @@ INFO: [VRFC 10-2458] undeclared symbol fun7_5_id, assumed default net type wire 
 INFO: [VRFC 10-2458] undeclared symbol csr_imm_id, assumed default net type wire [/home/it/Desktop/team_work/PROJECT/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:301]
 WARNING: [VRFC 10-3676] redeclaration of ansi port 'csr_data_sel_id' is not allowed [/home/it/Desktop/team_work/PROJECT/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:352]
 WARNING: [VRFC 10-3676] redeclaration of ansi port 'csr_to_reg_id' is not allowed [/home/it/Desktop/team_work/PROJECT/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:353]
-INFO: [VRFC 10-2458] undeclared symbol alu_src_exe, assumed default net type wire [/home/it/Desktop/team_work/PROJECT/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:435]
+INFO: [VRFC 10-2458] undeclared symbol alu_src_exe, assumed default net type wire [/home/it/Desktop/team_work/PROJECT/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:437]
 INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/it/Desktop/team_work/PROJECT/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/forwarding_unit.sv" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module forwarding_unit
 INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/it/Desktop/team_work/PROJECT/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/hazard_controller.sv" into library xil_defaultlib

@@ -355,14 +355,14 @@ module data_path #(
         // data signals 
         current_pc_id, // 32
         pc_plus_4_id,  // 32
-        rs1_id,        // 32
-        rs2_id,
+        rs1_id,        // 5 
+        rs2_id,        //5
         rd_id, 
         fun3_id,
         fun7_5_id,
         reg_rdata1_id,
         reg_rdata2_id,
-        imm_id,
+        imm_id, //bookmark
         csr_imm_id,
         // control signals
         reg_write_id,
@@ -379,7 +379,9 @@ module data_path #(
         //CSR
         csr_data_sel_id,
         csr_to_reg_id,
-        csr_addr_id,    
+        csr_addr_id,  
+        csr_wdata_id, 
+
         csr_op_id,
         csr_write_id,
         is_csr_instr_id,
@@ -552,9 +554,9 @@ module data_path #(
     csr_to_reg_exe,
     //current_pc_exe,        // Added for CSR trap handling
     csr_addr_exe,          // CSR address
+    csr_write_exe,         // CSR write enable    
     csr_wdata_exe,         // CSR write data 
     csr_op_exe,            // CSR operation type
-    csr_write_exe,         // CSR write enable
     is_csr_instr_exe,      // Is CSR instruction
     is_mret_instr_exe      // Is MRET instruction
         

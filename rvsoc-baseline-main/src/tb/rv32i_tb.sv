@@ -70,38 +70,38 @@ module rv32i_tb;
     always_comb begin
         case (current_pc)
         
-            // Simple register operations
-    32'hfffff000: inst = 32'h00100093; // addi x1, x0, 1
-    32'hfffff004: inst = 32'h00200113; // addi x2, x0, 2
-    32'hfffff008: inst = 32'h00300193; // addi x3, x0, 3
-    32'hfffff00C: inst = 32'h00118213; // addi x4, x3, 1  # x4 = 4
-    32'hfffff010: inst = 32'h00320233; // add x4, x4, x3  # x4 = 7
+//            // Simple register operations
+//    32'hfffff000: inst = 32'h00100093; // addi x1, x0, 1
+//    32'hfffff004: inst = 32'h00200113; // addi x2, x0, 2
+//    32'hfffff008: inst = 32'h00300193; // addi x3, x0, 3
+//    32'hfffff00C: inst = 32'h00118213; // addi x4, x3, 1  # x4 = 4
+//    32'hfffff010: inst = 32'h00320233; // add x4, x4, x3  # x4 = 7
     
-    // More register operations
-    32'hfffff014: inst = 32'h00500293; // addi x5, x0, 5
-    32'hfffff018: inst = 32'h00600313; // addi x6, x0, 6
-    32'hfffff01C: inst = 32'h00700393; // addi x7, x0, 7
-    32'hfffff020: inst = 32'h00800413; // addi x8, x0, 8
+//    // More register operations
+//    32'hfffff014: inst = 32'h00500293; // addi x5, x0, 5
+//    32'hfffff018: inst = 32'h00600313; // addi x6, x0, 6
+//    32'hfffff01C: inst = 32'h00700393; // addi x7, x0, 7
+//    32'hfffff020: inst = 32'h00800413; // addi x8, x0, 8
     
-    // Default for all other addresses
-    default: inst = 32'h00000013; // NOP instruction
-//            // Basic register operations
-//            32'hfffff000: inst = 32'h00100093; // addi x1, x0, 1
-//            32'hfffff004: inst = 32'h00200113; // addi x2, x0, 2
-//            32'hfffff008: inst = 32'h00300193; // addi x3, x0, 3
-//            32'hfffff00C: inst = 32'h00118213; // addi x4, x3, 1  # x4 = 4
-//            32'hfffff010: inst = 32'h00320233; // add x4, x4, x3  # x4 = 7
+//    // Default for all other addresses
+//    default: inst = 32'h00000013; // NOP instruction
+            // Basic register operations
+            32'hfffff000: inst = 32'h00100093; // addi x1, x0, 1
+            32'hfffff004: inst = 32'h00200113; // addi x2, x0, 2
+            32'hfffff008: inst = 32'h00300193; // addi x3, x0, 3
+            32'hfffff00C: inst = 32'h00118213; // addi x4, x3, 1  # x4 = 4
+            32'hfffff010: inst = 32'h00320233; // add x4, x4, x3  # x4 = 7
             
-//            // CSR operations
-//            32'hfffff014: inst = 32'h0ABCD0B7; // lui x1, 0xABCD0     # x1 = 0xABCD0000
-//            32'hfffff018: inst = 32'h00108093; // addi x1, x1, 1      # x1 = 0xABCD0001
-//            32'hfffff01C: inst = 32'h30109173; // csrrw x2, mstatus, x1   # Write to mstatus
-//            32'hfffff020: inst = 32'h300021F3; // csrrs x3, mstatus, x0   # Read mstatus
-//            32'hfffff024: inst = 32'h30125273; // csrrsi x4, mstatus, 5   # Set bits 0 and 2
-//            32'hfffff028: inst = 32'h300022F3; // csrrs x5, mstatus, x0   # Read final value
+            // CSR operations
+            32'hfffff014: inst = 32'h0ABCD0B7; // lui x1, 0xABCD0     # x1 = 0xABCD0000
+            32'hfffff018: inst = 32'h00108093; // addi x1, x1, 1      # x1 = 0xABCD0001
+            32'hfffff01C: inst = 32'h30109173; // csrrw x2, mstatus, x1   # Write to mstatus
+            32'hfffff020: inst = 32'h300021F3; // csrrs x3, mstatus, x0   # Read mstatus
+            32'hfffff024: inst = 32'h30125273; // csrrsi x4, mstatus, 5   # Set bits 0 and 2
+            32'hfffff028: inst = 32'h300022F3; // csrrs x5, mstatus, x0   # Read final value
             
             // Default for all other addresses
-//            default: inst = 32'h00000013; // NOP instruction
+            default: inst = 32'h00000013; // NOP instruction
         endcase
     end
     
@@ -182,13 +182,13 @@ module rv32i_tb;
         
         
         $display("Pipeline Regs - ID/EXE:%b, EXE/MEM:%b, MEM/WB:%b",
-                 id_exe_bus_o.reg_write, exe_mem_bus_o.reg_write, mem_wb_bus_o.reg_write);
+                 dut.data_path_inst.id_exe_bus_o.reg_write, dut.data_path_inst.exe_mem_bus_o.reg_write, dut.data_path_inst.mem_wb_bus_o.reg_write);
 
         // Print pipeline control signals to debug
         $display("\n=== Pipeline Control Signals ===");
         debug_pipeline_signals();
                 $display("Pipeline Regs - ID/EXE:%b, EXE/MEM:%b, MEM/WB:%b",
-                 id_exe_bus_o.reg_write, exe_mem_bus_o.reg_write, mem_wb_bus_o.reg_write);
+                 dut.data_path_inst.id_exe_bus_o.reg_write, dut.data_path_inst.exe_mem_bus_o.reg_write, dut.data_path_inst.mem_wb_bus_o.reg_write);
         
         // Wait for CSR operations to execute
         repeat (25) @(posedge clk);
@@ -257,13 +257,16 @@ module rv32i_tb;
         $display("  csr_wen: %b", dut.csr_wen);
         $display("  csr_op: %b", dut.csr_op);
     endtask
-    
+
     // Monitoring
     int cycle_count = 0;
     always @(posedge clk) begin
         if (reset_n) begin
             cycle_count++;
             $display("Cycle: %0d, PC: 0x%h, Inst: 0x%h", cycle_count, current_pc, inst);
+                                $display("Pipeline Regs - ID/EXE:%b, EXE/MEM:%b, MEM/WB:%b",
+                 dut.data_path_inst.id_exe_bus_o.reg_write, dut.data_path_inst.exe_mem_bus_o.reg_write, dut.data_path_inst.mem_wb_bus_o.reg_write);
+
         end
     end
     

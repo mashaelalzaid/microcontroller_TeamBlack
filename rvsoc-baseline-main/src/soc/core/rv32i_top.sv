@@ -42,6 +42,10 @@ logic [31:0] trap_pc;
 logic mret_exec;
 logic [31:0] mret_pc;
 logic [31:0] current_pc_mem;
+
+     logic mret_exec_control;
+
+
    // Instantiate the CSR file
     csr_file csr_file_inst (
         .clk(clk),
@@ -59,7 +63,7 @@ logic [31:0] current_pc_mem;
         // Trap handling signals
         .trap_taken(trap_taken),
         .trap_pc(trap_pc),
-        .mret_exec(mret_exec),
+        .mret_exec(mret_exec_control),
         .mret_pc(mret_pc)
     );
 
@@ -70,7 +74,7 @@ logic [31:0] current_pc_mem;
 //assign mret_exec = data_path_inst.mret_exec;//1'b0;  // Temporarily disable MRET until we implement it
     
       // END ===============================  CSR signals
- 
+
     // controller to the data path 
     logic reg_write_id; 
     logic mem_write_id;
@@ -149,7 +153,7 @@ logic [31:0] current_pc_mem;
         .csr_data_sel_id(csr_data_sel_id),
         .csr_to_reg_id(csr_to_reg_id),
         .is_csr_instr_id(is_csr_instr_id),
-        .is_mret_instr_id(is_mret_instr_id),
+        .is_mret_instr_id(mret_exec_control),
         
         // CSR connections
         .csr_addr(csr_addr),
@@ -159,7 +163,7 @@ logic [31:0] current_pc_mem;
         .csr_op(csr_op),
         .trap_taken(trap_taken),
         .trap_pc(trap_pc),
-        .mret_exec(mret_exec),
+        //.mret_exec(mret_exec),
         .mret_pc(mret_pc)
     );
 
@@ -171,9 +175,9 @@ logic [31:0] current_pc_mem;
         .csr_data_sel_id(csr_data_sel_id),
         .csr_to_reg(csr_to_reg_id),
         .is_csr_instr(is_csr_instr_id),
-        .is_mret_instr(is_mret_instr_id),
+        //.is_mret_instr(is_mret_instr_id),
         .trap_taken(trap_taken),     // From CSR file to control pipeline
-        .mret_exec(mret_exec)       // From data path to control pipeline
+        .is_mret_instr(mret_exec_control)       // From data path to control pipeline
         
     );
 

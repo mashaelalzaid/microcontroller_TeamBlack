@@ -25,7 +25,7 @@ module control_unit(
     output logic is_csr_instr,    // Whether instruction is CSR
     output logic is_mret_instr,    // Whether instruction is MRET
     input logic trap_taken,     // New: Signal when trap is requested
-    input logic mret_exec,        // New: Signal when MRET is executed
+   // input logic mret_exec,        // New: Signal when MRET is executed
 
     // alu_controller output
     output [3:0] alu_ctrl_exe,
@@ -147,9 +147,9 @@ module control_unit(
         .branch_hazard(branch_hazard),
         .stall_pipl(stall_pipl),
         .*,        
-        .trap_taken(trap_taken),     
-        .mret_exec(mret_exec)
-
+        .trap_taken(trap_taken), 
+        .mret_exec(is_mret_instr)
+       
     );
 
 endmodule
