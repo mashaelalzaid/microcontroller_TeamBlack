@@ -271,10 +271,11 @@ package riscv_types;
         logic        zero;
         //CSR
         logic       csr_to_reg;
+        logic [31:0] current_pc_exe;// Trap Handler Address 
         logic [11:0] csr_addr_exe;
-        logic csr_write_exe;
         logic [31:0] csr_wdata_exe; 
         logic [2:0] csr_op_exe;
+        logic csr_write_exe;
          logic is_csr_instr_exe; 
          logic is_mret_instr_exe;
 //        //CSR

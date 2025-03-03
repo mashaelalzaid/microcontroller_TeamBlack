@@ -8,7 +8,7 @@ module rom#(parameter TEST_MODE = 1 ) (
 
    initial begin
        case (TEST_MODE)
-           1: $readmemh("/home/it/Desktop/team_black/microcontroller_TeamBlack/Test1.mem", rom); // Default mode
+           1: $readmemh("/home/it/Desktop/team_black/microcontroller_TeamBlack/Test2.mem", rom); // Default mode
            0: $readmemh("/home/it/Desktop/team_black/microcontroller_TeamBlack/machine.mem", rom); // Machine mode
            2: $readmemh("test_mode_2.mem", rom); // Example for another test mode
            // Add more cases as needed

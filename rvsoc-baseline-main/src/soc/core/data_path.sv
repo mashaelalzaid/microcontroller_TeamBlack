@@ -180,15 +180,15 @@ module data_path #(
 
     // pc adder 
     assign pc_plus_4_if1 = current_pc_if1 + 4;
-
-    mux2x1 #(
-        .n(32)
-    ) next_pc_mux (
-        .sel(pc_sel_mem),
-        .in0(pc_plus_4_if1),
-        .in1(pc_jump_mem),
-        .out(next_pc_if1)
-    );
+//Remove this Samaher 
+//    mux2x1 #(
+//        .n(32)
+//    ) next_pc_mux (
+//        .sel(pc_sel_mem),
+//        .in0(pc_plus_4_if1),
+//        .in1(pc_jump_mem),
+//        .out(next_pc_if1)
+//    );
 
     assign current_pc_if = current_pc_if1;
 
@@ -289,7 +289,7 @@ module data_path #(
     logic [4:0] rd_id;
     logic [6:0] fun7_id;
     logic [2:0] fun3_id;
-
+    logic fun7_5_id; 
     assign rs1_id    = inst_id[19:15];
     assign rs2_id    = inst_id[24:20];
     assign rd_id     = inst_id[11:7] ;
@@ -378,7 +378,8 @@ module data_path #(
         //CSR
         csr_data_sel_id,
         csr_to_reg_id,
-        csr_addr_id,    
+        csr_addr_id,  
+        csr_wdata_id,
         csr_op_id,
         csr_write_id,
         is_csr_instr_id,
@@ -396,7 +397,7 @@ module data_path #(
         .data_i(id_exe_bus_i),
         .data_o(id_exe_bus_o)
     );
-//    logic [4:0] csr_imm_id_exe; 
+   logic [4:0] csr_imm_id; 
     logic [4:0] csr_imm_exe; //TODO connect from pipeline reg exe
     
     logic csr_data_sel_exe;//DONE
@@ -412,7 +413,8 @@ module data_path #(
     
     //mashael CSR data for csr file
 
-    assign reg_rdata1_exe  = csr_data_sel_exe ==1?csr_imm_exe : id_exe_bus_o.reg_rdata1; // new mux to select between rdara and csr imm
+    assign reg_rdata1_exe  = csr_data_sel_exe ==1 ? {27'b0,csr_imm_exe} : id_exe_bus_o.reg_rdata1; // new mux to select between rdara and csr imm
+//        assign reg_rdata1_exe  = csr_data_sel_exe ==1? id_exe_bus_o.reg_rdata1 :csr_imm_exe;
     assign reg_rdata2_exe  = id_exe_bus_o.reg_rdata2;
     assign imm_exe         = id_exe_bus_o.imm;
     assign csr_imm_exe     = id_exe_bus_o.csr_imm;
