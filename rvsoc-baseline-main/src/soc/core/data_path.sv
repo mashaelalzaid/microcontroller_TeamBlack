@@ -88,6 +88,7 @@ module data_path #(
     input logic csr_to_reg_id,      // Whether to write CSR value to register
     input logic is_csr_instr_id,    // Whether instruction is CSR
     input logic is_mret_instr_id,   // Whether instruction is MRET
+    output [31:0] current_pc_mem, //CSR related PC 
     
         // CSR interface signals mashael
     output logic [11:0] csr_addr,       // CSR address
@@ -105,7 +106,7 @@ module data_path #(
 );
     
     logic [31:0] inst_id;
-    logic [31:0] current_pc, current_pc_id, current_pc_exe, current_pc_mem;
+    logic [31:0] current_pc, current_pc_id, current_pc_exe;//, current_pc_mem;
     logic [31:0] reg_rdata1_id, reg_rdata1_exe;
     logic [31:0] reg_rdata2_id, reg_rdata2_exe;
     logic [31:0] reg_wdata_wb;
@@ -121,7 +122,7 @@ module data_path #(
     logic is_mret_instr_exe, is_mret_instr_mem;
     logic csr_write_exe, csr_write_mem;
     logic [11:0] csr_addr_id, csr_addr_exe, csr_addr_mem;
-    logic [31:0] csr_wdata_id, csr_wdata_exe, csr_wdata_mem;
+    logic [31:0] csr_wdata_id, csr_wdata_exe, csr_wdata_mem; //issue how should i pass csr_wdata_id through the pipeline?
     logic [2:0] csr_op_id, csr_op_exe, csr_op_mem;
     logic [31:0] csr_rdata_wb;
     
@@ -288,7 +289,7 @@ module data_path #(
     // Giving descriptive names to field of instructions 
     logic [4:0] rd_id;
     logic [6:0] fun7_id;
-    logic [2:0] fun3_id;
+    logic [2:0] fun3_id; //issue
 
     assign rs1_id    = inst_id[19:15];
     assign rs2_id    = inst_id[24:20];
@@ -410,9 +411,10 @@ module data_path #(
     assign fun3_exe        = id_exe_bus_o.fun3;
     assign fun7_5_exe      = id_exe_bus_o.fun7_5;
     
-    //mashael CSR data for csr file
-
-    assign reg_rdata1_exe  = csr_data_sel_exe ==1?csr_imm_exe : id_exe_bus_o.reg_rdata1; // new mux to select between rdara and csr imm
+    // CSR data for csr file
+    //issue doesn these have different sizes? do we need zero extention here?
+    // instead of csr_imm_exe i zero-extended it
+    assign reg_rdata1_exe  = csr_data_sel_exe ==1? {27'b0, csr_imm_exe} : id_exe_bus_o.reg_rdata1; // new mux to select between rdara and csr imm
     assign reg_rdata2_exe  = id_exe_bus_o.reg_rdata2;
     assign imm_exe         = id_exe_bus_o.imm;
     assign csr_imm_exe     = id_exe_bus_o.csr_imm;
@@ -526,6 +528,7 @@ module data_path #(
     logic csr_to_reg_mem;
     assign exe_mem_bus_i = {
     // data signals 
+    current_pc_exe,
     pc_plus_4_exe,  
     pc_jump_exe,     
     rs2_exe,
@@ -547,7 +550,7 @@ module data_path #(
     
 //CSR
     csr_to_reg_exe,
-    current_pc_exe,        // Added for CSR trap handling
+    //current_pc_exe,        // Added for CSR trap handling
     csr_addr_exe,          // CSR address
     csr_wdata_exe,         // CSR write data 
     csr_op_exe,            // CSR operation type
@@ -569,6 +572,7 @@ module data_path #(
     );
 
     // data signals 
+    assign current_pc_mem  = exe_mem_bus_o.current_pc; // 32
     assign pc_plus_4_mem   = exe_mem_bus_o.pc_plus_4;  // 32
     assign pc_jump_mem     = exe_mem_bus_o.pc_jump;
     assign rs2_mem         = exe_mem_bus_o.rs2;
@@ -611,10 +615,9 @@ module data_path #(
         .in1(reg_wdata_wb),
         .out(mem_wdata_mem)
     );    
-    assign mem_addr_mem = alu_result_mem;
+    assign mem_addr_mem = alu_result_mem; //issue
     assign mem_op_mem = fun3_mem;
     
-//bookmark should i instantiate csr here or in the top file?
 
     // Connect CSR signals to the CSR file
     assign csr_addr = csr_addr_mem;
@@ -676,6 +679,16 @@ module data_path #(
     assign csr_data_wb      = mem_wb_bus_o.csr_data;  // mashael to be valudated I suspect this is wrog
     // control signals
     assign reg_write_wb      = mem_wb_bus_o.reg_write;
+    
+//$display("MEM/WB Debug - reg_write_mem: %b, mem_wb_bus_o.reg_write: %b, reg_write_wb: %b", reg_write_mem, mem_wb_bus_o.reg_write, reg_write_wb);
+        always @(posedge clk) begin
+    if (reset_n) begin
+        $display("Debug - Reg Write signals: ID:%b, EXE:%b, MEM:%b, WB:%b", 
+                 reg_write_id, reg_write_exe, reg_write_mem, reg_write_wb);
+    end
+end 
+/// to remove the above code always 
+         
     assign mem_to_reg_wb     = mem_wb_bus_o.mem_to_reg; 
     assign csr_to_reg_wb     = mem_wb_bus_o.csr_to_reg;
     assign is_csr_instr_wb   = mem_wb_bus_o.is_csr_instr; // mashael to be validated

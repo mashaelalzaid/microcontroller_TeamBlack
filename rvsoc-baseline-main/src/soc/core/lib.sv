@@ -252,6 +252,7 @@ package riscv_types;
     // EX/MEM Register Structure
     typedef struct packed {
         // Data signals 
+        logic [31:0] current_pc; 
         logic [31:0] pc_plus_4;
         logic [31:0] pc_jump;      
         logic [4:0]  rs2;
@@ -276,15 +277,7 @@ package riscv_types;
         logic [2:0] csr_op_exe;
          logic is_csr_instr_exe; 
          logic is_mret_instr_exe;
-//        //CSR
-//        logic csr_data_sel;
-//        logic csr_to_reg;
-//        logic [11:0] csr_addr_id;
-//        logic [31:0] csr_wdata_id;
-//        logic [2:0] csr_op_id;
-//        logic csr_write_id;
-//         logic is_csr_instr_id; 
-//         logic is_mret_instr_id;
+
 
        
     } exe_mem_reg_t;
@@ -299,7 +292,7 @@ package riscv_types;
         logic        reg_write;
         logic        mem_to_reg;
         logic        csr_to_reg;
-        logic is_csr_instr; //mashael
+        logic is_csr_instr; 
 
     } mem_wb_reg_t;
 

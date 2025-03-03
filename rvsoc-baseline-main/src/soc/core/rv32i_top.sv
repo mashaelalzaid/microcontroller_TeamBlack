@@ -41,7 +41,7 @@ logic trap_taken;
 logic [31:0] trap_pc;
 logic mret_exec;
 logic [31:0] mret_pc;
-
+logic [31:0] current_pc_mem;
    // Instantiate the CSR file
     csr_file csr_file_inst (
         .clk(clk),
@@ -55,7 +55,7 @@ logic [31:0] mret_pc;
         // External interrupts
         .timer_int(timer_int),
         // Current PC for exception handling (from memory stage)
-        .current_pc(data_path_inst.current_pc_mem),
+        .current_pc(current_pc_mem), //data_path_inst.current_pc_mem
         // Trap handling signals
         .trap_taken(trap_taken),
         .trap_pc(trap_pc),

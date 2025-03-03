@@ -182,6 +182,53 @@ module rv32i_soc #(
   logic        wb_gpio_ack_i;
   logic        wb_gpio_err_i;
   logic        wb_gpio_rty_i;
+  
+       
+
+
+    //CLINT SIGNALS
+
+
+    logic [31:0] wb_clint_adr_o;
+
+
+    logic [31:0] wb_clint_dat_o;
+
+
+    logic  [3:0] wb_clint_sel_o;
+
+
+    logic   wb_clint_we_o;
+
+
+    logic   wb_clint_cyc_o;
+
+
+    logic   wb_clint_stb_o;
+
+
+    logic  [2:0] wb_clint_cti_o;
+
+
+    logic  [1:0] wb_clint_bte_o;
+
+
+    logic  [31:0] wb_clint_dat_i;
+
+
+    logic         wb_clint_ack_i;
+
+
+    logic         wb_clint_err_i;
+
+
+    logic        wb_clint_rty_i;
+
+
+    logic timer_intterrupt;     
+
+
+    logic mtip_o  ;  
 
 wb_intercon interconnect_inst (
     .*,
