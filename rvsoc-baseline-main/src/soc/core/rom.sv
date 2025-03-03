@@ -1,15 +1,25 @@
-module rom (
+module rom#(parameter TEST_MODE = 1 ) (
     input logic [11:0] addr,  
     output logic [31:0] inst
 );
 
    logic [31:0] rom [0:127];
 
-//    initial  $readmemh("/home/it/Documents/rvsoc_v3/src/tb/uart_receiver/rom.hex",rom);
-  
-      initial $readmemh("trap_handler.mem", rom);
-   // initial $readmemh("machine.mem", rom);
 
+   initial begin
+       case (TEST_MODE)
+           1: $readmemh("/home/it/Desktop/team_black/microcontroller_TeamBlack/Test1.mem", rom); // Default mode
+           0: $readmemh("/home/it/Desktop/team_black/microcontroller_TeamBlack/machine.mem", rom); // Machine mode
+           2: $readmemh("test_mode_2.mem", rom); // Example for another test mode
+           // Add more cases as needed
+           default: $readmemh("trap_handler.mem", rom); // Fallback
+       endcase
+   end
+   assign inst = rom[addr >> 2];
+   //    initial  $readmemh("/home/it/Documents/rvsoc_v3/src/tb/uart_receiver/rom.hex",rom);
+  
+//      initial $readmemh("trap_handler.mem", rom);
+   // initial $readmemh("machine.mem", rom);
 //assign rom[0]    = 32'h00000013;  // nop
 //assign rom[1]    = 32'h200005B7;  // lui x11, 0x20000    ; GPIO base address
 //assign rom[2]    = 32'h10058593;  // addi x11, x11, 0x100
@@ -201,5 +211,5 @@ module rom (
 //        assign rom[126]  = 32'h00000000;
 //        assign rom[127]  = 32'h00000000;
 
-    assign inst = rom[addr >> 2];
+    
 endmodule

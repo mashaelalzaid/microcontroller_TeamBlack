@@ -260,6 +260,7 @@ package riscv_types;
         logic [31:0] rdata2_frw;
         logic [31:0] imm;
         logic [31:0] alu_result;
+        
         // Control signals
         logic        reg_write;
         logic        mem_write;

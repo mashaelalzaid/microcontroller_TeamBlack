@@ -65,7 +65,11 @@ module control_unit(
     output logic mem_wb_reg_en,
     output logic pc_reg_en,
 
-    input logic stall_pipl
+    input logic stall_pipl,
+    
+    // CSR control signals
+    input logic trap_taken,     // Signal when trap is requested
+    input logic mret_exec       // Signal when MRET is executed
 );
 
     logic csr_write_wire; //mashael csr write enable
@@ -144,6 +148,8 @@ module control_unit(
         .load_hazard(load_hazard),
         .branch_hazard(branch_hazard),
         .stall_pipl(stall_pipl),
+        .trap_taken(trap_taken),
+        .mret_exec(mret_exec),
         .*
     );
 

@@ -14,7 +14,7 @@ typedef enum logic [6:0] {
 module decode_control (
     input logic [6:0] opcode,
     input logic [2:0] func3,
-        input logic [11:0] funct12,   //mashael Added for MRET detection (instruction bits [31:20])
+    input logic [11:0] funct12,   //mashael Added for MRET detection (instruction bits [31:20])
     output logic reg_write, 
     output logic mem_write, 
     output logic mem_to_reg, 

@@ -21,9 +21,9 @@ module rv32i_top #(
     input logic stall_pipl,
     output logic if_id_reg_en,
 
-       // START =============================== CSR signals
+    // START =============================== CSR signals
     input logic timer_int // timer interrup
-   // END ===============================  CSR signals
+    // END ===============================  CSR signals
 );
     // CSR control signals
     logic csr_write_id;
@@ -32,17 +32,17 @@ module rv32i_top #(
     logic is_csr_instr_id;
     logic is_mret_instr_id;
 
-// Add CSR file instance
-logic [11:0] csr_addr;
-logic [31:0] csr_wdata, csr_rdata;
-logic csr_wen;
-logic [2:0] csr_op;
-logic trap_taken;
-logic [31:0] trap_pc;
-logic mret_exec;
-logic [31:0] mret_pc;
+    // Add CSR file instance
+    logic [11:0] csr_addr;
+    logic [31:0] csr_wdata, csr_rdata;
+    logic csr_wen;
+    logic [2:0] csr_op;
+    logic trap_taken;
+    logic [31:0] trap_pc;
+    logic mret_exec;
+    logic [31:0] mret_pc;
 
-   // Instantiate the CSR file
+    // Instantiate the CSR file
     csr_file csr_file_inst (
         .clk(clk),
         .reset_n(reset_n),
@@ -62,15 +62,7 @@ logic [31:0] mret_pc;
         .mret_exec(mret_exec),
         .mret_pc(mret_pc)
     );
-
-//// Connect trap signals to data_path
-//assign data_path_inst.trap_taken = trap_taken;
-//assign data_path_inst.trap_pc = trap_pc;
-//assign data_path_inst.mret_pc = mret_pc;
-//assign mret_exec = data_path_inst.mret_exec;//1'b0;  // Temporarily disable MRET until we implement it
     
-      // END ===============================  CSR signals
- 
     // controller to the data path 
     logic reg_write_id; 
     logic mem_write_id;
@@ -88,7 +80,7 @@ logic [31:0] mret_pc;
     // data path to the controller 
     logic [6:0] opcode_id;
     logic fun7_5_exe;
-    logic [2:0] fun3_exe, fun3_mem;
+    logic [2:0] fun3_id, fun3_exe, fun3_mem;
     logic zero_mem;
     logic [1:0] alu_op_exe;
     logic jump_mem; 
@@ -164,27 +156,18 @@ logic [31:0] mret_pc;
     );
 
     control_unit controller_inst(
-        .*
+        .*,
         
         // CSR control signals
-//        .csr_write_id(csr_write_id),
-//        .csr_data_sel_id(csr_data_sel_id),
-//        .csr_to_reg_id(csr_to_reg_id),
-//        .is_csr_instr_id(is_csr_instr_id),
-//        .is_mret_instr_id(is_mret_instr_id),
-//        .trap_taken(trap_taken),     // From CSR file to control pipeline
-//        .mret_exec(mret_exec)       // From data path to control pipeline
-        
-        
+        .csr_write(csr_write_id),
+        .csr_data_sel_id(csr_data_sel_id),
+        .csr_to_reg(csr_to_reg_id),
+        .is_csr_instr(is_csr_instr_id),
+        .is_mret_instr(is_mret_instr_id),
+        .trap_taken(trap_taken),     // From CSR file to control pipeline
+        .mret_exec(mret_exec)        // From data path to control pipeline
     );
-
-        // Additional logic needed in your data_path module to:
-    // 1. Decode CSR instructions in ID stage
-    // 2. Forward CSR operations through pipeline (ID->EXE->MEM)
-    // 3. Connect current PC to CSR file (from appropriate pipeline stage)
-    // 4. Execute CSR operations in MEM stage
-
 
     assign mem_read_mem = mem_to_reg_mem;
 
-endmodule 
+endmodule

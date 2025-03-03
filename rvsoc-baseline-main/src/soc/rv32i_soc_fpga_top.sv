@@ -20,6 +20,7 @@
     
     parameter DMEM_DEPTH = 128;
     parameter IMEM_DEPTH = 128;
+    parameter TEST_MODE =1;
     
     logic        o_flash_cs_n;
     logic        o_flash_mosi;
@@ -82,7 +83,7 @@
     rv32i_soc #(
         .DMEM_DEPTH(DMEM_DEPTH),
         .IMEM_DEPTH(IMEM_DEPTH),
-        .TEST_MODE(3'b000)
+        .TEST_MODE(TEST_MODE)
     ) soc_inst (
         .*,
         .io_data(io_data),

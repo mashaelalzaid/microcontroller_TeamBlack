@@ -1,7 +1,7 @@
 module rv32i_soc #(
     parameter DMEM_DEPTH = 128,
     parameter IMEM_DEPTH = 128,
-    parameter TEST_MODE = 0 
+    parameter TEST_MODE = 1 
 ) (
     input logic clk, 
     input logic reset_n,
@@ -22,7 +22,7 @@ module rv32i_soc #(
     output [31:0] inst_OUT
     
 );
-
+    
 
     // Memory bus signals
     logic [31:0] mem_addr_mem;
@@ -182,7 +182,22 @@ module rv32i_soc #(
   logic        wb_gpio_ack_i;
   logic        wb_gpio_err_i;
   logic        wb_gpio_rty_i;
-
+       
+    //CLINT SIGNALS
+    logic [31:0] wb_clint_adr_o;
+    logic [31:0] wb_clint_dat_o;
+    logic  [3:0] wb_clint_sel_o;
+    logic   wb_clint_we_o;
+    logic   wb_clint_cyc_o;
+    logic   wb_clint_stb_o;
+    logic  [2:0] wb_clint_cti_o;
+    logic  [1:0] wb_clint_bte_o;
+    logic  [31:0] wb_clint_dat_i;
+    logic         wb_clint_ack_i;
+    logic         wb_clint_err_i;
+    logic        wb_clint_rty_i;
+    logic timer_intterrupt;     
+    logic mtip_o  ;
 wb_intercon interconnect_inst (
     .*,
     .wb_clk_i(clk),
@@ -220,20 +235,20 @@ wb_intercon interconnect_inst (
     // Instantiate the CLINT peripheral here 
 
 
-    //CLINT SIGNALS
-    logic [31:0] wb_clint_adr_o;
-    logic [31:0] wb_clint_dat_o;
-//    output  [3:0] wb_clint_sel_o,
-    logic   wb_clint_we_o;
-    logic   wb_clint_cyc_o;
-    logic   wb_clint_stb_o;
-//    output  [2:0] wb_clint_cti_o,
-//    output  [1:0] wb_clint_bte_o,
-    logic  [31:0] wb_clint_dat_i;
-    logic         wb_clint_ack_i;
-//    input         wb_clint_err_i,
-//    input         wb_clint_rty_i,
-    logic timer_intterrupt;
+//    //CLINT SIGNALS
+//    logic [31:0] wb_clint_adr_o;
+//    logic [31:0] wb_clint_dat_o;
+////    output  [3:0] wb_clint_sel_o,
+//    logic   wb_clint_we_o;
+//    logic   wb_clint_cyc_o;
+//    logic   wb_clint_stb_o;
+////    output  [2:0] wb_clint_cti_o,
+////    output  [1:0] wb_clint_bte_o,
+//    logic  [31:0] wb_clint_dat_i;
+//    logic         wb_clint_ack_i;
+////    input         wb_clint_err_i,
+////    input         wb_clint_rty_i,
+//    logic timer_intterrupt;
      
  clint_wishbone  clint_inst(
     .wb_clk_i(clk),       
@@ -245,7 +260,7 @@ wb_intercon interconnect_inst (
     .wb_dat_i(wb_clint_dat_o), 
     .wb_dat_o(wb_clint_dat_i), 
     .wb_ack_o(wb_clint_ack_i),       
-    .mtip_o(timer_intterrupt)         
+    .mtip_o(mtip_o)         
 );
     // ============================================
     //                 GPIO Instantiation
@@ -300,6 +315,7 @@ logic gpio_wb_inta_o;
     //             Data Memory Instance
     // ============================================
     
+  
     // Instantiate data memory here 
     data_mem #(
         .DEPTH(DMEM_DEPTH)
