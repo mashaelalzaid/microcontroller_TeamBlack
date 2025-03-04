@@ -44,8 +44,10 @@ module clint_wishbone (
 
     // 64-bit Machine Time Counter 
     always_ff @(posedge wb_clk_i or posedge wb_rst_i) begin
-        if (wb_rst_i)
+        if (wb_rst_i) begin
             mtime <= 64'b0;
+            mtimecmp <= 64'hFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
+            end
         else
             mtime <= mtime + 1; 
     end
@@ -69,8 +71,7 @@ module clint_wishbone (
         end
     end
     //generate interrupt
-    always_ff @(posedge wb_clk_i) begin
-        mtip_o <= (mtime >= mtimecmp);
-    end
+    
+       assign mtip_o = (mtime >= mtimecmp);
 
 endmodule

@@ -5,27 +5,35 @@ module soc_test;
     // Testbench signals
     logic clk;
     logic reset_n;
-    wire [31:0] io_data;
-    logic tx, rx;
+    // GPIO signals
+    logic [31:0] io_data;  // Bidirectional 32-bit GPIO data bus
     
+    // UART signals
+    logic srx_pad_i;  // UART Serial Receive
+    logic stx_pad_o;  // UART Serial Transmit
+    logic rts_pad_o;  // UART Ready to Send
+    logic cts_pad_i;  // UART Clear to Send
     
-//    // Instantiate the DUT (Device Under Test)
-//    rv32i_soc dut (
-//        .clk(clk),
-//        .reset_n(reset_n),
-//        .io_data(io_data),
-//        .srx_pad_i(rx),
-//        .stx_pad_o(tx)
-//    );
-    
- rv32i_soc_fpag_top  DUT(
-    .CLK100MHZ(clk), 
-    .CPU_RESETN(reset_n),
-    .UART_TXD_IN(tx)
- );
-    
-    
-    
+
+rv32i_soc #(
+    128, 
+    128
+) dut (
+    .clk(clk), 
+    .reset_n(reset_n), // Input reset signal
+
+    // SPI signals to the SPI-Flash (not provided in your description)
+
+    // UART signals
+    .srx_pad_i(srx_pad_i),
+    .stx_pad_o(stx_pad_o),
+    .rts_pad_o(rts_pad_o),
+    .cts_pad_i(cts_pad_i),
+
+    // GPIO signals
+    .io_data()
+);
+
 
     // Clock generation
     always #5 clk = ~clk; // 10ns period

@@ -14,15 +14,9 @@ module rv32i_soc #(
     input								 srx_pad_i,
     output 								 stx_pad_o,
     output 								 rts_pad_o,
-    input								 cts_pad_i,
-    
-    // ila
-    output [31:0] current_pc_OUT,
-    output [31:0] inst_OUT
+    input								 cts_pad_i
     
 );
-    assign current_pc_OUT = current_pc;
-    assign inst_OUT = inst;
 
     // Memory bus signals
     logic [31:0] mem_addr_mem;
@@ -32,6 +26,8 @@ module rv32i_soc #(
     logic [31:0] mem_rdata_mem;
     logic        mem_read_mem;
     
+    
+    logic clint_wb_inta_i; //timer Interrupt
 
     // ============================================
     //          Processor Core Instantiation
@@ -61,7 +57,8 @@ module rv32i_soc #(
     .mem_addr_mem(mem_addr_mem),
     .mem_wdata_mem(mem_wdata_mem),
     .mem_write_mem(mem_write_mem),
-    .mem_read_mem(mem_read_mem)
+    .mem_read_mem(mem_read_mem),
+    .timer_int(clint_wb_inta_i)
     );
 
 
@@ -182,6 +179,21 @@ module rv32i_soc #(
   logic        wb_gpio_ack_i;
   logic        wb_gpio_err_i;
   logic        wb_gpio_rty_i;
+// CLINT SIGNALS
+logic [31:0] wb_clint_adr_o;  // Address output
+ logic [31:0] wb_clint_dat_o;  // Data output
+ logic  [3:0] wb_clint_sel_o;  // Byte select output
+ logic        wb_clint_we_o;   // Write enable output
+ logic        wb_clint_cyc_o;  // Cycle valid output
+ logic        wb_clint_stb_o;  // Strobe output
+ logic  [2:0] wb_clint_cti_o;  // Cycle type identifier output
+ logic  [1:0] wb_clint_bte_o;  // Burst type extension output
+ logic [31:0] wb_clint_dat_i;  // Data input
+ logic  wb_clint_err_i;
+ logic wb_clint_rty_i;
+ logic        wb_clint_ack_i;  // Acknowledge input
+ 
+
 
 wb_intercon interconnect_inst (
     .*,
@@ -461,5 +473,20 @@ uart_top uart (
     .dcd_pad_i(dcd_pad_i)
 );
 
-    
+// ============================================
+    //          CLINT Instance
+    // ============================================ 
+    clint_wishbone clint (
+        .wb_clk_i(clk),       
+        .wb_rst_i(~reset_n),       
+        .wb_cyc_i(wb_clint_cyc_o),       
+        .wb_stb_i(wb_clint_stb_o),       
+        .wb_we_i(wb_clint_we_o),        
+        . wb_adr_i(wb_clint_adr_o), 
+        .wb_dat_i(wb_clint_dat_o), 
+        .wb_dat_o(wb_clint_dat_i), 
+        .wb_ack_o(wb_clint_ack_i),       
+        .mtip_o(clint_wb_inta_i)
+    );
+       
 endmodule : rv32i_soc
