@@ -1,0 +1,69 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/lib.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module n_bit_dec
+INFO: [VRFC 10-311] analyzing module n_bit_dec_with_en
+INFO: [VRFC 10-311] analyzing module mux4x1
+INFO: [VRFC 10-311] analyzing module mux2x1
+INFO: [VRFC 10-311] analyzing module mux3x1
+INFO: [VRFC 10-311] analyzing module one_hot_mux4x1
+INFO: [VRFC 10-311] analyzing module one_hot_mux2x1
+INFO: [VRFC 10-311] analyzing module one_hot_mux3x1
+INFO: [VRFC 10-311] analyzing module n_bit_reg
+INFO: [VRFC 10-311] analyzing module n_bit_reg_wclr
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/alignment_units.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module store_aligner
+INFO: [VRFC 10-311] analyzing module load_aligner
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/alu.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu
+INFO: [VRFC 10-311] analyzing module n_bit_add_sub
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/alu_control.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module alu_control
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/gpio/bidirec.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bidirec
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/branch_controller.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module branch_controller
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/clint_wishbone.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module clint_wishbone
+WARNING: [VRFC 10-986] literal value truncated to fit in 64 bits [/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/clint_wishbone.sv:49]
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/control_unit.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module control_unit
+INFO: [VRFC 10-2458] undeclared symbol r_type_id, assumed default net type wire [/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/control_unit.sv:92]
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/csr_file.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module csr_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_mem.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module data_mem
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module data_path
+WARNING: [VRFC 10-3676] redeclaration of ansi port 'fun3_id' is not allowed [/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:291]
+INFO: [VRFC 10-2458] undeclared symbol csr_imm_id, assumed default net type wire [/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:301]
+WARNING: [VRFC 10-3676] redeclaration of ansi port 'csr_data_sel_id' is not allowed [/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:352]
+WARNING: [VRFC 10-3676] redeclaration of ansi port 'csr_to_reg_id' is not allowed [/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:353]
+WARNING: [VRFC 10-2938] 'csr_imm_id' is already implicitly declared on line 301 [/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:403]
+INFO: [VRFC 10-2458] undeclared symbol alu_src_exe, assumed default net type wire [/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv:436]
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/forwarding_unit.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module forwarding_unit
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/gpio/gpio_top.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module gpio_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/hazard_controller.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module hazard_handler
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/imm_gen.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module imm_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/main_control.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module decode_control
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/pipeline_controller.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module pipeline_controller
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/program_counter.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module program_counter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/reg_file.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module reg_file
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/rom.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module rom
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/rv32i_soc.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module rv32i_soc
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/rv32i_top.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module rv32i_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/WishboneInterconnect/wb_intercon.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wb_intercon
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/WishboneInterconnect/wishbone_controller.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module wishbone_controller
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/binahmed/RV32I_MicroController_2/microcontroller_TeamBlack/rvsoc-baseline-main/src/tb/soc_test.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module soc_test

@@ -180,7 +180,7 @@ module rv32i_soc #(
   logic        wb_gpio_err_i;
   logic        wb_gpio_rty_i;
 // CLINT SIGNALS
-logic [31:0] wb_clint_adr_o;  // Address output
+ logic [31:0] wb_clint_adr_o;  // Address output
  logic [31:0] wb_clint_dat_o;  // Data output
  logic  [3:0] wb_clint_sel_o;  // Byte select output
  logic        wb_clint_we_o;   // Write enable output

@@ -1,1 +1,4 @@
-vivado_proj/
+project_1.sim
+project_1.ip_user_files
+project_1.hw
+project_1.cache
