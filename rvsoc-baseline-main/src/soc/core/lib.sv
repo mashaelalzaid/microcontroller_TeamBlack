@@ -223,6 +223,7 @@ package riscv_types;
         logic [31:0] reg_rdata1;
         logic [31:0] reg_rdata2;
         logic [31:0] imm;
+        logic [4:0] csr_imm;
         // Control signals
         logic        reg_write;
         logic        mem_write;
@@ -234,11 +235,24 @@ package riscv_types;
         logic        auipc;
         logic        jal;
         logic [1:0]  alu_op;
+        //CSR
+        logic csr_data_sel;
+        logic csr_to_reg;
+        logic [11:0] csr_addr_id;
+        logic [31:0] csr_wdata_id;
+        logic [2:0] csr_op_id;
+        logic csr_write_id;
+         logic is_csr_instr_id; 
+         logic is_mret_instr_id;
     } id_exe_reg_t;
+    
+
+    
 
     // EX/MEM Register Structure
     typedef struct packed {
         // Data signals 
+        logic [31:0] current_pc; 
         logic [31:0] pc_plus_4;
         logic [31:0] pc_jump;      
         logic [4:0]  rs2;
@@ -255,6 +269,17 @@ package riscv_types;
         logic        jump;
         logic        lui;
         logic        zero;
+        //CSR
+        logic       csr_to_reg;
+        logic [11:0] csr_addr_exe;
+        logic csr_write_exe;
+        logic [31:0] csr_wdata_exe; 
+        logic [2:0] csr_op_exe;
+         logic is_csr_instr_exe; 
+         logic is_mret_instr_exe;
+
+
+       
     } exe_mem_reg_t;
 
     // MEM/WB Register Structure
@@ -262,9 +287,13 @@ package riscv_types;
         // Data signals 
         logic [4:0]  rd; 
         logic [31:0] result;
+        logic [31:0] csr_data;
         // Control signals
         logic        reg_write;
         logic        mem_to_reg;
+        logic        csr_to_reg;
+        logic is_csr_instr; 
+
     } mem_wb_reg_t;
 
 endpackage

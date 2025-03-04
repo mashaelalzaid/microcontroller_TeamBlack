@@ -211,8 +211,6 @@ assign wb_ack_o = wb_acc;
 
 
 
-<<<<<<< HEAD
+
 endmodule
-=======
-endmodule
->>>>>>> fac26f0 (K)
+

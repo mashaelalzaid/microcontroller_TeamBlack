@@ -1,7 +1,7 @@
 module control_unit(
     input logic [6:0] opcode_id,
     input logic fun7_5_exe,
-    input logic [2:0] fun3_exe, fun3_mem,
+    input logic [2:0] fun3_id,fun3_exe, fun3_mem,
     input logic zero_mem,
     input logic [1:0] alu_op_exe,
     input logic jump_mem, 
@@ -18,6 +18,14 @@ module control_unit(
     output logic auipc_id, 
     output logic jal_id,
     output logic [1:0] alu_op_id,
+     //CSR
+    output logic csr_write, //mashael csr write enable
+    output logic csr_data_sel_id, // Whether to use immediate or register for CSR op
+    output logic csr_to_reg,      // Whether to write CSR value to register
+    output logic is_csr_instr,    // Whether instruction is CSR
+    output logic is_mret_instr,    // Whether instruction is MRET
+    input logic trap_taken,     // New: Signal when trap is requested
+   // input logic mret_exec,        // New: Signal when MRET is executed
 
     // alu_controller output
     output [3:0] alu_ctrl_exe,
@@ -62,9 +70,15 @@ module control_unit(
     input logic stall_pipl
 );
 
+    logic csr_write_wire; //mashael csr write enable
+    logic csr_data_sel_wire; // Whether to use immediate or register for CSR op
+    logic csr_to_reg_wire;      // Whether to write CSR value to register
+    logic is_csr_instr_wire;    // Whether instruction is CSR
+    logic is_mret_instr_wire;   // Whether instruction is MRET    
     
     decode_control dec_ctrl_inst (
         .opcode(opcode_id),
+        .func3(fun3_id),
         .reg_write(reg_write_id),
         .mem_write(mem_write_id),
         .mem_to_reg(mem_to_reg_id),
@@ -75,8 +89,22 @@ module control_unit(
         .lui(lui_id),
         .auipc(auipc_id),
         .jal(jal_id),
-        .r_type(r_type_id)
+        .r_type(r_type_id),
+        //CSR
+        .csr_write(csr_write_wire), //mashael csr write enable
+        .csr_data_sel(csr_data_sel_wire), // Whether to use immediate or register for CSR op
+        .csr_to_reg(csr_to_reg_wire),      // Whether to write CSR value to register
+        .is_csr_instr(is_csr_instr_wire),   // Whether instruction is CSR
+        .is_mret_instr(is_mret_instr_wire)    // Whether instruction is MRET
+
     );
+    
+    assign csr_write=csr_write_wire; //mashael csr write enable
+    assign csr_data_sel_id=csr_data_sel_wire;// Whether to use immediate or register for CSR op
+    assign csr_to_reg=csr_to_reg_wire;     // Whether to write CSR value to register
+    assign is_csr_instr=is_csr_instr_wire;   // Whether instruction is CSR
+    assign is_mret_instr=is_mret_instr_wire;   // Whether instruction is MRET    
+
 
     wire exe_use_rs1_id;
     wire exe_use_rs2_id;
@@ -118,7 +146,10 @@ module control_unit(
         .load_hazard(load_hazard),
         .branch_hazard(branch_hazard),
         .stall_pipl(stall_pipl),
-        .*
+        .*,        
+        .trap_taken(trap_taken), 
+        .mret_exec(is_mret_instr)
+       
     );
 
 endmodule

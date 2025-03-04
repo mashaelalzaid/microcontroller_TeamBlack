@@ -58,16 +58,11 @@
 
     // gpio signals
 
-<<<<<<< HEAD
-    wire [31:0]   io_data;
-    assign io_data[31:16] = SW;
-    assign LED = io_data[15:0];
-    assign io_data= {SW ,LED}; // in soc instantiation
-=======
+
 //    wire [31:0]   io_data;
 //    assign io_data[31:16] = SW;
 //    assign LED = io_data[15:0];
->>>>>>> fac26f0 (K)
+
 
     logic reset_n;
     logic clk;
@@ -88,33 +83,24 @@
         .IMEM_DEPTH(IMEM_DEPTH)
     ) soc_inst (
         .*,
-<<<<<<< HEAD
-        .io_data(io_data),
-=======
+
         .io_data( {SW ,LED}),
 //.io_data(io_data),
->>>>>>> fac26f0 (K)
+
         .srx_pad_i(UART_TXD_IN),
         .stx_pad_o(UART_RXD_OUT),
         .rts_pad_o(UART_RTS),
         .cts_pad_i(UART_CTS)
     );
 
-<<<<<<< HEAD
-//ila_0 your_instance_name ( 
-//	.clk(clk), // input wire clk
 
-
-//	.probe0(current_pc_OUT), // input wire [0:0]  probe0  
-//	.probe1(inst_OUT) // input wire [0:0]  probe1
-=======
 //ila_0 your_instance_name (
 //	.clk(clk), // input wire clk
 
 
 //	.probe0(UART_RXD_OUT), // input wire [0:0]  probe0  
 //	.probe1(UART_TXD_IN) // input wire [0:0]  probe1
->>>>>>> fac26f0 (K)
+
 //);
 
 

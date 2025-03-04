@@ -1,0 +1,199 @@
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+Cycle: 1, PC: 0xfffff000, Inst: 0x00100093
+Pipeline Regs - ID/EXE:0, EXE/MEM:0, MEM/WB:0
+Debug - Reg Write signals: ID:0, EXE:0, MEM:0, WB:0
+Starting PC after reset: 0xfffff004
+Cycle: 2, PC: 0xfffff004, Inst: 0x00200113
+Pipeline Regs - ID/EXE:0, EXE/MEM:0, MEM/WB:0
+Debug - Reg Write signals: ID:0, EXE:0, MEM:0, WB:0
+Cycle: 3, PC: 0xfffff008, Inst: 0x00300193
+Pipeline Regs - ID/EXE:0, EXE/MEM:0, MEM/WB:0
+Debug - Reg Write signals: ID:1, EXE:0, MEM:0, WB:0
+Cycle: 4, PC: 0xfffff00c, Inst: 0x00118213
+Pipeline Regs - ID/EXE:1, EXE/MEM:0, MEM/WB:0
+Debug - Reg Write signals: ID:1, EXE:1, MEM:0, WB:0
+Cycle: 5, PC: 0xfffff010, Inst: 0x00320233
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:0
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:0
+Cycle: 6, PC: 0xfffff014, Inst: 0x0abcd0b7
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 7, PC: 0xfffff018, Inst: 0x00108093
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 8, PC: 0xfffff01c, Inst: 0x30109173
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 9, PC: 0xfffff020, Inst: 0x300021f3
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 10, PC: 0xfffff024, Inst: 0x30125273
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 11, PC: 0xfffff028, Inst: 0x300022f3
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 12, PC: 0xfffff02c, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 13, PC: 0xfffff030, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 14, PC: 0xfffff034, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 15, PC: 0xfffff038, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 16, PC: 0xfffff03c, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 17, PC: 0xfffff040, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 18, PC: 0xfffff044, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 19, PC: 0xfffff048, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 20, PC: 0xfffff04c, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 21, PC: 0xfffff050, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 22, PC: 0xfffff054, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 23, PC: 0xfffff058, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 24, PC: 0xfffff05c, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 25, PC: 0xfffff060, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 26, PC: 0xfffff064, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+
+=== Register Operations Results ===
+Register values:
+  x0 = 0x00000000
+  x1 = 0x00000000
+  x2 = 0x00000000
+  x3 = 0x00000000
+  x4 = 0x00000000
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Trap was not taken  305000, PC: 0fffff05 
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+
+=== Pipeline Control Signals ===
+Control signals:
+  PC select (pc_sel_mem): 0
+  RegWrite ID stage (reg_write_id): 1
+  RegWrite WB stage (reg_write_wb): 1
+  ALU source (alu_src_id): 1
+
+Pipeline enables:
+  if_id_reg_en: 1
+  id_exe_reg_en: 1
+  exe_mem_reg_en: 1
+  mem_wb_reg_en: 1
+  pc_reg_en: 1
+
+Decode stage:
+  opcode_id: 0x13
+  fun3_id: 0x0
+
+Writeback stage:
+  rd_wb:  0
+  reg_wdata_wb: 0x00000000
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Cycle: 27, PC: 0xfffff068, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 28, PC: 0xfffff06c, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 29, PC: 0xfffff070, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 30, PC: 0xfffff074, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 31, PC: 0xfffff078, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 32, PC: 0xfffff07c, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 33, PC: 0xfffff080, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 34, PC: 0xfffff084, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 35, PC: 0xfffff088, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 36, PC: 0xfffff08c, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 37, PC: 0xfffff090, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 38, PC: 0xfffff094, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 39, PC: 0xfffff098, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 40, PC: 0xfffff09c, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 41, PC: 0xfffff0a0, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 42, PC: 0xfffff0a4, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 43, PC: 0xfffff0a8, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 44, PC: 0xfffff0ac, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 45, PC: 0xfffff0b0, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 46, PC: 0xfffff0b4, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 47, PC: 0xfffff0b8, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 48, PC: 0xfffff0bc, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 49, PC: 0xfffff0c0, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 50, PC: 0xfffff0c4, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+Cycle: 51, PC: 0xfffff0c8, Inst: 0x00000013
+Pipeline Regs - ID/EXE:1, EXE/MEM:1, MEM/WB:1
+Debug - Reg Write signals: ID:1, EXE:1, MEM:1, WB:1
+
+=== CSR Operations Results ===
+Register values:
+  x0 = 0x00000000
+  x1 = 0x00000000
+  x2 = 0x00000000
+  x3 = 0x00000000
+  x4 = 0x00000000
+  x5 = 0x00000000
