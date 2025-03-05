@@ -75,10 +75,9 @@ module csr_file (
 
         if (trap_taken) begin
             if (mtvec[0] == 1'b0) begin
-                trap_pc = {mtvec[31:2], 2'b00}; 
-                                    end
+                trap_pc = {mtvec[31:2], 2'b00};
+            end
             else begin
-
                 trap_pc = {mtvec[31:2], 2'b00} + 32'd28;  // 7 * 4 = 28 and it should be generaliable 
           //      trap_pc = {mtvec[31:2], 2'b00} + (TIMER_INT_CAUSE << 2);
             end

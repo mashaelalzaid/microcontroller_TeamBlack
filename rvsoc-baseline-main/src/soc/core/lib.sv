@@ -239,7 +239,6 @@ package riscv_types;
         logic csr_data_sel;
         logic csr_to_reg;
         logic [11:0] csr_addr_id;
-        logic [31:0] csr_wdata_id;
         logic [2:0] csr_op_id;
         logic csr_write_id;
          logic is_csr_instr_id; 

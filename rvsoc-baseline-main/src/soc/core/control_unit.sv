@@ -2,6 +2,7 @@ module control_unit(
     input logic [6:0] opcode_id,
     input logic fun7_5_exe,
     input logic [2:0] fun3_id,fun3_exe, fun3_mem,
+    input logic [11:0] funct12,
     input logic zero_mem,
     input logic [1:0] alu_op_exe,
     input logic jump_mem, 
@@ -79,6 +80,7 @@ module control_unit(
     decode_control dec_ctrl_inst (
         .opcode(opcode_id),
         .func3(fun3_id),
+        .funct12(funct12),
         .reg_write(reg_write_id),
         .mem_write(mem_write_id),
         .mem_to_reg(mem_to_reg_id),

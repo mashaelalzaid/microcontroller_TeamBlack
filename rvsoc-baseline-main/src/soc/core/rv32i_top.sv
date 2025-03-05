@@ -55,7 +55,7 @@ logic [31:0] mret_pc;
         // External interrupts
         .timer_int(timer_int),
         // Current PC for exception handling (from memory stage)
-        .current_pc(data_path_inst.current_pc_mem),
+        .current_pc(data_path_inst.exe_mem_bus_o.current_pc_exe),
         // Trap handling signals
         .trap_taken(trap_taken),
         .trap_pc(trap_pc),
@@ -137,13 +137,15 @@ logic [31:0] mret_pc;
 
     assign current_pc = current_pc_if;
     assign inst_if = inst;
+    
+    logic [11:0] funct12;
 
     data_path #(
         .DMEM_DEPTH(DMEM_DEPTH),
         .IMEM_DEPTH(IMEM_DEPTH)
     ) data_path_inst (
         .*,
-        
+        .funct12(funct12),
         // CSR control signals
         .csr_write_id(csr_write_id),
         .csr_data_sel_id(csr_data_sel_id),
@@ -165,6 +167,7 @@ logic [31:0] mret_pc;
 
     control_unit controller_inst(
         .*,
+        .funct12(funct12),
         //.fun3_id(fun3_id),
         // CSR control signals
         .csr_write(csr_write_id),

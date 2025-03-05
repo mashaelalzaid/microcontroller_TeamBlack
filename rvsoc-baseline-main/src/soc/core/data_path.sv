@@ -89,6 +89,7 @@ module data_path #(
     input logic is_csr_instr_id,    // Whether instruction is CSR
     input logic is_mret_instr_id,   // Whether instruction is MRET
     
+    output logic [11:0] funct12,
         // CSR interface signals mashael
     output logic [11:0] csr_addr,       // CSR address
     output logic [31:0] csr_wdata,      // Data to write to CSR
@@ -121,7 +122,7 @@ module data_path #(
     logic is_mret_instr_exe, is_mret_instr_mem;
     logic csr_write_exe, csr_write_mem;
     logic [11:0] csr_addr_id, csr_addr_exe, csr_addr_mem;
-    logic [31:0] csr_wdata_id, csr_wdata_exe, csr_wdata_mem;
+    logic [31:0] csr_wdata_exe, csr_wdata_mem;
     logic [2:0] csr_op_id, csr_op_exe, csr_op_mem;
     logic [31:0] csr_rdata_wb;
     
@@ -290,7 +291,7 @@ module data_path #(
     logic [6:0] fun7_id;
     logic [2:0] fun3_id;
     logic fun7_5_id; 
-    
+    assign funct12 = inst_id[31:20];
     assign rs1_id    = inst_id[19:15];
     assign rs2_id    = inst_id[24:20];
     assign rd_id     = inst_id[11:7] ;
@@ -347,10 +348,10 @@ module data_path #(
     // ============================================
     //             ID-EXE Pipeline Register
     // ============================================
-    
-    id_exe_reg_t id_exe_bus_i, id_exe_bus_o;
     logic csr_data_sel_id;
     logic csr_to_reg_id;
+    id_exe_reg_t id_exe_bus_i, id_exe_bus_o;
+
     assign id_exe_bus_i = {
         // data signals 
         current_pc_id, // 32
@@ -380,7 +381,6 @@ module data_path #(
         csr_data_sel_id,
         csr_to_reg_id,
         csr_addr_id,   
-        csr_wdata_id,
         csr_op_id,
         csr_write_id,
         is_csr_instr_id,
@@ -422,7 +422,7 @@ module data_path #(
    
     //CSR
     assign csr_addr_exe    = id_exe_bus_o.csr_addr_id; 
-    assign csr_wdata_exe   = reg_rdata1_exe; 
+    assign csr_wdata_exe  = id_exe_bus_o.reg_rdata1; 
     assign csr_op_exe      = id_exe_bus_o.csr_op_id; 
     assign csr_write_exe    = id_exe_bus_o.csr_write_id;
     assign is_csr_instr_exe = id_exe_bus_o.is_csr_instr_id;
