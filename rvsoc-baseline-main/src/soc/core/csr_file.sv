@@ -19,7 +19,8 @@ module csr_file (
     output logic [31:0] mret_pc        // this should be mux-ed with pc in rv32i_top
 );
 
-
+    logic [31:0] pc_anti_flush;
+    
 // machine trap setup
 
     localparam CSR_MSTATUS     = 12'h300;
@@ -68,7 +69,7 @@ module csr_file (
    
 //   ======================================= START
    
-         assign  trap_taken = mstatus[3] && mip[7] && mie[7] && !mret_exec; // Q: should i explicitly exclude && !mret_exec;
+         assign  trap_taken = mstatus[3] && mip[7] && mie[7] && !mret_exec ;// Q: should i explicitly exclude && !mret_exec;
 
       // Trap detection logic 
     always_comb begin
@@ -105,10 +106,11 @@ module csr_file (
             mstatus     <= 32'h0;
             mie         <= 32'h0;
             mtvec       <= 32'h0;
-            mscratch    <= 32'h0;
-            mepc        <= 32'h0;
+            mscratch    <= 32'h0; 
+            mepc        <= 32'h0;  
             mcause      <= 32'h0;
             mip         <= 32'h0;
+            pc_anti_flush<=32'h0;
         end
         else begin
             // Update timer interrupt pending bit
@@ -130,10 +132,11 @@ module csr_file (
               //  trap_taken=1'b0; /// Q: should i explicitly disable trap taken here?
 
             end
-            
+        if(current_pc != 0) 
+            pc_anti_flush = current_pc;
             // Timer interrupt handling
             else if (trap_taken) begin
-                mepc <= current_pc & 32'hFFFF_FFFE;; //the two low bits (mepc[1:0]) are always zero. //q: should i account for that here ?
+                mepc <= pc_anti_flush & 32'hFFFF_FFFE;; //the two low bits (mepc[1:0]) are always zero. //q: should i account for that here ?
                 
                 mcause <= {1'b1, 27'b0, 4'd7}; //this should be modified when we start having more interrupt types
                 // Update status register for trap entry

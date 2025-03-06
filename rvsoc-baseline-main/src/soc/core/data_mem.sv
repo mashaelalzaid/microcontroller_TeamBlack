@@ -32,7 +32,7 @@ logic [6:0] word_addr;
 assign word_addr = adr_i[8:2];
 
 // inst memory here 
-logic [31:0] dmem [0:DEPTH - 1];
+logic [31:0] dmem [0:512 - 1];
 
 always_ff @(posedge clk_i) begin 
     if(mem_write) begin 
@@ -47,7 +47,7 @@ logic [31:0] data_o_reg, mem_rdata;
 
 assign mem_rdata = dmem[word_addr];
 n_bit_reg #(
-    .n(32)
+    .n(32) 
 ) data_o_reg_inst (
     .clk(clk_i),
     .reset_n (~rst_i     ),

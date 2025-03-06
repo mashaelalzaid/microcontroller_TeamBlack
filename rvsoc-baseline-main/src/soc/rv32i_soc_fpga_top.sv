@@ -18,8 +18,8 @@
 );  
 
     
-    parameter DMEM_DEPTH = 128;
-    parameter IMEM_DEPTH = 128;
+    parameter DMEM_DEPTH = 512;
+    parameter IMEM_DEPTH = 512;
     
     logic        o_flash_cs_n;
     logic        o_flash_mosi;
@@ -58,9 +58,9 @@
     // gpio signals
 
     wire [31:0]   io_data;
-    assign io_data[31:16] = SW;
+//    assign io_data[31:16] = SW;
     assign LED = io_data[15:0];
-    assign io_data= {SW ,LED}; // in soc instantiation
+//    assign io_data= {SW ,LED}; // in soc instantiation
 
     logic reset_n;
     logic clk;

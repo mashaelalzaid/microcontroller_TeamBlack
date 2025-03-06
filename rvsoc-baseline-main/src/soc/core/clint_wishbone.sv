@@ -43,20 +43,23 @@ module clint_wishbone (
     localparam logic [31:0] MTIME_ADDR    = 32'h20000C08;
 
     // 64-bit Machine Time Counter 
+
     always_ff @(posedge wb_clk_i or posedge wb_rst_i) begin
-        if (wb_rst_i) begin
+                if (wb_rst_i) begin
             mtime <= 64'b0;
-            mtimecmp <= 64'hFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
- //           mtimecmp <= 64'h64;//100
             end
-        else
+            else
             mtime <= mtime + 1; 
     end
-
-    always_ff @(posedge wb_clk_i) begin
-        if (wb_cyc_i && wb_stb_i) begin
+    
+    always_ff @(posedge wb_clk_i or posedge wb_rst_i) begin
+            if (wb_rst_i) begin
+            mtimecmp <= -1;
+ //           mtimecmp <= 64'h64;//100
+            end
+        else if (wb_cyc_i && wb_stb_i) begin 
             if (wb_we_i) begin
-                case (wb_adr_i)
+                case (wb_adr_i) 
                     MTIMECMP_ADDR + 0: mtimecmp[31:0]  <= wb_dat_i; // Write lower 32 bits
                     MTIMECMP_ADDR + 4: mtimecmp[63:32] <= wb_dat_i; // Write upper 32 bits
                 endcase

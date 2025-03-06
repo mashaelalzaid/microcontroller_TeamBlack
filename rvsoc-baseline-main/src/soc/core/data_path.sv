@@ -349,7 +349,7 @@ module data_path #(
     //             ID-EXE Pipeline Register
     // ============================================
     logic csr_data_sel_id;
-    logic csr_to_reg_id;
+    logic csr_to_reg_id; 
     id_exe_reg_t id_exe_bus_i, id_exe_bus_o;
 
     assign id_exe_bus_i = {
@@ -580,7 +580,7 @@ module data_path #(
     assign rdata2_frw_mem  = exe_mem_bus_o.rdata2_frw;
     assign imm_mem         = exe_mem_bus_o.imm;
     assign alu_result_mem  = exe_mem_bus_o.alu_result;
-   
+   assign current_pc_mem = exe_mem_bus_o.current_pc_exe;
     // CSR
     assign csr_to_reg_mem = exe_mem_bus_o.csr_to_reg;
     assign csr_addr_mem    = exe_mem_bus_o.csr_addr_exe;

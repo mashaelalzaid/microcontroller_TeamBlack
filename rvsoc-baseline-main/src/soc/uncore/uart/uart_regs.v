@@ -419,8 +419,8 @@ begin
 end
 
 wire 	lsr_mask_condition;
-wire 	iir_read;
-wire  msr_read;
+wire 	iir_read; 
+wire  msr_read; 
 wire	fifo_read;
 wire	fifo_write;
 

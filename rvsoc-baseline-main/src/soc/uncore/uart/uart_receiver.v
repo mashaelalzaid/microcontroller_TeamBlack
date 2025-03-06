@@ -459,7 +459,7 @@ begin
 end // always of break condition detection
 
 ///
-/// Timeout condition detection
+/// Timeout condition detection 
 reg	[9:0]	counter_t;	// counts the timeout condition clocks
 
 always @(posedge clk or posedge wb_rst_i)

@@ -3,7 +3,7 @@ module rom (
     output logic [31:0] inst
 );
 
-   logic [31:0] rom [0:127];
+   logic [31:0] rom [0:511];
 
 //    initial  $readmemh("/home/it/Documents/rvsoc_v3/src/tb/uart_receiver/rom.hex",rom);
   

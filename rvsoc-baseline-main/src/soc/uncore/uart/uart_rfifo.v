@@ -205,7 +205,7 @@ begin
 	begin
 		top		<= 0;
 		bottom		<= 0;
-		count		<= 0;
+		count		<= 0; 
 		fifo[0] <= 0;
 		fifo[1] <= 0;
 		fifo[2] <= 0;
