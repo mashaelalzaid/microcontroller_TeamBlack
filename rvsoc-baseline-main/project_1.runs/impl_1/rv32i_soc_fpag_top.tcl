@@ -60,24 +60,21 @@ proc step_failed { step } {
   close $ch
 }
 
-set_msg_config -id {Synth 8-256} -limit 10000
-set_msg_config -id {Synth 8-638} -limit 10000
 
 start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
-  set_param xicom.use_bs_reader 1
-  set_param chipscope.maxJobs 5
+  set_param chipscope.maxJobs 4
   create_project -in_memory -part xc7a100tcsg324-1
   set_property design_mode GateLvl [current_fileset]
   set_param project.singleFileAddWarning.threshold 0
-  set_property webtalk.parent_dir /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.cache/wt [current_project]
-  set_property parent.project_path /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.xpr [current_project]
-  set_property ip_output_repo /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.cache/ip [current_project]
+  set_property webtalk.parent_dir /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.cache/wt [current_project]
+  set_property parent.project_path /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.xpr [current_project]
+  set_property ip_output_repo /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
-  add_files -quiet /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.runs/synth_1/rv32i_soc_fpag_top.dcp
-  read_xdc /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/pin-assignment.xdc
+  add_files -quiet /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.runs/synth_1/rv32i_soc_fpag_top.dcp
+  read_xdc /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/pin-assignment.xdc
   link_design -top rv32i_soc_fpag_top -part xc7a100tcsg324-1
   close_msg_db -file init_design.pb
 } RESULT]

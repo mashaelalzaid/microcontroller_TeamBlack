@@ -7,9 +7,9 @@
 # 
 
 if [ -z "$PATH" ]; then
-  PATH=/home/binahmed/Xilinx/Vivado/SDK/2019.1/bin:/home/binahmed/Xilinx/Vivado/Vivado/2019.1/ids_lite/ISE/bin/lin64:/home/binahmed/Xilinx/Vivado/Vivado/2019.1/bin
+  PATH=/home/it/Xilinx/Vivado/SDK/2019.1/bin:/home/it/Xilinx/Vivado/Vivado/2019.1/ids_lite/ISE/bin/lin64:/home/it/Xilinx/Vivado/Vivado/2019.1/bin
 else
-  PATH=/home/binahmed/Xilinx/Vivado/SDK/2019.1/bin:/home/binahmed/Xilinx/Vivado/Vivado/2019.1/ids_lite/ISE/bin/lin64:/home/binahmed/Xilinx/Vivado/Vivado/2019.1/bin:$PATH
+  PATH=/home/it/Xilinx/Vivado/SDK/2019.1/bin:/home/it/Xilinx/Vivado/Vivado/2019.1/ids_lite/ISE/bin/lin64:/home/it/Xilinx/Vivado/Vivado/2019.1/bin:$PATH
 fi
 export PATH
 
@@ -20,7 +20,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.runs/impl_1'
+HD_PWD='/home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.runs/impl_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log

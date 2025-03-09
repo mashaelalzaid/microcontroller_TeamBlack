@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
-| Date         : Thu Mar  6 05:34:24 2025
+| Date         : Mon Mar 10 02:20:08 2025
 | Host         : IT-RDIA-NSH running 64-bit Ubuntu 24.04.1 LTS
 | Command      : report_timing_summary -max_paths 10 -file rv32i_soc_fpag_top_timing_summary_routed.rpt -pb rv32i_soc_fpag_top_timing_summary_routed.pb -rpx rv32i_soc_fpag_top_timing_summary_routed.rpx -warn_on_violation
 | Design       : rv32i_soc_fpag_top
@@ -53,7 +53,7 @@ Table of Contents
 
 1. checking no_clock
 --------------------
- There are 2588 register/latch pins with no clock driven by root clock pin: gen_core_clk/clk_o_reg/Q (HIGH)
+ There are 2557 register/latch pins with no clock driven by root clock pin: gen_core_clk/clk_o_reg/Q (HIGH)
 
  There are 15 register/latch pins with no clock driven by root clock pin: soc_inst/rv32i_top/data_path_inst/if_id_reg/n_bit_reg_reg[0]/Q (HIGH)
 
@@ -112,7 +112,7 @@ Table of Contents
 
 4. checking unconstrained_internal_endpoints
 --------------------------------------------
- There are 7706 pins that are not constrained for maximum delay. (HIGH)
+ There are 7614 pins that are not constrained for maximum delay. (HIGH)
 
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 

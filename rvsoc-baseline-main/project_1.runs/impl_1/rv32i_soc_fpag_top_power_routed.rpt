@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
-| Date             : Thu Mar  6 05:34:24 2025
+| Date             : Mon Mar 10 02:20:08 2025
 | Host             : IT-RDIA-NSH running 64-bit Ubuntu 24.04.1 LTS
 | Command          : report_power -file rv32i_soc_fpag_top_power_routed.rpt -pb rv32i_soc_fpag_top_power_summary_routed.pb -rpx rv32i_soc_fpag_top_power_routed.rpx
 | Design           : rv32i_soc_fpag_top
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.092        |
+| Total On-Chip Power (W)  | 0.091        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.008        |
+| Dynamic (W)              | 0.007        |
 | Device Static (W)        | 0.084        |
 | Effective TJA (C/W)      | 4.6          |
 | Max Ambient (C)          | 84.6         |
@@ -53,19 +53,19 @@ Table of Contents
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
 | Clocks                   |    <0.001 |        3 |       --- |             --- |
-| Slice Logic              |     0.003 |     6688 |       --- |             --- |
-|   LUT as Logic           |     0.002 |     2909 |     63400 |            4.59 |
-|   Register               |    <0.001 |     2568 |    126800 |            2.03 |
+| Slice Logic              |     0.002 |     6447 |       --- |             --- |
+|   LUT as Logic           |     0.002 |     2741 |     63400 |            4.32 |
+|   Register               |    <0.001 |     2537 |    126800 |            2.00 |
 |   CARRY4                 |    <0.001 |       64 |     15850 |            0.40 |
-|   F7/F8 Muxes            |    <0.001 |      516 |     63400 |            0.81 |
 |   BUFG                   |    <0.001 |        1 |        32 |            3.13 |
-|   Others                 |     0.000 |       36 |       --- |             --- |
+|   F7/F8 Muxes            |    <0.001 |      465 |     63400 |            0.73 |
+|   Others                 |     0.000 |       35 |       --- |             --- |
 |   LUT as Distributed RAM |     0.000 |       16 |     19000 |            0.08 |
-| Signals                  |     0.004 |     4425 |       --- |             --- |
+| Signals                  |     0.003 |     4309 |       --- |             --- |
 | Block RAM                |     0.001 |        1 |       135 |            0.74 |
 | I/O                      |    <0.001 |       22 |       210 |           10.48 |
 | Static Power             |     0.084 |          |           |                 |
-| Total                    |     0.092 |          |           |                 |
+| Total                    |     0.091 |          |           |                 |
 +--------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -75,7 +75,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.023 |       0.008 |      0.015 |
+| Vccint    |       1.000 |     0.022 |       0.007 |      0.015 |
 | Vccaux    |       1.800 |     0.018 |       0.000 |      0.018 |
 | Vcco33    |       3.300 |     0.000 |       0.000 |      0.000 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
@@ -144,10 +144,10 @@ Table of Contents
 +----------------------+-----------+
 | Name                 | Power (W) |
 +----------------------+-----------+
-| rv32i_soc_fpag_top   |     0.008 |
-|   soc_inst           |     0.006 |
-|     rv32i_top        |     0.004 |
-|       data_path_inst |     0.004 |
+| rv32i_soc_fpag_top   |     0.007 |
+|   soc_inst           |     0.005 |
+|     rv32i_top        |     0.003 |
+|       data_path_inst |     0.003 |
 +----------------------+-----------+
 
 

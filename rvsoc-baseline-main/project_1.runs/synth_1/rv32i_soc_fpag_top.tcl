@@ -17,69 +17,66 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
-set_param xicom.use_bs_reader 1
-set_param chipscope.maxJobs 5
-set_msg_config -id {Synth 8-256} -limit 10000
-set_msg_config -id {Synth 8-638} -limit 10000
+set_param chipscope.maxJobs 4
 create_project -in_memory -part xc7a100tcsg324-1
 
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.cache/wt [current_project]
-set_property parent.project_path /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.xpr [current_project]
+set_property webtalk.parent_dir /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.cache/wt [current_project]
+set_property parent.project_path /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
-set_property ip_output_repo /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.cache/ip [current_project]
+set_property ip_output_repo /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 read_verilog {
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_defines.v
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/gpio/gpio_defines.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_defines.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/gpio/gpio_defines.v
 }
-set_property file_type "Verilog Header" [get_files /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_defines.v]
-set_property file_type "Verilog Header" [get_files /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/gpio/gpio_defines.v]
+set_property file_type "Verilog Header" [get_files /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_defines.v]
+set_property file_type "Verilog Header" [get_files /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/gpio/gpio_defines.v]
 read_mem {
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/Bootmachine.mem
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/machine.mem
+  /home/it/SOC_Project/microcontroller_TeamBlack/Bootmachine.mem
+  /home/it/SOC_Project/microcontroller_TeamBlack/machine.mem
 }
 read_verilog -library xil_defaultlib -sv {
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/lib.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/alignment_units.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/alu.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/alu_control.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/gpio/bidirec.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/branch_controller.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/clint_wishbone.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/control_unit.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/csr_file.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_mem.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/forwarding_unit.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/gpio/gpio_top.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/hazard_controller.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/imm_gen.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/main_control.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/pipeline_controller.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/program_counter.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/reg_file.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/rom.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/rv32i_soc.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/rv32i_top.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/WishboneInterconnect/wb_intercon.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/WishboneInterconnect/wishbone_controller.sv
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/rv32i_soc_fpga_top.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/lib.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/alignment_units.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/alu.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/alu_control.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/gpio/bidirec.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/branch_controller.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/clint_wishbone.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/control_unit.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/csr_file.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_mem.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/data_path.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/forwarding_unit.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/gpio/gpio_top.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/hazard_controller.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/imm_gen.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/main_control.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/pipeline_controller.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/program_counter.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/reg_file.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/rom.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/rv32i_soc.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/core/rv32i_top.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/WishboneInterconnect/wb_intercon.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/WishboneInterconnect/wishbone_controller.sv
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/rv32i_soc_fpga_top.sv
 }
 read_verilog -library xil_defaultlib {
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/raminfr.v
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_receiver.v
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_regs.v
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_rfifo.v
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_sync_flops.v
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_tfifo.v
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_top.v
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_transmitter.v
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_wb.v
-  /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/WishboneInterconnect/wb_intercon_1.2.2-r1/wb_mux.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/raminfr.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_receiver.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_regs.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_rfifo.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_sync_flops.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_tfifo.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_top.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_transmitter.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/uncore/uart/uart_wb.v
+  /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/soc/WishboneInterconnect/wb_intercon_1.2.2-r1/wb_mux.v
 }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -89,8 +86,8 @@ read_verilog -library xil_defaultlib {
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/pin-assignment.xdc
-set_property used_in_implementation false [get_files /home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/src/pin-assignment.xdc]
+read_xdc /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/pin-assignment.xdc
+set_property used_in_implementation false [get_files /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/src/pin-assignment.xdc]
 
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]

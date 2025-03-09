@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
-| Date         : Thu Mar  6 05:34:09 2025
+| Date         : Mon Mar 10 02:19:53 2025
 | Host         : IT-RDIA-NSH running 64-bit Ubuntu 24.04.1 LTS
 | Command      : report_control_sets -verbose -file rv32i_soc_fpag_top_control_sets_placed.rpt
 | Design       : rv32i_soc_fpag_top
@@ -23,11 +23,11 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Total control sets                                       |    86 |
-|    Minimum number of control sets                        |    86 |
+| Total control sets                                       |    85 |
+|    Minimum number of control sets                        |    85 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |   104 |
+| Unused register locations in slices containing registers |   103 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -39,7 +39,7 @@ Table of Contents
 +--------------------+-------+
 |       Fanout       | Count |
 +--------------------+-------+
-| Total control sets |    86 |
+| Total control sets |    85 |
 | >= 0 to < 4        |     2 |
 | >= 4 to < 6        |    13 |
 | >= 6 to < 8        |     1 |
@@ -47,7 +47,7 @@ Table of Contents
 | >= 10 to < 12      |     2 |
 | >= 12 to < 14      |     0 |
 | >= 14 to < 16      |     1 |
-| >= 16              |    54 |
+| >= 16              |    53 |
 +--------------------+-------+
 * Control sets can be remapped at either synth_design or opt_design
 
@@ -58,12 +58,12 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |              19 |            8 |
-| No           | No                    | Yes                    |             234 |           76 |
+| No           | No                    | No                     |              19 |            9 |
+| No           | No                    | Yes                    |             234 |           83 |
 | No           | Yes                   | No                     |               0 |            0 |
 | Yes          | No                    | No                     |               0 |            0 |
-| Yes          | No                    | Yes                    |            2283 |          948 |
-| Yes          | Yes                   | No                     |              32 |           12 |
+| Yes          | No                    | Yes                    |            2252 |          916 |
+| Yes          | Yes                   | No                     |              32 |           13 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
@@ -73,92 +73,91 @@ Table of Contents
 +------------------------------------------------------------------+----------------------------------------------------------------------------+-------------------------------------------------------------------+------------------+----------------+
 |                           Clock Signal                           |                                Enable Signal                               |                          Set/Reset Signal                         | Slice Load Count | Bel Load Count |
 +------------------------------------------------------------------+----------------------------------------------------------------------------+-------------------------------------------------------------------+------------------+----------------+
-|  CLK100MHZ_IBUF_BUFG                                             |                                                                            | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              1 |
 |  soc_inst/rv32i_top/data_path_inst/if_id_reg/n_bit_reg_reg[2]_1  |                                                                            |                                                                   |                1 |              1 |
-|  clk_BUFG                                                        |                                                                            |                                                                   |                2 |              4 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/fifo_rx/top[3]_i_1_n_0                         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              4 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/fifo_rx/bottom[3]_i_1_n_0                      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              4 |
+|  CLK100MHZ_IBUF_BUFG                                             |                                                                            | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              1 |
+|  clk_BUFG                                                        |                                                                            |                                                                   |                4 |              4 |
 |  clk_BUFG                                                        | soc_inst/uart/wb_interface/lcr_reg[7]_0[0]                                 | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              4 |
 |  clk_BUFG                                                        | soc_inst/uart/wb_interface/FSM_onehot_wbstate[3]_i_1_n_0                   | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              4 |
 |  clk_BUFG                                                        | soc_inst/uart/regs/transmitter/fifo_tx/top[3]_i_1__0_n_0                   | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              4 |
 |  clk_BUFG                                                        | soc_inst/uart/regs/transmitter/fifo_tx/bottom[3]_i_1__0_n_0                | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              4 |
 |  clk_BUFG                                                        | soc_inst/uart/regs/receiver/rcounter16[3]_i_1_n_0                          | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              4 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/FSM_sequential_rstate[3]_i_1_n_0               | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              4 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/transmitter/fifo_tx/count[4]_i_1__0_n_0                 | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              5 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/fifo_rx/count[4]_i_1_n_0                       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              5 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/FSM_sequential_rstate[3]_i_1_n_0               | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              4 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/fifo_rx/top[3]_i_1_n_0                         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              4 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/fifo_rx/bottom[3]_i_1_n_0                      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              4 |
 |  clk_BUFG                                                        | soc_inst/uart/regs/transmitter/counter[4]_i_1_n_0                          | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              5 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/rshift[4]_i_1_n_0                              | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              5 |
-|  clk_BUFG                                                        | soc_inst/uart/wb_interface/wb_adr_is_reg[2]_0[0]                           | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              6 |
-|  clk_BUFG                                                        | soc_inst/uart/wb_interface/wb_adr_is_reg[0]_2[0]                           | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                3 |              8 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_0[2]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                6 |              8 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_0[3]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                5 |              8 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/transmitter/fifo_tx/count[4]_i_1__0_n_0                 | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              5 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/rshift[4]_i_1_n_0                              | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              5 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/fifo_rx/count[4]_i_1_n_0                       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              5 |
+|  clk_BUFG                                                        | soc_inst/uart/wb_interface/wb_adr_is_reg[2]_0[0]                           | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              6 |
+|  clk_BUFG                                                        | soc_inst/uart/wb_interface/wb_adr_is_reg[0]_3[0]                           | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              8 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/counter_b[7]_i_1_n_0                           | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                3 |              8 |
+|  clk_BUFG                                                        | soc_inst/uart/wb_interface/wb_adr_is_reg[0]_2[0]                           | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              8 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_0[2]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                3 |              8 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_0[3]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                4 |              8 |
 |  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_1[0]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              8 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_1[1]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                5 |              8 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_1[1]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                4 |              8 |
 |  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_1[2]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                3 |              8 |
 |  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_1[3]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                3 |              8 |
-|  clk_BUFG                                                        | soc_inst/uart/wb_interface/wb_adr_is_reg[0]_3[0]                           | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              8 |
 |  clk_BUFG                                                        | soc_inst/uart/wb_interface/lcr_reg[7]_1[0]                                 | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              8 |
-|  clk_BUFG                                                        | soc_inst/uart/wb_interface/E[0]                                            | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              8 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/counter_b[7]_i_1_n_0                           | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                3 |              8 |
+|  clk_BUFG                                                        | soc_inst/uart/wb_interface/E[0]                                            | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                1 |              8 |
 |  clk_BUFG                                                        | soc_inst/uart/regs/block_cnt[7]_i_1_n_0                                    | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                4 |              8 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/transmitter/bit_counter[2]_i_1_n_0                      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                3 |              9 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/fifo_rx/E[0]                                   | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                4 |             10 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/rf_data_in[10]_i_1_n_0                         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                4 |             11 |
-|  soc_inst/rv32i_top/data_path_inst/if_id_reg/n_bit_reg_reg[12]_0 |                                                                            |                                                                   |                5 |             14 |
-|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/fifo_rx/rfifo/rf_push_pulse                    |                                                                   |                2 |             16 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_0[0]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                6 |             16 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_0[1]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                6 |             16 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/transmitter/bit_counter[2]_i_1_n_0                      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                2 |              9 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/fifo_rx/E[0]                                   | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                3 |             10 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/rf_data_in[10]_i_1_n_0                         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                3 |             11 |
+|  soc_inst/rv32i_top/data_path_inst/if_id_reg/n_bit_reg_reg[12]_0 |                                                                            |                                                                   |                4 |             14 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_0[1]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                8 |             16 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[92]_0[0]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                7 |             16 |
 |  clk_BUFG                                                        | soc_inst/uart/regs/tf_push_reg_n_0                                         |                                                                   |                2 |             16 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[198]_0         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             30 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[2]_0[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               12 |             31 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/id_exe_reg/n_bit_reg_reg[19]_1           | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               28 |             31 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/csr_file_inst/pc_anti_flush                             | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               12 |             31 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_5[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               11 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_23[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                8 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_24[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               18 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_25[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               18 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_26[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               13 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_27[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               27 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_28[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               15 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_29[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               15 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_3[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               17 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_30[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               17 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_4[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               20 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_6[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               17 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_7[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               19 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_8[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               13 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_9[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/csr_file_inst/E[0]                                      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               20 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/csr_file_inst/mstatus_reg[3]_3[0]                       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               15 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_13[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_21[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                9 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[88]_1          | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[88]_0 |               12 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/E[0]                         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                8 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/E[1]                         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                7 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[188]_0[0]      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[194]_0[0]      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               14 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[196]_0[0]      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               21 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[44]_3[0]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               20 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_0[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_11[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                7 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_1[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               21 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_12[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               13 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_22[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               14 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_20[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               10 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_2[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_19[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                9 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_18[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               13 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_17[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               19 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_16[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               21 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_15[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               30 |             32 |
+|  clk_BUFG                                                        | soc_inst/uart/regs/receiver/fifo_rx/rfifo/rf_push_pulse                    |                                                                   |                2 |             16 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[198]_0         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               15 |             30 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/csr_file_inst/pc_anti_flush                             | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               13 |             31 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[2]_0[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               13 |             31 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/E[0]                         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                6 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_3[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               19 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_30[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                8 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_4[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               23 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_5[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               10 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_6[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               10 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_7[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_8[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               17 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_9[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               21 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/E[1]                         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                8 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[88]_1          | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[88]_0 |               13 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_27[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               25 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/csr_file_inst/n_bit_reg_reg[0]_0[0]                     | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                7 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/csr_file_inst/E[0]                                      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               17 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_15[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               27 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[194]_0[0]      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               15 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[196]_0[0]      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               20 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[44]_3[0]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               14 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_0[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               13 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_11[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               17 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_1[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               12 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_10[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               11 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_12[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_13[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               21 |             32 |
 |  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_14[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               22 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_10[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               12 |             32 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/csr_file_inst/mstatus_reg[3]_8[0]                       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               13 |             63 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/slave_sel_ff_reg[2][0]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               30 |             72 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/if_id_reg_clr_ff_inst/n_bit_reg_reg[0]_0 | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               28 |            107 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_29[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               18 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_16[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               26 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_22[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_28[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               17 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/n_bit_reg_reg[188]_0[0]      | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               17 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_26[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                7 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_25[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                9 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_24[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               11 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_23[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               19 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_17[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               24 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_21[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               14 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_20[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |                7 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_2[0]         | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               11 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_19[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/mem_wb_reg/n_bit_reg_reg[3]_18[0]        | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               16 |             32 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/csr_file_inst/mstatus_reg[3]_6[0]                       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               12 |             63 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/exe_mem_reg/slave_sel_ff_reg[2][0]       | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               34 |             72 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/if_id_reg_clr_ff_inst/n_bit_reg_reg[0]_0 | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               26 |            107 |
 |  clk_BUFG                                                        | soc_inst/rv32i_top/data_path_inst/id_exe_reg/n_bit_reg[214]_i_1__0_n_0     | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               55 |            198 |
-|  clk_BUFG                                                        |                                                                            | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               75 |            233 |
-|  clk_BUFG                                                        | soc_inst/rv32i_top/csr_file_inst/mstatus_reg[3]_0                          | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               62 |            256 |
+|  clk_BUFG                                                        |                                                                            | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               82 |            233 |
+|  clk_BUFG                                                        | soc_inst/rv32i_top/csr_file_inst/mstatus_reg[3]_1                          | soc_inst/rv32i_top/data_path_inst/reg_file_inst/CPU_RESETN        |               71 |            256 |
 +------------------------------------------------------------------+----------------------------------------------------------------------------+-------------------------------------------------------------------+------------------+----------------+
 
 

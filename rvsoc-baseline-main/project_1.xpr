@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="40" Path="/home/binahmed/RV32I_MicroController/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.xpr">
+<Project Version="7" Minor="40" Path="/home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="777204d93deb41f7bd8417837dccd96f"/>

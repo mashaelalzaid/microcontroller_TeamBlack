@@ -1,21 +1,5 @@
 #include <stdint.h>
 
-/************************************************************
- * Minimal Bare-Metal RISC-V Program (Mostly in C)
- * 
- * - Sets up stack pointer (SP)
- * - Installs a machine-mode trap handler (timer interrupt)
- * - Increments a counter, displays on LEDs
- * - On each timer interrupt, toggles LEDs briefly
- *
- * Compile with something like:
- *   riscv64-unknown-elf-gcc -march=rv32imac -mabi=ilp32 \
- *       -nostartfiles -nostdlib -o main.elf main.c
- * (Adjust options and toolchain to match your setup.)
- ************************************************************/
-
-#include <stdint.h>
-
 /* ----------------------------------------------------------------
    1) Memory-mapped registers
    Adjust these addresses to match your hardware
@@ -25,7 +9,7 @@
 #define MTIME         ((volatile uint32_t *)0x20000c08)
 
 /* Timer interrupt interval */
-#define TIMER_INTERVAL   (250000000u)  /* e.g. "interrupt after ~some cycles" */
+#define TIMER_INTERVAL   (100u)  /* e.g. "interrupt after ~some cycles" */
 
 /* A maximum for our main counter (like 0xFFFF in your code) */
 #define MAX_COUNT        0xFFFF
@@ -111,9 +95,9 @@ void trap_handler_c(void)
 
     /* 5) Toggle LED pattern: turn all ON, delay, then turn all OFF, delay */
     LED_REG = 0xFFFF;    /* all bits on */
-    simple_delay(0x100000);
+    simple_delay(0x10);
     LED_REG = 0x0000;    /* all bits off */
-    simple_delay(0x100000);
+    simple_delay(0x10);
 }
 
 /*
@@ -201,7 +185,7 @@ int main(void)
         LED_REG = g_counter;  /* display current counter on LEDs */
 
         /* Simple busy-loop delay so the increment is visible */
-        simple_delay(2500000);
+        simple_delay(10);
     }
 
     /* We never reach here in a true bare-metal infinite loop */
