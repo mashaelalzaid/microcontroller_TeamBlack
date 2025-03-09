@@ -1,7 +1,5 @@
 *
 !.gitignore
 !src
-!src/** 
-!**.runs
-!**.runs/** 
+!src/**  
 !**.xpr
