@@ -1,32 +1,37 @@
 ENTRY(_start)
 
+MEMORY
+{
+    /* Instruction mem 0x10000000 */
+    IMEM (rx) : ORIGIN = 0x10000000, LENGTH = 512K
+
+    /*(RAM) 0x00000000 */
+    DMEM (rwx) : ORIGIN = 0x00000000, LENGTH = 128K
+}
+
 SECTIONS
 {
-    /* Define memory regions */
-    . = 0x80000000;  /* Start address of RAM */
+    .text :
+    {
+        *(.text)                       
+        *(.rodata)                     
+        _etext = .;                    
+    } > IMEM
 
-    .text : {
-        *(.text .text.*)  /* Code section */
-    }
+   
+    .data :
+    {
+        _sdata = .;                    /*start .data in RAM */
+        *(.data)                      
+        _edata = .;                    /* end of .data in RAM */
+    } > DMEM AT> IMEM
 
-    .rodata : {
-        *(.rodata .rodata.*)  /* Read-only data */
-    }
-
-    .data : {
-        *(.data .data.*)  /* Initialized data */
-    }
-
-    .bss : {
-        *(COMMON)  /* Common symbols */
-        *(.bss .bss.*)  /* Uninitialized data */
-    }
-
-    /* Stack setup */
-    . = ALIGN(4);
-    .stack : {
-        _stack_start = .;
-        . += 0x1000;  /* 4 KB stack */
-        _stack_end = .;
-    }
+    
+    .bss :
+    {
+        _sbss = .;                     /* start .bss in ram */
+        *(.bss)
+        *(COMMON)                      
+        _ebss = .;                     /* end of .bss in RAM */
+    } > DMEM
 }
