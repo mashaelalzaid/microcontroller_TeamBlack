@@ -1,60 +1,66 @@
+/**************************************************************
+ * Example of bare-metal startup in one file:
+ *  - _start: the linker/entry point (sets SP, calls main)
+ *  - main(): the usual main function
+ *  - trap_handler, etc., for interrupts
+ *
+ * You have a linker script that says:
+ *    ENTRY(_start)
+ * 
+ * And your code includes _start below.
+ **************************************************************/
+
 #include <stdint.h>
 
-/* ----------------------------------------------------------------
-   1) Memory-mapped registers
-   Adjust these addresses to match your hardware
-   ----------------------------------------------------------------*/
+/* Memory-mapped registers for your hardware */
 #define LED_REG       (*(volatile uint32_t *)0x20000104)
 #define MTIMECMP      ((volatile uint32_t *)0x20000c00)
 #define MTIME         ((volatile uint32_t *)0x20000c08)
 
 /* Timer interrupt interval */
-#define TIMER_INTERVAL   (100u)  /* e.g. "interrupt after ~some cycles" */
+#define TIMER_INTERVAL   (100u)
 
-/* A maximum for our main counter (like 0xFFFF in your code) */
+/* A maximum for our main counter (like 0xFFFF) */
 #define MAX_COUNT        0xFFFF
 
-/* ----------------------------------------------------------------
-   2) CSR manipulation macros in (mostly) C + small inline assembly
-   ----------------------------------------------------------------*/
-static inline void write_csr_mtvec(void (*handler)(void)) {
+/* Bits we need for machine interrupts */
+#define MSTATUS_MIE  (1 << 3)   /* Machine Interrupt Enable bit */
+#define MIE_MTIE     (1 << 7)   /* Machine Timer Interrupt Enable bit */
+#define MIP_MTIP     (1 << 7)   /* Machine Timer Interrupt Pending bit */
+
+/* Minimal inline assembly for CSR operations */
+static inline void write_csr_mtvec(void (*handler)(void))
+{
     /* mtvec <- address of trap handler */
     asm volatile ("csrw mtvec, %0" : : "r"(handler));
 }
 
-static inline void set_csr_mie(uint32_t mask) {
-    /* mie |= mask */
+static inline void set_csr_mie(uint32_t mask)
+{
+    /* mie |= mask (set bits) */
     asm volatile ("csrs mie, %0" : : "r"(mask));
 }
 
-static inline void set_csr_mstatus(uint32_t mask) {
-    /* mstatus |= mask */
+static inline void set_csr_mstatus(uint32_t mask)
+{
+    /* mstatus |= mask (set bits) */
     asm volatile ("csrs mstatus, %0" : : "r"(mask));
 }
 
-static inline void clear_csr_mip(uint32_t mask) {
+static inline void clear_csr_mip(uint32_t mask)
+{
     /* mip &= ~mask */
     asm volatile ("csrc mip, %0" : : "r"(mask));
 }
 
-/*
- * Bits we need:
- *  - mstatus.MIE = (1<<3)
- *  - mie.MTIE    = (1<<7)
- *  - mip.MTIP    = (1<<7)
- */
-#define MSTATUS_MIE  (1 << 3)  /* Machine Interrupt Enable bit */
-#define MIE_MTIE     (1 << 7)  /* Machine Timer Interrupt Enable bit */
-#define MIP_MTIP     (1 << 7)  /* Machine Timer Interrupt Pending bit */
-
-/* ----------------------------------------------------------------
-   3) Global counter for main loop
-   ----------------------------------------------------------------*/
+/**************************************************************
+ * Global counter for main loop
+ **************************************************************/
 volatile uint32_t g_counter = 0;
 
-/* ----------------------------------------------------------------
-   4) Simple software delay in C
-   ----------------------------------------------------------------*/
+/**************************************************************
+ * Simple delay routine
+ **************************************************************/
 static void simple_delay(volatile uint32_t count)
 {
     while (count--) {
@@ -62,16 +68,33 @@ static void simple_delay(volatile uint32_t count)
     }
 }
 
-/* ----------------------------------------------------------------
-   5) Trap handler:
-      We split it into two functions:
-      - trap_handler (naked): does the manual push/pop + mret
-      - trap_handler_c (normal C): does the actual logic
-   ----------------------------------------------------------------*/
+/**************************************************************
+ *  _start: The true entry point (matches ENTRY(_start) in the
+ *  linker script). We do bare-metal initialization here, then
+ *  call main(). If main ever returns, we can loop forever.
+ **************************************************************/
+__attribute__((naked)) void _start(void)
+{
+    asm volatile(
+        /* 1) Set stack pointer. Adjust if your memory map differs. */
+        "li sp, 0x0FFFFFFF        \n\t"
 
-/* The C part: read mtime, add INTERVAL, write mtimecmp, clear pending bit, 
- * and toggle the LEDs (on then off) with a delay.
- */
+        /* 2) Call main(). The return address after main() 
+              is the next instruction, which we can just loop. */
+        "call main                \n\t"
+        
+        /* 3) If main() returns, loop forever. */
+        "1:  j 1b                 \n\t"
+    );
+}
+
+/**************************************************************
+ * trap_handler_c: The "C" portion of the interrupt handler.
+ *   - Reads mtime, adds TIMER_INTERVAL
+ *   - Writes mtimecmp
+ *   - Clears interrupt pending bit
+ *   - Toggles LEDs with small delays
+ **************************************************************/
 void trap_handler_c(void)
 {
     /* 1) Read current mtime */
@@ -94,17 +117,19 @@ void trap_handler_c(void)
     clear_csr_mip(MIP_MTIP);
 
     /* 5) Toggle LED pattern: turn all ON, delay, then turn all OFF, delay */
-    LED_REG = 0xFFFF;    /* all bits on */
+    LED_REG = 0xFFFF;      /* all bits on */
     simple_delay(0x10);
-    LED_REG = 0x0000;    /* all bits off */
+    LED_REG = 0x0000;      /* all bits off */
     simple_delay(0x10);
 }
 
-/*
- * The actual interrupt/trap entry in assembly, marked "naked" so the compiler
- * does not generate its own prologue/epilogue. We manually save/restore
- * registers and do "mret" at the end.
- */
+/**************************************************************
+ * trap_handler: Naked function that does:
+ *   - Push registers
+ *   - Call trap_handler_c()
+ *   - Pop registers
+ *   - mret
+ **************************************************************/
 __attribute__((naked)) void trap_handler(void)
 {
     asm volatile(
@@ -125,8 +150,10 @@ __attribute__((naked)) void trap_handler(void)
         "   sw     a5, 48(sp)        \n\t"
         "   sw     a6, 52(sp)        \n\t"
         "   sw     a7, 56(sp)        \n\t"
-        /* Call C function to handle the interrupt logic */
+
+        /* Call the C handler code */
         "   call   trap_handler_c    \n\t"
+
         /* Restore registers */
         "   lw     a7, 56(sp)        \n\t"
         "   lw     a6, 52(sp)        \n\t"
@@ -144,24 +171,18 @@ __attribute__((naked)) void trap_handler(void)
         "   lw     t0,  4(sp)        \n\t"
         "   lw     ra,  0(sp)        \n\t"
         "   addi   sp,  sp, 64       \n\t"
+
         /* Return from machine-mode trap */
         "   mret                     \n\t"
     );
 }
 
-/* ----------------------------------------------------------------
-   6) Main function in (mostly) C
-   ----------------------------------------------------------------*/
+/**************************************************************
+ * main: Our main loop
+ **************************************************************/
 int main(void)
 {
-    /*
-     * If you're in full control of the environment (no CRT startup),
-     * you may want to set the stack pointer here. 
-     * In many linker setups, the linker script + reset code do this instead.
-     */
-    asm volatile ("li sp, 0x0FFFFFFF");
-
-    /* 1) Set trap (interrupt) handler */
+    /* 1) Set the trap handler: mtvec = trap_handler */
     write_csr_mtvec(trap_handler);
 
     /* 2) Enable machine-timer interrupt in mie (set MTIE=bit7) */
@@ -185,9 +206,9 @@ int main(void)
         LED_REG = g_counter;  /* display current counter on LEDs */
 
         /* Simple busy-loop delay so the increment is visible */
-        simple_delay(10);
+        simple_delay(0x10);
     }
 
-    /* We never reach here in a true bare-metal infinite loop */
+    /* We never actually reach here in this bare-metal infinite loop. */
     return 0;
 }
