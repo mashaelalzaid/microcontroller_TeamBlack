@@ -6,16 +6,16 @@ RV_OBJDUMP := $(RV_PREFIX)objdump
 RV_FLAGS_OBJ := -S --no-addresses -M no-aliases -M numeric
 
 *.asm: *.c
-		$(RV_GCC) $(RV_FLAGS) *.c -o *.asm -S
+		$(RV_GCC) $(RV_FLAGS) $< -o $@ -S
 
 *.o: *.c
-		$(RV_GCC) $(RV_FLAGS) *.c -o *.o -S
+		$(RV_GCC) $(RV_FLAGS) $< -o $@ -S
 
 *.elf: *.o
-		$(RV_AS) $(RV_FLAGS) *.o -o *.elf
+		$(RV_AS) $(RV_FLAGS) $< -o $@
 
 *.bin: *.c
-		$(RV_GCC) -o *.bin *.c
+		$(RV_GCC) -o $< $@
 
 
 .PHONY:clean

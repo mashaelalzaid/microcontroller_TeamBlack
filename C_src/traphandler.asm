@@ -20,7 +20,7 @@ write_csr_mtvec:
 	sw	a0,-20(s0)
 	lw	a5,-20(s0)
 #APP
-# 38 "traphandler.c" 1
+# 35 "traphandler.c" 1
 	csrw mtvec, a5
 # 0 "" 2
 #NO_APP
@@ -52,7 +52,7 @@ set_csr_mie:
 	sw	a0,-20(s0)
 	lw	a5,-20(s0)
 #APP
-# 43 "traphandler.c" 1
+# 41 "traphandler.c" 1
 	csrs mie, a5
 # 0 "" 2
 #NO_APP
@@ -84,7 +84,7 @@ set_csr_mstatus:
 	sw	a0,-20(s0)
 	lw	a5,-20(s0)
 #APP
-# 48 "traphandler.c" 1
+# 47 "traphandler.c" 1
 	csrs mstatus, a5
 # 0 "" 2
 #NO_APP
@@ -157,7 +157,7 @@ simple_delay:
 	j	.L6
 .L7:
 #APP
-# 77 "traphandler.c" 1
+# 67 "traphandler.c" 1
 	nop
 # 0 "" 2
 #NO_APP
@@ -180,10 +180,28 @@ simple_delay:
 .LFE4:
 	.size	simple_delay, .-simple_delay
 	.align	2
+	.globl	_start
+	.type	_start, @function
+_start:
+.LFB5:
+	.cfi_startproc
+#APP
+# 78 "traphandler.c" 1
+	li sp, 0x0FFFFFFF        
+	call main                
+	1:  j 1b                 
+	
+# 0 "" 2
+#NO_APP
+	nop
+	.cfi_endproc
+.LFE5:
+	.size	_start, .-_start
+	.align	2
 	.globl	trap_handler_c
 	.type	trap_handler_c, @function
 trap_handler_c:
-.LFB5:
+.LFB6:
 	.cfi_startproc
 	addi	sp,sp,-32
 	.cfi_def_cfa_offset 32
@@ -203,18 +221,16 @@ trap_handler_c:
 	sw	a5,-20(s0)
 	lw	a5,-24(s0)
 	sw	a5,-28(s0)
-	lw	a4,-24(s0)
-	li	a5,249999360
-	addi	a5,a5,640
-	add	a5,a4,a5
+	lw	a5,-24(s0)
+	addi	a5,a5,100
 	sw	a5,-24(s0)
 	lw	a4,-24(s0)
 	lw	a5,-28(s0)
-	bgeu	a4,a5,.L9
+	bgeu	a4,a5,.L10
 	lw	a5,-20(s0)
 	addi	a5,a5,1
 	sw	a5,-20(s0)
-.L9:
+.L10:
 	li	a5,536875008
 	addi	a5,a5,-1024
 	lw	a4,-24(s0)
@@ -230,12 +246,12 @@ trap_handler_c:
 	li	a4,65536
 	addi	a4,a4,-1
 	sw	a4,0(a5)
-	li	a0,1048576
+	li	a0,16
 	call	simple_delay
 	li	a5,536870912
 	addi	a5,a5,260
 	sw	zero,0(a5)
-	li	a0,1048576
+	li	a0,16
 	call	simple_delay
 	nop
 	lw	ra,28(sp)
@@ -247,16 +263,16 @@ trap_handler_c:
 	.cfi_def_cfa_offset 0
 	jr	ra
 	.cfi_endproc
-.LFE5:
+.LFE6:
 	.size	trap_handler_c, .-trap_handler_c
 	.align	2
 	.globl	trap_handler
 	.type	trap_handler, @function
 trap_handler:
-.LFB6:
+.LFB7:
 	.cfi_startproc
 #APP
-# 126 "traphandler.c" 1
+# 135 "traphandler.c" 1
 	   addi   sp, sp, -64       
 	   sw     ra,  0(sp)        
 	   sw     t0,  4(sp)        
@@ -296,13 +312,13 @@ trap_handler:
 #NO_APP
 	nop
 	.cfi_endproc
-.LFE6:
+.LFE7:
 	.size	trap_handler, .-trap_handler
 	.align	2
 	.globl	main
 	.type	main, @function
 main:
-.LFB7:
+.LFB8:
 	.cfi_startproc
 	addi	sp,sp,-16
 	.cfi_def_cfa_offset 16
@@ -312,11 +328,6 @@ main:
 	.cfi_offset 8, -8
 	addi	s0,sp,16
 	.cfi_def_cfa 8, 0
-#APP
-# 178 "traphandler.c" 1
-	li sp, 0x0FFFFFFF
-# 0 "" 2
-#NO_APP
 	lui	a5,%hi(trap_handler)
 	addi	a0,a5,%lo(trap_handler)
 	call	write_csr_mtvec
@@ -326,13 +337,12 @@ main:
 	call	set_csr_mstatus
 	li	a5,536875008
 	addi	a5,a5,-1024
-	li	a4,249999360
-	addi	a4,a4,640
+	li	a4,100
 	sw	a4,0(a5)
 	li	a5,536875008
 	addi	a5,a5,-1020
 	sw	zero,0(a5)
-.L13:
+.L14:
 	lui	a5,%hi(g_counter)
 	lw	a5,%lo(g_counter)(a5)
 	addi	a4,a5,1
@@ -341,21 +351,20 @@ main:
 	lui	a5,%hi(g_counter)
 	lw	a4,%lo(g_counter)(a5)
 	li	a5,65536
-	bltu	a4,a5,.L12
+	bltu	a4,a5,.L13
 	lui	a5,%hi(g_counter)
 	sw	zero,%lo(g_counter)(a5)
-.L12:
+.L13:
 	li	a5,536870912
 	addi	a5,a5,260
 	lui	a4,%hi(g_counter)
 	lw	a4,%lo(g_counter)(a4)
 	sw	a4,0(a5)
-	li	a5,2498560
-	addi	a0,a5,1440
+	li	a0,16
 	call	simple_delay
-	j	.L13
+	j	.L14
 	.cfi_endproc
-.LFE7:
+.LFE8:
 	.size	main, .-main
 	.ident	"GCC: () 14.2.0"
 	.section	.note.GNU-stack,"",@progbits
