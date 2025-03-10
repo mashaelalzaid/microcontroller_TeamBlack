@@ -15,38 +15,38 @@ module soc_test;
     logic cts_pad_i;  // UART Clear to Send
     
 
-//rv32i_soc #(
-//    512, 
-//    512
-//) dut (
-//    .clk(clk), 
-//    .reset_n(reset_n), // Input reset signal
+rv32i_soc #(
+    512, 
+    512
+) dut (
+    .clk(clk), 
+    .reset_n(reset_n), // Input reset signal
 
-//    // SPI signals to the SPI-Flash (not provided in your description)
+    // SPI signals to the SPI-Flash (not provided in your description)
 
-//    // UART signals
-//    .srx_pad_i(srx_pad_i),
-//    .stx_pad_o(stx_pad_o),
-//    .rts_pad_o(rts_pad_o),
-//    .cts_pad_i(cts_pad_i),
+    // UART signals
+    .srx_pad_i(srx_pad_i),
+    .stx_pad_o(stx_pad_o),
+    .rts_pad_o(rts_pad_o),
+    .cts_pad_i(cts_pad_i),
 
-//    // GPIO signals
-//    .io_data()
-//);
+    // GPIO signals
+    .io_data()
+);
 
      logic [15:0] SW;
      logic [15:0] LED;
      
-    rv32i_soc_fpag_top uut (
-        .CLK100MHZ (clk),
-        .CPU_RESETN (reset_n),
-        .UART_TXD_IN (),
-        .UART_RXD_OUT (),
-        .UART_CTS (),
-        .UART_RTS (),
-        .SW (SW),
-        .LED (LED)
-    );
+//    rv32i_soc_fpag_top uut (
+//        .CLK100MHZ (clk),
+//        .CPU_RESETN (reset_n),
+//        .UART_TXD_IN (),
+//        .UART_RXD_OUT (),
+//        .UART_CTS (),
+//        .UART_RTS (),
+//        .SW (SW),
+//        .LED (LED)
+//    );
 
 
     // Clock generation
