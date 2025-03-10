@@ -30,4 +30,3 @@ delay:
         addi t6, t6, -1
         bnez t6, delay_loop
     ret
-   

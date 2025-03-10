@@ -2,7 +2,7 @@ import serial
 import time
 
 # Set this to True to send LSB first (right to left), or False for MSB first (left to right)
-SEND_LSB_FIRST = True  
+SEND_LSB_FIRST = True
 
 INSTRUCTION_LIMIT = 128  # Global variable for instruction limit
 

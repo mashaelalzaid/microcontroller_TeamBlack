@@ -1,9 +1,9 @@
+
 ########################################################################### start of configurations ###########################################################################
 nop
 nop
 lui x10, 0x20000
 addi x10, x10, 0x003 # access the address of Line Control Register
-mret
 # UART address: 0x2000_0000
 
 # set UART config for devisor (baudrate config)
