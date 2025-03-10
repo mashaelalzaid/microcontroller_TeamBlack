@@ -21,7 +21,7 @@ RV_FLAGS_OBJ := -S --no-addresses -M no-aliases -M numeric
 .PHONY:clean
 
 clean:
-		rm  *.o *.elf *.hex *.asm
+	rm -f *.o *.bin *.elf *.hex
 
 *.hex: *.elf
 		eval $(RV_OBJDUMP) *.elf $(RV_FLAGS_OBJ) >> *.hex
