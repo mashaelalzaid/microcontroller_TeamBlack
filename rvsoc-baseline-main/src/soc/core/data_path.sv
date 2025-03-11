@@ -698,5 +698,15 @@ module data_path #(
         .in1(mem_rdata_wb),
         .out(reg_wdata_wb)
     );
-
+    
+    // ============================================
+    //          Decompressor Instance
+    // ============================================ 
+    
+    decompressor decompressor(
+        .decompressor_en(),
+        .IF_Instr_16(),
+        .IF_Dec_32()
+    
+    );
 endmodule 

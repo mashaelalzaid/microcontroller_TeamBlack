@@ -488,5 +488,13 @@ uart_top uart (
         .wb_ack_o(wb_clint_ack_i),       
         .mtip_o(clint_wb_inta_i)
     );
-       
+    
+    
+    // ============================================
+    //          Decompressor Instance
+    // ============================================ 
+    
+    
+    
+    
 endmodule : rv32i_soc
