@@ -1,27 +1,36 @@
 RV_PREFIX := riscv64-unknown-linux-gnu-
 RV_GCC := $(RV_PREFIX)gcc
 RV_AS := $(RV_PREFIX)as
-RV_FLAGS := -mabi=ilp32 -march=rv32i_zicsr
+RV_LD := $(RV_PREFIX)ld
+RV_FLAGS := -O2 -Wall -ffreestanding -nostdlib -nostartfiles -T linker.ld -march=rv32i_zicsr -mabi=ilp32
 RV_OBJDUMP := $(RV_PREFIX)objdump
-RV_FLAGS_OBJ := -S --no-addresses -M no-aliases -M numeric
+RV_OBJCOPY := $(RV_PREFIX)objcopy
+RV_FLAGS_OBJ := -S -M no-aliases -D #--no-addresses  -M numeric
+
+RV_FLAGS_LD := -mabi=ilp32 -march=rv32i_zicsr -m elf32lriscv
+
+OBJS := gpio_test.o
 
 %.asm: %.c
-		$(RV_GCC) $(RV_FLAGS) $< -o $@ -S
+	$(RV_GCC) $(RV_FLAGS) -o $@ $< -S -nostdlib
 
 %.o: %.c
-		$(RV_GCC) $(RV_FLAGS) $< -o $@ -S
+	$(RV_GCC) $(RV_FLAGS) -c $< -o $@
 
-%.elf: %.o
-		$(RV_AS) $(RV_FLAGS) $< -o $@
+%.elf: %.o 
+	$(RV_LD) $(RV_FLAGS_LD) -T linker_script.ld $< -o $@
 
-%.bin: %.c
-		$(RV_GCC) -o $< $@
+traphandler.elf: $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS)
+
+
+%.hex: %.elf
+	eval $(RV_OBJDUMP) $< $(RV_FLAGS_OBJ) >> $@
+
+#  riscv64-unknown-linux-gnu-objcopy -j .text -O verilog gpio_test.elf machine_data.hex
 
 
 .PHONY:clean
 
 clean:
-	rm -f *.o *.bin *.elf *.hex *.asm
-
-%.hex: %.elf
-		eval $(RV_OBJDUMP) $< $(RV_FLAGS_OBJ) >> $@
+	rm  *.o *.elf *.hex *.asm

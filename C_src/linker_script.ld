@@ -13,7 +13,7 @@ SECTIONS
 {
     .text :
     {
-        *(.text)                       
+        *(.text*)                       
         *(.rodata)                     
         _etext = .;                    
     } > IMEM
@@ -22,7 +22,7 @@ SECTIONS
     .data :
     {
         _sdata = .;                    /*start .data in RAM */
-        *(.data)                      
+        *(.*data*);                      
         _edata = .;                    /* end of .data in RAM */
     } > DMEM AT> IMEM
 

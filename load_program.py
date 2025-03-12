@@ -1,97 +1,60 @@
 import serial
+import os
+import sys
 import time
 
-# Set this to True to send LSB first (right to left), or False for MSB first (left to right)
-SEND_LSB_FIRST = True
-
-INSTRUCTION_LIMIT = 128  # Global variable for instruction limit
-
-def read_hex_from_file(file_path):
-    """Reads hex instructions from a file and returns a list of bytes (optionally reversed)."""
-    instructions = []
+def send_uart(inst, data):
+    # Open the serial port
+    ser = serial.Serial('/dev/ttyUSB1', baudrate=9600, timeout=1, stopbits=serial.STOPBITS_ONE, parity=serial.PARITY_EVEN)
     try:
-        with open(file_path, 'r') as file:
-            for line_number, line in enumerate(file, start=1):
-                if line_number > INSTRUCTION_LIMIT:
-                    raise ValueError("Error: Number of instructions is greater than 128.")
+        # Send handshake byte
+        ser.write(b'\xAA') # Single byte handshake
+        response = ser.read(1) # Wait for acknowledgment
+        time.sleep(0.1)
+        print(f"Received handshake response: {response.hex()}") # Print the received handshake response
+        
+        for filename in [inst, data]:
+            with open(filename, 'r') as file:
+                lines = file.readlines()
+                # Ignore the first line
+                data_lines = lines[1:]
+                # Convert data to bytes
+                data_bytes = bytearray()
+                for line in data_lines:
+                    bytes_str = line.strip().split()
+                    for byte_str in bytes_str:
+                        data_bytes.append(int(byte_str, 16))
                 
-                line = line.strip().replace(" ", "").lower()  # Remove spaces and normalize case
-                if line.startswith("0x"):  # Remove '0x' prefix if present
-                    line = line[2:]
-                if line:  # Ensure it's not empty
-                    try:
-                        byte_data = bytes.fromhex(line.zfill(8))  # Ensure even-length (4-byte instructions)
-                        if SEND_LSB_FIRST:
-                            byte_data = byte_data[::-1]  # Reverse byte order (LSB first)
-                        instructions.append(byte_data)
-                    except ValueError:
-                        print(f"Skipping invalid hex line: {line}")
-    except FileNotFoundError:
-        print(f"Error: File '{file_path}' not found.")
-    return instructions
-
-def send_instruction(ser, instruction, count, order):
-    """Send a single instruction and receive response."""
-    ser.reset_input_buffer()
-    ser.reset_output_buffer()
-
-    print(f"Sending instruction {count + 1} ({order}):")
-    
-    for byte in instruction:
-        print(f"Sent Byte: {hex(byte)}")  # Print each sent byte
-        ser.write(bytes([byte]))  # Send byte-by-byte
-        ser.flush()
-        # time.sleep(0.0)  # Small delay between bytes
-
-    # # **Ensure we wait for a response**
-    timeout = 10.0  # Maximum wait time in seconds
-    start_time = time.time()
-
-    while ser.in_waiting == 0:  # Wait until data is available
-        if time.time() - start_time > timeout:
-            print("Error: No response received within timeout!")
-            return
-
-    # **Receive response byte-by-byte**
-    print("Received Bytes:")
-    while ser.in_waiting:  # Read byte-by-byte
-        received_byte = ser.read(1)  # Read one byte at a time
-        print(f"Received Byte: {received_byte.hex()}")  # Print received byte in hex format
-
-def continuous_test(file_path):
-    """Reads hex instructions from a file, sends via serial, and receives responses."""
-    try:
-        ser = serial.Serial('/dev/ttyUSB1', baudrate=9600, timeout=1, stopbits=serial.STOPBITS_ONE, parity=serial.PARITY_EVEN)
-        print(f"Connected to {ser.port}")
-
-        # Read instructions from file
-        instructions = read_hex_from_file(file_path)
-        if not instructions:
-            print("No valid hex instructions found in the file.")
-            return
-
-        count = 0
-        order = "LSB first (Right to Left)" if SEND_LSB_FIRST else "MSB first (Left to Right)"
-
-        # **Send all instructions from file**
-        for instruction in instructions:
-            send_instruction(ser, instruction, count, order)
-            count += 1
-            # time.sleep(0.1) 
-
-        # **Send 0x00000013 (NOP) until count reaches INSTRUCTION_LIMIT**
-        NOP_INSTRUCTION = [0x13, 0x00, 0x00, 0x00]  # 0x00000013 in little-endian format
-
-        while count < INSTRUCTION_LIMIT:
-            send_instruction(ser, NOP_INSTRUCTION, count, order)
-            count += 1
-            # time.sleep(0.1)
-    except serial.SerialException as e:
+                # Send file size byte by byte
+                file_size = len(data_bytes)
+                size_bytes = file_size.to_bytes(4, 'big')
+                
+                # Send each byte of the size separately and print result
+                print(f"Sending file size: {file_size} ({size_bytes.hex()})")
+                for i in range(4):
+                    ser.write(bytes([size_bytes[i]]))
+                    # response = ser.read(1) # Receive echo
+                    # print(f"Sent byte: {hex(size_bytes[i])} | Received echo: {response.hex()}")
+                
+                # Send file data byte by byte with the same structure
+                print(f"Sending file data ({len(data_bytes)} bytes)")
+                for i, byte in enumerate(data_bytes):
+                    ser.write(bytes([byte])) # Send one byte
+                    # response = ser.read(1) # Receive echo
+                    # print(f"Sent byte {i+1}/{len(data_bytes)}: {hex(byte)} | Received echo: {response.hex()}")
+                    
+                print(f"File {filename} sent successfully.")
+                
+        print("Both files sent successfully.")
+        
+    except Exception as e:
         print(f"Error: {e}")
     finally:
-        print("Port closed")
-
+        ser.close()
 
 if __name__ == "__main__":
-    file_path = "Bootmachine.mem"
-    continuous_test(file_path)
+    if len(sys.argv) != 3:
+        print("Usage: python3 load_program.py <inst.mem> <data.mem>")
+        sys.exit(1)
+    
+    send_uart(sys.argv[1], sys.argv[2])

@@ -3,12 +3,12 @@ module rom (
     output logic [31:0] inst
 );
 
-   logic [31:0] rom [0:511];
+   logic [31:0] rom [0:1023];
 
 //    initial  $readmemh("/home/it/Documents/rvsoc_v3/src/tb/uart_receiver/rom.hex",rom);
   
 //      initial $readmemh("trap_handler.mem", rom);
-    initial $readmemh("machine.mem", rom);
+    initial $readmemh("machine.mem", rom); 
 
 //assign rom[0]    = 32'h00000013;  // nop
 //assign rom[1]    = 32'h200005B7;  // lui x11, 0x20000    ; GPIO base address

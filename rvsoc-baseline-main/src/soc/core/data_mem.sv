@@ -32,7 +32,7 @@ logic [6:0] word_addr;
 assign word_addr = adr_i[8:2];
 
 // inst memory here 
-logic [31:0] dmem [0:512 - 1];
+logic [31:0] dmem [0:1023];
 
 always_ff @(posedge clk_i) begin 
     if(mem_write) begin 
