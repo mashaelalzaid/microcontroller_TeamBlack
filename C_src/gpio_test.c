@@ -57,7 +57,7 @@ int main(void)
         LED_REG = g_counter;  /* display current counter on LEDs */
 
         /* Simple busy-loop delay so the increment is visible */
-        simple_delay(0x10);
+        simple_delay(0x100000);
     }
 
     /* We never actually reach here in this bare-metal infinite loop. */

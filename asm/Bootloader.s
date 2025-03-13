@@ -1,4 +1,5 @@
 ########################################################################### start of configurations ###########################################################################
+li sp, 0x000000ff
 nop
 nop
 lui x10, 0x20000
@@ -39,160 +40,188 @@ li x11, 0x1b
 sw x11, 0(x10)
 ########################################################################### end of configurations ############################################################################
 ################################################################################ bootloader ##################################################################################
-###############################
-_start:
-    # Receive handshake byte (0xAA)
-    call uart_receive
-    nop             # NOP after function call
-    nop
-    nop
-    li t0, 0xAA
-    bne a0, t0, _start  # If not 0xAA, wait for it
-    nop             # NOP after branch
-    nop
-    nop
-    # Send acknowledgment byte (0x55)
-    li a0, 0x55
-    call uart_send
-    nop             # NOP after function call
-    nop
-    nop
-    # Receive first file size (4 bytes)
-    call receive_size
-    nop             # NOP after function call
-    nop
-    nop
-    li s1, 0x10000000  # Store first file at 0x10000000
-    call receive_file
-    nop             # NOP after function call
-    nop
-    nop
-    # Receive second file size (4 bytes)
-    call receive_size
-    nop             # NOP after function call
-    nop
-    nop
-    li s1, 0x00000000  # Store second file at 0x00000000
-    call receive_file
-    nop             # NOP after function call
-    nop
-    nop
-    li x10, 0x10000000 #give control to instruction memory
-    nop
-    nop
-    nop
-    jalr x10
-    nop             # NOP after jump
-    nop
-    nop
+li s0, 0x20000000      # UART base address 
+li s2, 0x10000000      # inst mem address 
 
-# Receive 4-byte size value and store in s2
-receive_size:
-    call uart_receive
-    nop             # NOP after function call
+li s1, 0xAA # hello signal
+wait_for_hello:
+call read_uart_word    # wait for 0xAA and then respond by 0x55
+bne a0,s1,wait_for_hello
+# send hello back
+li a0, 0x55
+call send_uart_word
+nop
+nop
+call read_uart_word    # read size of instructions
+# a0 has the number of instructions
+mv s3, a0              # Store instruction count in s3
+call send_uart_word
+nop
+nop
+receive_instructions:
+nop
+nop
+call read_uart_byte    # a0 will hold the received byte
+nop
+nop
+sb a0, 0(s2)           # store the inst in memory location 
+nop
+nop
+call send_uart_byte
+nop
+nop
+nop
+addi s3, s3, -1        # Decrement instruction counter 
+addi s2, s2, 1         # Increment memory pointer 
+beq s3, zero, send_data     # Branch if all instructions received
+nop
+nop
+j receive_instructions
+send_data:
+nop
+nop
+nop
+li s2, 0x00000000
+call read_uart_word    # read size of data
+# a0 has the number of data
+mv s3, a0              # Store instruction count in s3
+call send_uart_word
+receive_data:
+nop
+nop
+call read_uart_byte    # a0 will hold the received word
+nop
+nop
+sb a0, 0(s2)           # store the data in memory location 
+nop
+nop
+call send_uart_byte
+nop
+nop
+nop
+addi s3, s3, -1        # Decrement instruction counter 
+addi s2, s2, 1         # Increment memory pointer 
+beq s3, zero, exit     # Branch if all instructions received
+nop
+nop
+j receive_data
+nop
+nop
+nop
+exit:                  # give control to the inst memory
+li s0, 0x10000000      # Load jump address
+nop
+nop
+nop
+nop
+jalr s0                # Jump to loaded program
+nop
+nop
+nop
+nop
+
+# return data in a0
+read_uart_byte:
+    li t0,0x20000000   #UART base address
+    addi sp,sp ,-4
+    sw ra, 0(sp)
+    wait_rx:
     nop
     nop
-    mv s2, a0
-    nop             # NOP after register dependency
+    nop
+    lw t1, 5(t0) # addr 5 is the status register
+    andi t1, t1, 1
+    beq t1, zero, wait_rx # if t1 is zero then keep listining ; maybe need to add a limit to the times of re try >TODO
+    
+    # here the data is recieved
+    lw a0,0(t0) # load the data from Rx
     nop
     nop
-    call uart_receive
-    nop             # NOP after function call
     nop
     nop
-    slli s2, s2, 8
-    or s2, s2, a0
-    nop             # NOP after register dependency
-    nop
-    nop
-    call uart_receive
-    nop             # NOP after function call
-    nop
-    nop
-    slli s2, s2, 8
-    or s2, s2, a0
-    nop             # NOP after register dependency
-    nop
-    nop
-    call uart_receive
-    nop             # NOP after function call
-    nop
-    nop
-    slli s2, s2, 8
-    or s2, s2, a0
-    nop             # NOP after register dependency
+    lw ra, 0(sp)
+    addi sp,sp ,4
     nop
     nop
     ret
-    nop             # NOP after return
-    nop
-    nop
-
-# Receive file data and store in memory (s1 = memory address, s2 = size)
-receive_file:
-    li t1, 0  # Byte counter
-recv_loop:
-    bge t1, s2, recv_done  # If received all bytes, exit
-    nop             # NOP after branch
-    nop
-    nop
-    call uart_receive
-    nop             # NOP after function call
-    nop
-    nop
-    sb a0, 0(s1)    # Store byte in memory
-    nop             # NOP after memory operation
-    nop
-    nop
-    addi s1, s1, 1  # Increment memory address
-    addi t1, t1, 1  # Increment counter
     nop
     nop
     nop
-    j recv_loop
-    nop             # NOP after jump
-    nop
-    nop
-recv_done:
+    #end of read_uart_byte
+# return data in a0
+read_uart_word:
+    addi sp, sp, -8
+    sw ra, 0(sp)
+    sw s0, 4(sp)
+    # Read LSB (byte 0) first
+    call read_uart_byte
+    mv s0, a0            # This is now the least significant byte
+    # Read byte 1
+    call read_uart_byte
+    slli a0, a0, 8       # Shift second byte to bits 8-15
+    or s0, s0, a0        # Combine with previous byte
+    # Read byte 2
+    call read_uart_byte
+    slli a0, a0, 16      # Shift third byte to bits 16-23
+    or s0, s0, a0        # Combine with previous bytes
+    # Read MSB (byte 3) last
+    call read_uart_byte
+    slli a0, a0, 24      # Shift fourth byte to bits 24-31
+    or s0, s0, a0        # Combine with previous bytes
+    mv a0, s0            # Move result to return register
+    lw s0, 4(sp)
+    lw ra, 0(sp)
+    addi sp, sp, 8
     ret
-    nop             # NOP after return
     nop
     nop
+    nop
+# #end of read_uart_word
 
-# UART receive function (returns received byte in a0)
-uart_receive:
-    li t0, 0x20000000  # UART base address
-wait_rx:
-    lw t1, 5(t0)    # Load status register 
-    nop             # NOP after memory load
-    nop
-    nop
-    andi t1, t1, 1  # check if rx status register is set
+# send data should be in a0
+send_uart_byte:
+    li t0,0x20000000   #UART base address
     nop
     nop
     nop
-    beq t1, x0, wait_rx  # Wait if no data received
-    nop             # NOP after branch
+    sw a0,0(t0)
     nop
-    nop
-    lw a0, 0(t0)    # Load the data from Rx
-    nop             # NOP after memory load
     nop
     nop
     ret
-    nop             # NOP after return
     nop
     nop
-
-# UART send function (sends byte in a0)
-uart_send:
-    li t0, 0x20000000  # UART base address
-wait_tx:
-    sw a0, 0(t0)    # Send byte
-    nop             # NOP after memory store
     nop
-    nop
+    #end of send_uart_byte
+    
+# send data should be in a0
+send_uart_word:
+    addi sp, sp, -12
+    sw ra, 0(sp)
+    sw s0, 4(sp)
+    sw a0, 8(sp)
+    mv s0, a0
+    # Extract and send LSB (byte 0) first
+    andi a0, s0, 0xff
+    call send_uart_byte
+    # Send byte 1
+    srli a0, s0, 8
+    andi a0, a0, 0xff
+    call send_uart_byte
+    # Send byte 2
+    srli a0, s0, 16
+    andi a0, a0, 0xff
+    call send_uart_byte
+    # Send MSB (byte 3) last
+    srli a0, s0, 24
+    andi a0, a0, 0xff
+    call send_uart_byte
+    lw ra, 0(sp)
+    lw s0, 4(sp)
+    lw a0, 8(sp)
+    addi sp, sp, 12
     ret
-    nop             # NOP after return
     nop
     nop
+    nop
+# #end of send_uart_word

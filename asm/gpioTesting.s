@@ -1,8 +1,9 @@
 nop
+nop
+nop
 lui x11, 0x20000    # GPIO base address
 addi x11, x11, 0x100#
-lui x10, 0xF        # Load 0x0000FFFF for direction
-addi x10, x10, -1   #
+li x10, 0xFFFF        # Load 0x0000FFFF for direction
 sw x10, 8(x11)      # Write to direction register (0x108)
 ######################################################################
 back:
@@ -30,3 +31,6 @@ delay:
         addi t6, t6, -1
         bnez t6, delay_loop
     ret
+    nop
+    nop
+    nop
