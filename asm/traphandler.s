@@ -1,17 +1,16 @@
 # RISC-V Timer Interrupt System
 # With counter value displayed on LEDs
     # Initialize stack pointer
-.section .data
+.equ INT_INTERVAL, 25000
+.equ DELAY, 1
 
-.section .data__stack
-    .space 1024 * 4
-    # .align 8
-    __stack_top:
+.data
+ 
+.text
 
-.section .text
-
-    la sp, __stack_top       # Set stack pointer to address 0x0FFFFFFF
+    li sp, 0xff       # Set stack pointer to address 0x0FFFFFFF
     # Setup trap handler address in mtvec
+    la t0, trap_handler
     nop
     nop
     csrrw x0, 0x305, t0      # mtvec = 0x305
@@ -37,7 +36,7 @@
     
     # Set mtimecmp to current time + interval
     li t0, 0x20000c00  # mtimecmp address
-    li t2, 250000000         # Interrupt after 100 cycles
+    li t2, 250000000#INT_INTERVAL         # Interrupt after INT_INTERVAL cycles
     nop
     nop
     sw t2, 0(t0)        # Lower 32 bits
@@ -75,7 +74,7 @@ update_leds:
     sw a0, 0(t0)        # Display current counter value on LEDs
     nop
     nop
-    li t5, 2500000
+    lui t5,  0xfff#DELAY
     nop
     nop
     delay:
@@ -105,31 +104,8 @@ trap_handler:
     sw a3, 40(sp)
     sw a4, 44(sp)
     # 1. Clear timer by setting new mtimecmp value
-    li t0, 0x20000c00  # mtimecmp address
-    li t1, 0x20000c08  # mtime address
     nop
     nop
-    # Read current mtime
-    lw t2, 0(t1)        # Load lower 32 bits of mtime
-    lw t3, 4(t1)        # Load upper 32 bits of mtime
-    
-    # Set new mtimecmp to current time + interval
-    li t4, 250000000         # Interrupt interval (100 cycles)
-    nop
-    nop
-    nop
-    add t2, t2, t4      # Add to lower word
-    sltu t5, t2, t4     # Check for overflow
-    add t3, t3, t5      # Add carry to upper word if needed
-    nop
-    nop
-    nop
-    # Write new value to mtimecmp
-    sw t2, 0(t0)        # Store lower 32 bits
-    sw t3, 4(t0)        # Store upper 32 bits
-    
-
-    
     # 3. Clear interrupt signal in mip
     li t0, 0x80         # MTIP bit (bit 7)
     nop
@@ -158,14 +134,14 @@ trap_handler:
         nop
     nop
     nop
-    li t4, 0x100000
-        nop
+    lui t4,  0xfff#DELAY
+    nop
     nop
     nop
 # To:
     For_Loop1:
     addi a1,a1 , 1
-        nop
+    nop
     nop
     nop
     ble a1, t4 , For_Loop1   # Use t4 instead of t2 for comparison
@@ -177,7 +153,7 @@ trap_handler:
     nop
     nop
     sw t1, 0(t0)        # Turn all LEDs off
-        nop
+    nop
     nop
     nop
 #     xor t1, t1, t2      # Flip the LSB to toggle status LED
@@ -187,7 +163,7 @@ trap_handler:
         nop
     nop
     nop
-    li t4, 0x100000
+    li t4, 0xfff#DELAY
         nop
     nop
     nop
@@ -201,6 +177,17 @@ trap_handler:
     nop
     nop
     nop
+#     li t0, 0x20000c00  # mtimecmp address
+    li t1, 0x20000c08  # mtime address
+        # Read current mtime
+    
+    sw x0, 0(t1)        # Load lower 32 bits of mtime
+    sw x0, 4(t1)        # Load upper 32 bits of mtime
+    nop
+    nop
+    nop
+    
+
     # 5. Restore registers from stack
     lw a4, 44(sp)
     lw a3, 40(sp)
@@ -215,6 +202,5 @@ trap_handler:
     lw t0, 4(sp)
     lw ra, 0(sp)
     addi sp, sp, 64     # Restore stack pointer
-    mret
     # 6. Return from trap
      # mret (0x30200073)

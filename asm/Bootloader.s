@@ -39,6 +39,11 @@ addi x10, x10, 0x003
 li x11, 0x1b
 sw x11, 0(x10)
 ########################################################################### end of configurations ############################################################################
+#turn on the LEDs showing that bootloader is running
+li t0,0x20000104
+li t1, 0xffff
+nop
+sw t1, 0(t0)
 ################################################################################ bootloader ##################################################################################
 li s0, 0x20000000      # UART base address 
 li s2, 0x10000000      # inst mem address 
@@ -112,6 +117,11 @@ exit:                  # give control to the inst memory
 li s0, 0x10000000      # Load jump address
 nop
 nop
+#turn off the LEDs showing that bootloader is finished
+li t0,0x20000104
+li t1, 0x0000
+nop
+sw t1, 0(t0)
 nop
 nop
 jalr s0                # Jump to loaded program
