@@ -36,7 +36,7 @@ module alu (
     end
     
     
-    assign zero = (alu_result == 0);
+assign zero = (alu_result == 0);
 endmodule
 
 module n_bit_add_sub #(

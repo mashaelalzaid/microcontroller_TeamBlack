@@ -1,5 +1,5 @@
 module rv32i_top #(
-    parameter DMEM_DEPTH = 1024, 
+    parameter DMEM_DEPTH = 1024,
     parameter IMEM_DEPTH = 1024
 )(
     input logic clk, 

@@ -68,7 +68,16 @@ module csr_file (
    
    
 //   ======================================= START
-   
+        logic mret_exec_delayed;
+        // we need this signal because if there is an int right after mret it will cause an issue
+        always@(posedge clk , negedge reset_n) begin
+            if(!reset_n) begin
+                mret_exec_delayed =0;
+            end
+            else begin
+                mret_exec_delayed = mret_exec;
+            end
+        end
          assign  trap_taken = mstatus[3] && mip[7] && mie[7] && !mret_exec ;// Q: should i explicitly exclude && !mret_exec;
 
       // Trap detection logic 

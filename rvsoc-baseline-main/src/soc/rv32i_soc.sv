@@ -351,6 +351,9 @@ logic gpio_wb_inta_o;
 
     logic sel_boot_rom_ff;
     // Inst selection mux
+    //0x30000000
+    //- 0x3FFFFFFF
+//current_pc[31:28] == 4'b0011; 
     assign sel_boot_rom = &current_pc[31:12]; // 0xfffff000 - to - 0xffffffff 
     always @(posedge clk) 
     sel_boot_rom_ff <= sel_boot_rom; //Q new new: where should sel_boot_rom_ff come from ? it is not declared anywhere?

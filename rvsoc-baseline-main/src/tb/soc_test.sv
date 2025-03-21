@@ -37,7 +37,7 @@ module soc_test;
      logic [15:0] SW;
      logic [15:0] LED;
      
-    rv32i_soc_fpag_top uut (
+    rv32i_soc_fpag_top #(1024,1024) uut (
         .CLK100MHZ (clk),
         .CPU_RESETN (reset_n),
         .UART_TXD_IN (),

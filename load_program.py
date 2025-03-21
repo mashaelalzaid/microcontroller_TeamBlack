@@ -56,10 +56,10 @@ def read_hex_from_file(file_path, send_lsb_first=False):
             
             # Handle empty file case
             if not file_content:
-                return [bytes.fromhex('00') for _ in range(4)], 0
+                return [bytes.fromhex('00') for _ in range(4)], 4
                 
             lines = file_content.split('\n')
-            skip_first_line = True
+            skip_first_line = False
             
             for line in lines:
                 line = line.strip()
@@ -152,7 +152,7 @@ def continuous_test(ser,file_path,send_hello):
     if not words:
         print("No valid hex found in the file.")
         return
-
+    
     order = "LSB first (Right to Left)" if SEND_LSB_FIRST else "MSB first (Left to Right)"
     if(send_hello):
         # Send Hello Signal 0xAA and wait for 0x55

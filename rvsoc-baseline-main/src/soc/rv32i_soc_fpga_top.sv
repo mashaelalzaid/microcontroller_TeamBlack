@@ -18,8 +18,8 @@
 );  
 
     
-    parameter DMEM_DEPTH = 512;
-    parameter IMEM_DEPTH = 512;
+    parameter DMEM_DEPTH = 1024;
+    parameter IMEM_DEPTH = 1024;
     
     logic        o_flash_cs_n;
     logic        o_flash_mosi;

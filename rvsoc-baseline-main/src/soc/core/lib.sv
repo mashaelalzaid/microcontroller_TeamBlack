@@ -68,7 +68,7 @@ module mux3x1 #(
     input wire  [n-1:0] in2,
     output wire [n-1:0] out
 );
-
+ 
     // selection signals 
     wire sel0, sel1, sel2;
 

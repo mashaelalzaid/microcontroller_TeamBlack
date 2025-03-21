@@ -39,14 +39,14 @@ addi x10, x10, 0x003
 li x11, 0x1b
 sw x11, 0(x10)
 ########################################################################### end of configurations ############################################################################
-#turn on the LEDs showing that bootloader is running
-li t0,0x20000104
-li t1, 0xffff
-nop
-sw t1, 0(t0)
 ################################################################################ bootloader ##################################################################################
 li s0, 0x20000000      # UART base address 
 li s2, 0x10000000      # inst mem address 
+li s4, 0x20000104      # LED addr
+
+li t0, -1
+nop
+sw t0, 0(s4) # Turn on LEDs
 
 li s1, 0xAA # hello signal
 wait_for_hello:
@@ -77,6 +77,8 @@ nop
 nop
 nop
 addi s3, s3, -1        # Decrement instruction counter 
+nop
+sw s3, 0(s4)            # Display counter to LED
 addi s2, s2, 1         # Increment memory pointer 
 beq s3, zero, send_data     # Branch if all instructions received
 nop
@@ -105,6 +107,8 @@ nop
 nop
 nop
 addi s3, s3, -1        # Decrement instruction counter 
+nop
+sw s3, 0(s4)            # Display counter to LED
 addi s2, s2, 1         # Increment memory pointer 
 beq s3, zero, exit     # Branch if all instructions received
 nop

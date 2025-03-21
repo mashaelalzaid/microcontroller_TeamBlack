@@ -16,7 +16,7 @@ __attribute__((naked)) void _start(void)
 {
     asm volatile(
         // 1) Set stack pointer
-        "li    sp, 0x0FFFFFFF   \n\t"
+        "li    sp, 0x1000   \n\t"
 
         // 2) Call main()
         "call  main            \n\t"

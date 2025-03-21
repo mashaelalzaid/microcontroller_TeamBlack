@@ -45,10 +45,17 @@ module clint_wishbone (
     // 64-bit Machine Time Counter 
 
     always_ff @(posedge wb_clk_i or posedge wb_rst_i) begin
-                if (wb_rst_i) begin
-            mtime <= 64'b0;
-            end
-            else
+        if (wb_rst_i) begin
+                mtime <= 64'b0;
+        end
+        else if (wb_cyc_i && wb_stb_i) begin 
+            if (wb_we_i) begin
+                case (wb_adr_i) 
+                    MTIME_ADDR + 0: mtime[31:0]  <= wb_dat_i; // Write lower 32 bits
+                    MTIME_ADDR + 4: mtime[63:32] <= wb_dat_i; // Write upper 32 bits
+                endcase
+            end 
+        end else
             mtime <= mtime + 1; 
     end
     
