@@ -150,8 +150,6 @@ module data_path #(
     logic [31:0] current_pc_if1;
     logic [31:0] current_pc_if2, pc_plus_4_if2, inst_if2;
 
- 
- 
  //// CSR related PC modification mashael
  
      // Modify the next_pc_mux to account for traps
@@ -171,10 +169,15 @@ module data_path #(
  /// end of CSR related PC modification mashael
  
  
- 
+     // 1. Add C-extension controller signals
+    logic [31:0] next_pc_cext;             // Next PC value from c-extension controller
+    logic c_ext_hold_pc;                   // Hold PC signal from c-extension controller
+    logic [31:0] decompressed_inst_if;     // Decompressed instruction
+    logic [31:0] corrected_pc_if;          // Corrected PC for the instruction
+    logic c_ext_inst_valid;                // Instruction valid signal
     program_counter PC_inst (
         .*,
-        .en(pc_reg_en),
+        .en(pc_reg_en & ~c_ext_hold_pc),
         .next_pc_if1(final_next_pc) //mashael
     );
 
@@ -203,7 +206,7 @@ module data_path #(
         .n(1)
     ) if_id_reg_en_ff_inst (
         .*,
-        .data_i(if_id_reg_en),
+        .data_i(if_id_reg_en ),
         .data_o(if_id_reg_en_ff),
         .wen(1'b1) 
     );
@@ -252,7 +255,25 @@ module data_path #(
     );
     assign inst_if2 = if_id_reg_en_ff ? inst_if : inst_if_ff;
 
+    // ============================================
+    //              C - Extention 
+    // ============================================
+    
 
+    
+     c_extension_controller c_inst(
+    .clk(clk),
+    .reset_n(reset_n),
+    .current_pc(current_pc_if1),     // Current PC from Fetch 1- fetch2  register
+    .next_pc(next_pc_cext),        // output Next PC value for fetch2- decode 
+    .hold_pc(c_ext_hold_pc),        // Signal to hold PC (PC+0)
+    .raw_inst(inst_if2),       // Raw instruction from fetch1 
+    .decompressed_inst(decompressed_inst_if), // Decompressed instruction
+    .corrected_pc(corrected_pc_if),      // Corrected PC for instruction
+    .inst_valid(c_ext_inst_valid)         // Valid instruction signal
+);
+    
+    
     // ============================================
     //              IF-ID Pipeline Register
     // ============================================
@@ -260,9 +281,10 @@ module data_path #(
     if_id_reg_t if_id_bus_i, if_id_bus_o;
 
     assign if_id_bus_i = {
-        current_pc_if2,
+//        current_pc_if2,
+        corrected_pc_if,
         pc_plus_4_if2,
-        inst_if2
+        decompressed_inst_if
     };
 
     n_bit_reg_wclr #(
@@ -289,8 +311,9 @@ module data_path #(
     // Giving descriptive names to field of instructions 
     logic [4:0] rd_id;
     logic [6:0] fun7_id;
-    logic [2:0] fun3_id;
+   // logic [2:0] fun3_id;
     logic fun7_5_id; 
+    logic [4:0] csr_imm_id;
     assign funct12 = inst_id[31:20];
     assign rs1_id    = inst_id[19:15];
     assign rs2_id    = inst_id[24:20];
@@ -348,8 +371,6 @@ module data_path #(
     // ============================================
     //             ID-EXE Pipeline Register
     // ============================================
-    logic csr_data_sel_id;
-    logic csr_to_reg_id; 
     id_exe_reg_t id_exe_bus_i, id_exe_bus_o;
 
     assign id_exe_bus_i = {
@@ -400,10 +421,11 @@ module data_path #(
     );
 //    logic [4:0] csr_imm_id_exe; 
     logic [4:0] csr_imm_exe; //TODO connect from pipeline reg exe
-    logic [4:0] csr_imm_id; 
+    
     
     logic csr_data_sel_exe;//DONE
     logic csr_to_reg_exe;
+    logic alu_src_exe;
     // data signals
     assign current_pc_exe  = id_exe_bus_o.current_pc; // 32
     assign pc_plus_4_exe   = id_exe_bus_o.pc_plus_4;  // 32
@@ -699,14 +721,5 @@ module data_path #(
         .out(reg_wdata_wb)
     );
     
-    // ============================================
-    //          Decompressor Instance
-    // ============================================ 
-    
-    decompressor decompressor(
-        .decompressor_en(),
-        .IF_Instr_16(),
-        .IF_Dec_32()
-    
-    );
-endmodule 
+
+endmodule
