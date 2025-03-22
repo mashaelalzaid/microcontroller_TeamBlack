@@ -311,7 +311,6 @@ module data_path #(
     // Giving descriptive names to field of instructions 
     logic [4:0] rd_id;
     logic [6:0] fun7_id;
-   // logic [2:0] fun3_id;
     logic fun7_5_id; 
     logic [4:0] csr_imm_id;
     assign funct12 = inst_id[31:20];
@@ -419,7 +418,6 @@ module data_path #(
         .data_i(id_exe_bus_i),
         .data_o(id_exe_bus_o)
     );
-//    logic [4:0] csr_imm_id_exe; 
     logic [4:0] csr_imm_exe; //TODO connect from pipeline reg exe
     
     
