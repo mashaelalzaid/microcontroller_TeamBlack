@@ -7,6 +7,7 @@ module rv32i_soc_tb;
     logic i_flash_miso;
     logic o_uart_tx;
     logic i_uart_rx;
+    logic srx_pad_i;
 
     wire [31:0] io_data;
 

@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sat Mar 22 02:47:22 2025
+# Process ID: 1224211
+# Current directory: /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.runs/synth_1
+# Command line: vivado -log rv32i_soc_tb.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source rv32i_soc_tb.tcl
+# Log file: /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.runs/synth_1/rv32i_soc_tb.vds
+# Journal file: /home/it/SOC_Project/microcontroller_TeamBlack/rvsoc-baseline-main/project_1.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source rv32i_soc_tb.tcl -notrace
