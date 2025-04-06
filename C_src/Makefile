@@ -36,4 +36,4 @@ RV_FLAGS_LD := -mabi=ilp32 -march=rv32i_zicsr -m elf32lriscv
 .PHONY:clean
 
 clean:
-	rm  *.o *.elf *.hex *.asm *.mem *.s *.dis
+	rm  *.bin *.o *.elf *.hex *.asm *.mem *.s *.dis
