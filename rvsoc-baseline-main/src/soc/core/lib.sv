@@ -253,6 +253,7 @@ package riscv_types;
         // Data signals 
         logic [31:0] pc_plus_4;
         logic [31:0] pc_jump;      
+        logic [4:0]  rs1;
         logic [4:0]  rs2;
         logic [4:0]  rd; 
         logic [2:0]  fun3;

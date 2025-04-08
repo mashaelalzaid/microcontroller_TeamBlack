@@ -39,6 +39,7 @@ module data_path #(
     output wire [4:0] rs2_id,
     output wire [4:0] rs1_exe,
     output wire [4:0] rs2_exe,
+    output wire [4:0] rs1_mem,
     output wire [4:0] rs2_mem,
     output wire [4:0] rd_mem,
     output wire [4:0] rd_wb,
@@ -442,7 +443,7 @@ module data_path #(
    
     //CSR
     assign csr_addr_exe    = id_exe_bus_o.csr_addr_id; 
-    assign csr_wdata_exe  = id_exe_bus_o.reg_rdata1; 
+    assign csr_wdata_exe  = id_exe_bus_o.reg_rdata1;
     assign csr_op_exe      = id_exe_bus_o.csr_op_id; 
     assign csr_write_exe    = id_exe_bus_o.csr_write_id;
     assign is_csr_instr_exe = id_exe_bus_o.is_csr_instr_id;
@@ -551,6 +552,7 @@ module data_path #(
     // data signals 
     pc_plus_4_exe,  
     pc_jump_exe,     
+    rs1_exe,
     rs2_exe,
     rd_exe, 
     fun3_exe,
@@ -594,6 +596,7 @@ module data_path #(
     // data signals 
     assign pc_plus_4_mem   = exe_mem_bus_o.pc_plus_4;  // 32
     assign pc_jump_mem     = exe_mem_bus_o.pc_jump;
+    assign rs1_mem         = exe_mem_bus_o.rs1;
     assign rs2_mem         = exe_mem_bus_o.rs2;
     assign rd_mem          = exe_mem_bus_o.rd; 
     assign fun3_mem        = exe_mem_bus_o.fun3;
@@ -604,7 +607,9 @@ module data_path #(
     // CSR
     assign csr_to_reg_mem = exe_mem_bus_o.csr_to_reg;
     assign csr_addr_mem    = exe_mem_bus_o.csr_addr_exe;
-    assign csr_wdata_mem   = exe_mem_bus_o.csr_wdata_exe;
+//    assign csr_wdata_mem   = exe_mem_bus_o.csr_wdata_exe;
+//Forward between wb pipeline and mem
+    assign csr_wdata_mem   = (rs1_mem == rd_wb) ?  mem_wb_bus_o.result : exe_mem_bus_o.csr_wdata_exe;
     assign csr_op_mem      = exe_mem_bus_o.csr_op_exe;
     assign csr_write_mem   = exe_mem_bus_o.csr_write_exe;
     assign is_csr_instr_mem = exe_mem_bus_o.is_csr_instr_exe;
@@ -670,14 +675,14 @@ module data_path #(
     logic [31:0] csr_data_mem;
     assign mem_wb_bus_i = {
     // data signals 
-    rd_mem, 
+    rd_mem,
     result_mem,
     csr_data_mem,
     // control signals
     reg_write_mem,
     mem_to_reg_mem,
     csr_to_reg_mem,
-     is_csr_instr_mem       
+     is_csr_instr_mem
     };
 
     n_bit_reg_wclr #(
