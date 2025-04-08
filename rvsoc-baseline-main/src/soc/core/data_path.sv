@@ -282,7 +282,11 @@ module data_path #(
 
     assign if_id_bus_i = {
 //        current_pc_if2,
+<<<<<<< Updated upstream
         corrected_pc_if,
+=======
+corrected_pc_if,
+>>>>>>> Stashed changes
         pc_plus_4_if2,
         decompressed_inst_if
     };
@@ -311,6 +315,10 @@ module data_path #(
     // Giving descriptive names to field of instructions 
     logic [4:0] rd_id;
     logic [6:0] fun7_id;
+<<<<<<< Updated upstream
+=======
+    logic [2:0] fun3_id;
+>>>>>>> Stashed changes
     logic fun7_5_id; 
     logic [4:0] csr_imm_id;
     assign funct12 = inst_id[31:20];
@@ -370,6 +378,8 @@ module data_path #(
     // ============================================
     //             ID-EXE Pipeline Register
     // ============================================
+    logic csr_data_sel_id;
+    logic csr_to_reg_id; 
     id_exe_reg_t id_exe_bus_i, id_exe_bus_o;
 
     assign id_exe_bus_i = {
@@ -418,12 +428,14 @@ module data_path #(
         .data_i(id_exe_bus_i),
         .data_o(id_exe_bus_o)
     );
+
+//    logic [4:0] csr_imm_id_exe; 
     logic [4:0] csr_imm_exe; //TODO connect from pipeline reg exe
-    
+    logic [4:0] csr_imm_id; 
     
     logic csr_data_sel_exe;//DONE
     logic csr_to_reg_exe;
-    logic alu_src_exe;
+
     // data signals
     assign current_pc_exe  = id_exe_bus_o.current_pc; // 32
     assign pc_plus_4_exe   = id_exe_bus_o.pc_plus_4;  // 32
@@ -720,4 +732,4 @@ module data_path #(
     );
     
 
-endmodule
+endmodule 

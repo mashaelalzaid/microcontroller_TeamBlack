@@ -145,7 +145,7 @@ logic [31:0] mret_pc;
         .IMEM_DEPTH(IMEM_DEPTH)
     ) data_path_inst (
         .*,
-        .funct12(funct12),
+//        .funct12(funct12),
         // CSR control signals
         .csr_write_id(csr_write_id),
         .csr_data_sel_id(csr_data_sel_id),
