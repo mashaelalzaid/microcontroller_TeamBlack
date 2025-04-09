@@ -16,6 +16,8 @@ module csr_file (
     output logic [31:0] trap_pc, //   trap_pc, mret_pc should be muxed with next pc in rv32i
     // MRET handling
     input  logic        mret_exec,     // q: where does this come from? is is pipelined from the csr decoding stage or somewhere else?
+    // Ecall Handling 
+    input logic is_ecall_instr, 
     output logic [31:0] mret_pc        // this should be mux-ed with pc in rv32i_top
 );
 
@@ -50,6 +52,9 @@ module csr_file (
         // Timer interrupt cause value
     localparam TIMER_INT_CAUSE = 7;
     
+        //Samaher -  Ecall for M-mode 
+    localparam ECALL_M_CAUSE =11; 
+    
     //  read 
     always_comb begin
         case(csr_addr)
@@ -78,20 +83,28 @@ module csr_file (
                 mret_exec_delayed = mret_exec;
             end
         end
-         assign  trap_taken = mstatus[3] && mip[7] && mie[7] && !mret_exec ;// Q: should i explicitly exclude && !mret_exec;
+        // Samaher Detect if the Trap should be taken (timer or ECALL) 
+            assign  trap_taken = (mstatus[3] && mip[7] && mie[7] && !mret_exec) || is_ecall_instr; // Adding the ECall 
 
       // Trap detection logic 
     always_comb begin
 
-        if (trap_taken) begin
+        if (trap_taken) begin 
+        // == This is the Direct mode 
             if (mtvec[0] == 1'b0) begin
                 trap_pc = {mtvec[31:2], 2'b00};
             end
-            else begin
-                trap_pc = {mtvec[31:2], 2'b00} + 32'd28;  // 7 * 4 = 28 and it should be generaliable 
-          //      trap_pc = {mtvec[31:2], 2'b00} + (TIMER_INT_CAUSE << 2);
+        //==== Vectored mode - different exception causes go to different handlers
+                if (is_ecall_instr) begin
+                    // ECALL - cause 11 (0xB)
+                    trap_pc = {mtvec[31:2], 2'b00} + (ECALL_M_CAUSE << 2);
+                end
+                else begin
+                    // Timer interrupt - cause 7
+                    trap_pc = {mtvec[31:2], 2'b00} + (TIMER_INT_CAUSE << 2);
+                end
             end
-        end
+        
         else begin
             trap_pc = 32'h0;  
         end
@@ -143,11 +156,22 @@ module csr_file (
             end
         if(current_pc != 0) 
             pc_anti_flush = current_pc;
-            // Timer interrupt handling
+            // Timer interrupt handling and ECALL 
             else if (trap_taken) begin
                 mepc <= pc_anti_flush & 32'hFFFF_FFFE;; //the two low bits (mepc[1:0]) are always zero. //q: should i account for that here ?
                 
-                mcause <= {1'b1, 27'b0, 4'd7}; //this should be modified when we start having more interrupt types
+//                mcause <= {1'b1, 27'b0, 4'd7}; //this should be modified when we start having more interrupt types
+         //=== Samaher -->  Set cause register based on trap type
+                if (is_ecall_instr) begin
+                    // ECALL from M-mode (synchronous exception)
+                    mcause <= {1'b0, 27'b0, 4'd11}; // Bit 31=0 for exceptions, cause=11
+                end
+                else begin
+                    // Timer interrupt (asynchronous)
+                    mcause <= {1'b1, 27'b0, 4'd7}; // Bit 31=1 for interrupts, cause=7
+                end
+
+
                 // Update status register for trap entry
                 mstatus[7] <= mstatus[3];   
                 mstatus[3] <= 1'b0;     

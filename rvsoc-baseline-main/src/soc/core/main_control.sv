@@ -30,7 +30,8 @@ module decode_control (
     output logic csr_data_sel, // Whether to use immediate or register for CSR op
     output logic csr_to_reg,      // Whether to write CSR value to register
     output logic is_csr_instr,    // Whether instruction is CSR
-    output logic is_mret_instr    // Whether instruction is MRET
+    output logic is_mret_instr,    // Whether instruction is MRET
+    output logic is_ecall_instr     // Samaher--> Ecall
 );
 
     logic invalid_inst;
@@ -44,13 +45,18 @@ module decode_control (
     //mashael MRET function code
     localparam MRET_FUNCT12 = 12'h302;
     
+    // Samaher --> Ecall function code 
+    localparam ECALL_FUNCT12 = 12'h000; 
+    
+    //
     //mashael Detect if we have a MRET instruction (SYSTEM op + func3=0 + funct12=0x302)
     assign is_mret_instr = (opcode == SYSTEM) && (func3 == 3'b000) && (funct12 == MRET_FUNCT12);
     
     //mashael Detect if we have a CSR instruction (SYSTEM op + func3!=0)
     assign is_csr_instr = (opcode == SYSTEM) && (func3 != 3'b000);
 
-    
+    // Samaher Detect if the insts an ECALL 
+    assign is_ecall_instr = (opcode == SYSTEM ) && (func3 == 3'b000) && (funct12 == ECALL_FUNCT12); 
     always @(opcode) begin
         case(opcode[6:0])
             7'b0110011: begin reg_write=1; mem_write=0; mem_to_reg=0; alu_op=R_TYPE; alu_src=0; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=1; csr_data_sel=0; csr_to_reg=0;  csr_write=0;end // R-type
@@ -65,17 +71,27 @@ module decode_control (
 //            7'b1110011: begin reg_write='bx; mem_write='bx; mem_to_reg='bx; alu_op='bx; alu_src='bx; branch='bx; jump='bx; lui='bx; auipc='bx; jal='bx; r_type='bx; assign csr_data_sel=func3[2]; end // CSRR // TODO Xs to be replaced with correct signals
 //            default: begin reg_write=0; mem_write=0; mem_to_reg=0; alu_op=2'b00; alu_src=0; branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; end // NOP
         7'b1110011: begin 
-            // SYSTEM instructions (CSR or MRET)
+            // SYSTEM instructions (CSR , MRET OR ECALL) 
             if (is_mret_instr) begin 
-                // MRET or other system instructions with func3=0
+                // MRET instruction
+                reg_write=0; mem_write=0; mem_to_reg=0; alu_op=2'b00; alu_src=0; 
+                branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; 
+                csr_write=0; csr_data_sel=0; csr_to_reg=0;
+            end else if (is_ecall_instr) begin
+                // ECALL instruction
                 reg_write=0; mem_write=0; mem_to_reg=0; alu_op=2'b00; alu_src=0; 
                 branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; 
                 csr_write=0; csr_data_sel=0; csr_to_reg=0;
             end else if (is_csr_instr) begin
                 // CSR instructions (func3 != 000)
-                reg_write=1; mem_write=0; mem_to_reg=0; alu_op=2'b00; alu_src=0; //mashael maybe  alu_op = LOAD_STORE; 
+                reg_write=1; mem_write=0; mem_to_reg=0; alu_op=2'b00; alu_src=0;
                 branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0; 
                 csr_write=1; csr_data_sel=func3[2]; csr_to_reg=1;
+            end else begin
+                // Other SYSTEM instructions (shouldn't get here)
+                reg_write=0; mem_write=0; mem_to_reg=0; alu_op=2'b00; alu_src=0;
+                branch=0; jump=0; lui=0; auipc=0; jal=0; r_type=0;
+                csr_write=0; csr_data_sel=0; csr_to_reg=0;
             end
         end
         

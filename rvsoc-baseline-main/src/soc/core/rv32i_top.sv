@@ -31,6 +31,7 @@ module rv32i_top #(
     logic csr_to_reg_id;
     logic is_csr_instr_id;
     logic is_mret_instr_id;
+    logic is_ecall_instr_id; // Samaher Added for ECALL 
 
 // Add CSR file instance
 logic [11:0] csr_addr;
@@ -41,6 +42,7 @@ logic trap_taken;
 logic [31:0] trap_pc;
 logic mret_exec;
 logic [31:0] mret_pc;
+logic is_ecall_instr_mem; // Samaher Added for Ecall 
 
    // Instantiate the CSR file
     csr_file csr_file_inst (
@@ -60,7 +62,9 @@ logic [31:0] mret_pc;
         .trap_taken(trap_taken),
         .trap_pc(trap_pc),
         .mret_exec(mret_exec),
-        .mret_pc(mret_pc)
+        .mret_pc(mret_pc),
+        //Samaher -->  ECALL handling
+        .is_ecall_instr(is_ecall_instr_mem) // Added for ECALL
     );
 
 //// Connect trap signals to data_path
@@ -145,13 +149,14 @@ logic [31:0] mret_pc;
         .IMEM_DEPTH(IMEM_DEPTH)
     ) data_path_inst (
         .*,
-        .funct12(funct12),
+//        .funct12(funct12),
         // CSR control signals
         .csr_write_id(csr_write_id),
         .csr_data_sel_id(csr_data_sel_id),
         .csr_to_reg_id(csr_to_reg_id),
         .is_csr_instr_id(is_csr_instr_id),
         .is_mret_instr_id(is_mret_instr_id),
+        .is_ecall_instr_id(is_ecall_instr_id), // Samaher Added for ECALL
         
         // CSR connections
         .csr_addr(csr_addr),
@@ -162,7 +167,8 @@ logic [31:0] mret_pc;
         .trap_taken(trap_taken),
         .trap_pc(trap_pc),
         .mret_exec(mret_exec),
-        .mret_pc(mret_pc)
+        .mret_pc(mret_pc),
+         .is_ecall_instr_mem(is_ecall_instr_mem) //Samaher ->  Added for ECALL
     );
 
     control_unit controller_inst(
@@ -175,6 +181,7 @@ logic [31:0] mret_pc;
         .csr_to_reg(csr_to_reg_id),
         .is_csr_instr(is_csr_instr_id),
         .is_mret_instr(is_mret_instr_id),
+        .is_ecall_instr(is_ecall_instr_id), // Samaher --> Added for ECALL
         .trap_taken(trap_taken),     // From CSR file to control pipeline
         .mret_exec(mret_exec)       // From data path to control pipeline
         
