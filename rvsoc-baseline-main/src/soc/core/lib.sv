@@ -1,5 +1,3 @@
-
-
 // Decoders here
 module n_bit_dec #(
     parameter n = 2
@@ -241,8 +239,9 @@ package riscv_types;
         logic [11:0] csr_addr_id;
         logic [2:0] csr_op_id;
         logic csr_write_id;
-         logic is_csr_instr_id; 
-         logic is_mret_instr_id;
+        logic is_csr_instr_id; 
+        logic is_mret_instr_id;
+        logic is_ecall_instr_id;  // Added this line for ECALL
     } id_exe_reg_t;
     
 
@@ -274,19 +273,9 @@ package riscv_types;
         logic [31:0] csr_wdata_exe; 
         logic [2:0] csr_op_exe;
         logic csr_write_exe;
-         logic is_csr_instr_exe; 
-         logic is_mret_instr_exe;
-//        //CSR
-//        logic csr_data_sel;
-//        logic csr_to_reg;
-//        logic [11:0] csr_addr_id;
-//        logic [31:0] csr_wdata_id;
-//        logic [2:0] csr_op_id;
-//        logic csr_write_id;
-//         logic is_csr_instr_id; 
-//         logic is_mret_instr_id;
-
-       
+        logic is_csr_instr_exe; 
+        logic is_mret_instr_exe;
+        logic is_ecall_instr_exe;  // Added this line for ECALL
     } exe_mem_reg_t;
 
     // MEM/WB Register Structure

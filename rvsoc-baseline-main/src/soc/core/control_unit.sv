@@ -25,6 +25,7 @@ module control_unit(
     output logic csr_to_reg,      // Whether to write CSR value to register
     output logic is_csr_instr,    // Whether instruction is CSR
     output logic is_mret_instr,    // Whether instruction is MRET
+    output logic is_ecall_instr, // ECALL 
     input logic trap_taken,     // New: Signal when trap is requested
     input logic mret_exec,        // New: Signal when MRET is executed
 
@@ -76,6 +77,7 @@ module control_unit(
     logic csr_to_reg_wire;      // Whether to write CSR value to register
     logic is_csr_instr_wire;    // Whether instruction is CSR
     logic is_mret_instr_wire;   // Whether instruction is MRET    
+    logic is_ecall_instr_wire; // Samaher --> ECALL 
     
     decode_control dec_ctrl_inst (
         .opcode(opcode_id),
@@ -97,8 +99,8 @@ module control_unit(
         .csr_data_sel(csr_data_sel_wire), // Whether to use immediate or register for CSR op
         .csr_to_reg(csr_to_reg_wire),      // Whether to write CSR value to register
         .is_csr_instr(is_csr_instr_wire),   // Whether instruction is CSR
-        .is_mret_instr(is_mret_instr_wire)    // Whether instruction is MRET
-
+        .is_mret_instr(is_mret_instr_wire),    // Whether instruction is MRET
+        .is_ecall_instr(is_ecall_instr_wire)
     );
     
     assign csr_write=csr_write_wire; //mashael csr write enable
@@ -107,6 +109,7 @@ module control_unit(
     assign is_csr_instr=is_csr_instr_wire;   // Whether instruction is CSR
     assign is_mret_instr=is_mret_instr_wire;   // Whether instruction is MRET    
 
+    assign is_ecall_instr = is_ecall_instr_wire;
 
     wire exe_use_rs1_id;
     wire exe_use_rs2_id;

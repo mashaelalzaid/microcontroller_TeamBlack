@@ -88,7 +88,7 @@ module data_path #(
     input logic csr_to_reg_id,      // Whether to write CSR value to register
     input logic is_csr_instr_id,    // Whether instruction is CSR
     input logic is_mret_instr_id,   // Whether instruction is MRET
-    
+    input logic is_ecall_instr_id, // Samaher --> whether insts is Ecall 
     output logic [11:0] funct12,
         // CSR interface signals mashael
     output logic [11:0] csr_addr,       // CSR address
@@ -101,6 +101,7 @@ module data_path #(
     input  logic trap_taken,            // Signal when trap is taken
     input  logic [31:0] trap_pc,        // Trap handler address
     output logic mret_exec,             // Signal MRET execution
+    output logic is_ecall_instr_mem,    // Samaher --> Signal Ecall instruction 
     input  logic [31:0] mret_pc         // Return address for MRET
     
 );
@@ -120,6 +121,7 @@ module data_path #(
     // start CSR signals mashael
     logic is_csr_instr_exe, is_csr_instr_mem, is_csr_instr_wb;
     logic is_mret_instr_exe, is_mret_instr_mem;
+    logic is_ecall_instr_exe; //Samaher -->  Added for ECALL
     logic csr_write_exe, csr_write_mem;
     logic [11:0] csr_addr_id, csr_addr_exe, csr_addr_mem;
     logic [31:0] csr_wdata_exe, csr_wdata_mem;
@@ -169,7 +171,7 @@ module data_path #(
  /// end of CSR related PC modification mashael
  
  
-     // 1. Add C-extension controller signals
+     // Samaher --> 1. Add C-extension controller signals
     logic [31:0] next_pc_cext;             // Next PC value from c-extension controller
     logic c_ext_hold_pc;                   // Hold PC signal from c-extension controller
     logic [31:0] decompressed_inst_if;     // Decompressed instruction
@@ -282,11 +284,8 @@ module data_path #(
 
     assign if_id_bus_i = {
 //        current_pc_if2,
-<<<<<<< Updated upstream
-        corrected_pc_if,
-=======
+
 corrected_pc_if,
->>>>>>> Stashed changes
         pc_plus_4_if2,
         decompressed_inst_if
     };
@@ -315,10 +314,8 @@ corrected_pc_if,
     // Giving descriptive names to field of instructions 
     logic [4:0] rd_id;
     logic [6:0] fun7_id;
-<<<<<<< Updated upstream
-=======
-    logic [2:0] fun3_id;
->>>>>>> Stashed changes
+
+//    logic [2:0] fun3_id;
     logic fun7_5_id; 
     logic [4:0] csr_imm_id;
     assign funct12 = inst_id[31:20];
@@ -378,8 +375,8 @@ corrected_pc_if,
     // ============================================
     //             ID-EXE Pipeline Register
     // ============================================
-    logic csr_data_sel_id;
-    logic csr_to_reg_id; 
+//    logic csr_data_sel_id;
+//    logic csr_to_reg_id; 
     id_exe_reg_t id_exe_bus_i, id_exe_bus_o;
 
     assign id_exe_bus_i = {
@@ -414,7 +411,8 @@ corrected_pc_if,
         csr_op_id,
         csr_write_id,
         is_csr_instr_id,
-        is_mret_instr_id
+        is_mret_instr_id,
+        is_ecall_instr_id // Samaher --> Added for ECALL
         
     };
 
@@ -431,7 +429,7 @@ corrected_pc_if,
 
 //    logic [4:0] csr_imm_id_exe; 
     logic [4:0] csr_imm_exe; //TODO connect from pipeline reg exe
-    logic [4:0] csr_imm_id; 
+//    logic [4:0] csr_imm_id; 
     
     logic csr_data_sel_exe;//DONE
     logic csr_to_reg_exe;
@@ -459,6 +457,7 @@ corrected_pc_if,
     assign csr_write_exe    = id_exe_bus_o.csr_write_id;
     assign is_csr_instr_exe = id_exe_bus_o.is_csr_instr_id;
     assign is_mret_instr_exe = id_exe_bus_o.is_mret_instr_id;
+    assign is_ecall_instr_exe = id_exe_bus_o.is_ecall_instr_id; // Samaher -->Added for ECALL
     
     // control signals
     assign reg_write_exe   = id_exe_bus_o.reg_write;
@@ -588,7 +587,8 @@ corrected_pc_if,
     csr_op_exe,            // CSR operation type
     csr_write_exe,         // CSR write enable
     is_csr_instr_exe,      // Is CSR instruction
-    is_mret_instr_exe      // Is MRET instruction
+    is_mret_instr_exe,      // Is MRET instruction
+    is_ecall_instr_exe  // Samaher --> IS ECALL inst 
         
     };
 
@@ -621,7 +621,8 @@ corrected_pc_if,
     assign csr_write_mem   = exe_mem_bus_o.csr_write_exe;
     assign is_csr_instr_mem = exe_mem_bus_o.is_csr_instr_exe;
     assign is_mret_instr_mem = exe_mem_bus_o.is_mret_instr_exe;
-
+     
+     assign is_ecall_instr_mem = exe_mem_bus_o.is_ecall_instr_exe; // Samaher -->Added for ECALL
     // control signals
     assign reg_write_mem   = exe_mem_bus_o.reg_write;
     assign mem_write_mem   = exe_mem_bus_o.mem_write;
@@ -658,6 +659,7 @@ corrected_pc_if,
     assign csr_op = csr_op_mem;
     //assign is_csr_instr = is_csr_instr_mem;
     assign mret_exec = is_mret_instr_mem;
+    //assign is_ecall_instr = is_ecall_instr_mem; ==? 
        
     // selecting result in the memory stage
     // it can be used in the exe, incase it's needed 
